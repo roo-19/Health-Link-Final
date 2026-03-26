@@ -152,6 +152,8 @@ export default function ServicesOverview() {
                                     )}
                                     <Link
                                         href={service.ctaLink}
+                                        target={service.ctaLink.startsWith('http') ? "_blank" : undefined}
+                                        rel={service.ctaLink.startsWith('http') ? "noopener noreferrer" : undefined}
                                         className="block w-full rounded-full bg-slate-900 px-3.5 py-3 text-center text-sm font-semibold text-white shadow-md hover:bg-sky-600 hover:shadow-sky-500/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 transition-all duration-300 transform group-hover:-translate-y-0.5"
                                     >
                                         {service.cta}

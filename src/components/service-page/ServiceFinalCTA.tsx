@@ -31,6 +31,8 @@ export default function ServiceFinalCTA({ service }: ServiceFinalCTAProps) {
                         <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
                             <Link
                                 href={service.ctaLink}
+                                target={service.ctaLink.startsWith('http') ? "_blank" : undefined}
+                                rel={service.ctaLink.startsWith('http') ? "noopener noreferrer" : undefined}
                                 className="w-full sm:w-auto inline-flex justify-center items-center rounded-full bg-white px-10 py-5 text-lg font-bold text-slate-900 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:bg-slate-50 hover:scale-105 transition-all duration-300"
                             >
                                 {service.ctaIcon && service.ctaIcon}

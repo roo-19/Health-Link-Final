@@ -42,7 +42,7 @@ export default function Navbar() {
                         Sign in
                     </Link>
                     <Link
-                        href="/register"
+                        href="/services/telemedicine/register"
                         className="rounded-full bg-gradient-to-r from-sky-600 to-sky-500 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-500/40 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 transition-all duration-300"
                     >
                         Register now

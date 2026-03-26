@@ -111,6 +111,8 @@ export default function ServiceDetailPanel({ service }: ServiceDetailPanelProps)
                 <div className="mt-4 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <Link
                         href={service.ctaLink}
+                        target={service.ctaLink.startsWith('http') ? "_blank" : undefined}
+                        rel={service.ctaLink.startsWith('http') ? "noopener noreferrer" : undefined}
                         className="w-full sm:w-auto rounded-full px-6 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors bg-sky-600 hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
                     >
                         {service.cta}

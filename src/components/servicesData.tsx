@@ -464,12 +464,6 @@ export const servicesData: ServiceData[] = [
         finalCtaTitle: "Reach out today to begin your transformation.",
         finalCtaDescription: (
             <div className="space-y-4">
-                <div className="flex items-center gap-3 text-white/90">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12.031 2.016c-5.509 0-9.984 4.475-9.984 9.985 0 1.758.455 3.473 1.32 4.99L2 22l5.12-1.343a9.92 9.92 0 004.911 1.297h.003c5.508 0 9.983-4.475 9.983-9.986s-4.475-9.953-9.983-9.953zm5.49 14.331c-.244.686-1.41 1.343-1.956 1.408-.519.062-1.129.13-3.218-.737-2.515-1.042-4.144-3.612-4.269-3.778-.125-.165-1.018-1.353-1.018-2.583 0-1.23.639-1.834.869-2.083.23-.249.502-.311.668-.311.166 0 .332-.005.476 0 .151.005.356-.057.545.4.195.466.666 1.625.726 1.748.06.124.1.269.015.435-.085.166-.13.269-.255.414-.125.145-.264.316-.381.435-.13.13-.266.273-.11.543.155.269.691 1.143 1.484 1.848.97.863 1.815 1.134 2.08 1.258.265.124.42.103.575-.072.155-.175.666-.775.845-1.04.18-.264.36-.217.595-.134.235.083 1.483.7 1.737.825.254.124.425.186.485.29.06.104.06.605-.184 1.291z" />
-                    </svg>
-                    <span className="text-xl font-bold">whatsapp: +94 76 251 5494</span>
-                </div>
                 <p className="text-white text-lg font-semibold italic">✨ Your journey to a brighter tomorrow starts here. Make an appointment with a psychologist / Psychotherapist.</p>
             </div>
         ),

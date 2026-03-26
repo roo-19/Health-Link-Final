@@ -58,6 +58,8 @@ export default function ServiceHero({ service, imageSrc }: ServiceHeroProps) {
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link
                                 href={service.ctaLink}
+                                target={service.ctaLink.startsWith('http') ? "_blank" : undefined}
+                                rel={service.ctaLink.startsWith('http') ? "noopener noreferrer" : undefined}
                                 className="inline-flex justify-center items-center rounded-full bg-slate-900 px-8 py-4 text-base font-semibold text-white shadow-xl shadow-slate-900/20 hover:bg-sky-600 hover:shadow-sky-600/30 transition-all duration-300 transform hover:-translate-y-1"
                             >
                                 {service.ctaIcon && service.ctaIcon}
