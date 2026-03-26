@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
     return (
-        <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-7xl rounded-full bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5 border border-slate-200/50 transition-all duration-300">
+        <nav className="fixed top-14 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-7xl rounded-full bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5 border border-slate-200/50 transition-all duration-300">
             <div className="mx-auto flex h-20 items-center justify-between px-6 lg:px-8">
                 {/* Logo Section */}
                 <Link href="/" className="flex items-center gap-4 group">

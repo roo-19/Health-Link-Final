@@ -25,6 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfairDisplay.variable}`}>
       <body className="antialiased">
+        <div className="fixed top-0 w-full bg-yellow-500 text-black text-center py-2 z-[60] font-bold text-sm">
+          🚧 HealthLink Preview – Under Construction 🚧
+        </div>
         {children}
       </body>
     </html>
