@@ -19,7 +19,7 @@ export default function FinalCTA() {
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                         <Link
-                            href="/register"
+                            href="/services/telemedicine/register"
                             className="rounded-full bg-white px-8 py-3.5 text-base font-semibold text-slate-900 shadow-sm hover:bg-sky-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-sky-500/20"
                         >
                             Get care now

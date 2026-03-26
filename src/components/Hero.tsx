@@ -36,7 +36,7 @@ export default function Hero() {
                     </p>
                     <div className="mt-12 flex flex-col sm:flex-row gap-4 sm:items-center">
                         <Link
-                            href="/register"
+                            href="/services/telemedicine/register"
                             className="rounded-full bg-white px-8 py-4 text-base font-semibold text-slate-900 shadow-xl shadow-white/10 hover:bg-sky-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-300 hover:scale-105 hover:shadow-sky-500/20 text-center"
                         >
                             Get care now
