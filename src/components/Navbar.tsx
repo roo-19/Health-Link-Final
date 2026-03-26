@@ -1,15 +1,13 @@
-
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Navbar() {
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md transition-all">
-            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[96%] max-w-7xl rounded-full bg-white/95 backdrop-blur-xl shadow-lg shadow-black/5 border border-slate-200/50 transition-all duration-300">
+            <div className="mx-auto flex h-20 items-center justify-between px-6 lg:px-8">
                 {/* Logo Section */}
-                <Link href="/" className="flex items-center gap-3">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-md">
-                        {/* Using a placeholder if image is missing, or actual path */}
+                <Link href="/" className="flex items-center gap-4 group">
+                    <div className="relative h-12 w-12 overflow-hidden rounded-md transition-transform duration-300 group-hover:scale-105">
                         <Image
                             src="/logo.png"
                             alt="Health Link Logo"
@@ -18,20 +16,24 @@ export default function Navbar() {
                             className="object-contain"
                         />
                     </div>
-                    <span className="text-3xl font-extrabold tracking-tight text-[#002f6c]">Health Link</span>
+                    <span className="text-3xl font-extrabold tracking-tight text-slate-900 transition-colors duration-300 group-hover:text-sky-600 drop-shadow-sm">Health Link</span>
                 </Link>
 
                 {/* Center Navigation */}
                 <div className="hidden md:flex items-center gap-8">
-                    <Link href="/" className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors">
-                        Home
-                    </Link>
-                    <Link href="/about" className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors">
-                        About Us
-                    </Link>
-                    <Link href="/contact" className="text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors">
-                        Contact Us
-                    </Link>
+                    {[
+                        { name: 'Home', path: '/' },
+                        { name: 'About Us', path: '/about' },
+                        { name: 'Contact Us', path: '/contact' }
+                    ].map((item) => (
+                        <Link
+                            key={item.name}
+                            href={item.path}
+                            className="relative text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-sky-500 after:transition-all hover:after:w-full"
+                        >
+                            {item.name}
+                        </Link>
+                    ))}
                 </div>
 
                 {/* Right Actions */}
@@ -41,7 +43,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                         href="/register"
-                        className="rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 transition-all"
+                        className="rounded-full bg-gradient-to-r from-sky-600 to-sky-500 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-500/40 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 transition-all duration-300"
                     >
                         Register now
                     </Link>

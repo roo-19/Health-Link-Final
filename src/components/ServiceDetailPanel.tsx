@@ -27,8 +27,8 @@ export default function ServiceDetailPanel({ service }: ServiceDetailPanelProps)
                             <span
                                 key={tag}
                                 className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium border ${tag.toLowerCase().includes("free")
-                                        ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                                        : "bg-sky-50 text-sky-700 border-sky-100"
+                                    ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                                    : "bg-sky-50 text-sky-700 border-sky-100"
                                     }`}
                             >
                                 {tag}

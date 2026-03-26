@@ -1,4 +1,3 @@
-
 export default function FAQ() {
     const faqs = [
         {
@@ -20,22 +19,22 @@ export default function FAQ() {
     ];
 
     return (
-        <section className="bg-slate-50 py-16 sm:py-24">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-4xl divide-y divide-slate-900/10">
-                    <h2 className="text-2xl font-bold leading-10 tracking-tight text-slate-900">Frequently asked questions</h2>
-                    <dl className="mt-10 space-y-6 divide-y divide-slate-900/10">
+        <section className="bg-slate-50 py-24 relative overflow-hidden">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="mx-auto max-w-4xl">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 mb-4">Frequently Asked Questions</h2>
+                        <p className="text-lg text-slate-600">Everything you need to know about how Health Link works.</p>
+                    </div>
+                    
+                    <div className="space-y-6">
                         {faqs.map((faq) => (
-                            <div key={faq.question} className="pt-6">
-                                <dt>
-                                    <span className="text-base font-semibold leading-7 text-slate-900">{faq.question}</span>
-                                </dt>
-                                <dd className="mt-2 pr-12">
-                                    <p className="text-base leading-7 text-slate-600">{faq.answer}</p>
-                                </dd>
+                            <div key={faq.question} className="glass border border-slate-200/60 rounded-2xl p-6 sm:p-8 transition-all hover:bg-white/90">
+                                <h3 className="text-xl font-bold text-slate-900 mb-3">{faq.question}</h3>
+                                <p className="text-base text-slate-600 leading-relaxed pr-8">{faq.answer}</p>
                             </div>
                         ))}
-                    </dl>
+                    </div>
                 </div>
             </div>
         </section>
