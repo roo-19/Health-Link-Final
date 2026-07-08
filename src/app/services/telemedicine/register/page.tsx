@@ -5,8 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -16,19 +15,20 @@ export default function TelemedicineRegistration() {
     const router = useRouter();
 
     const [agreed, setAgreed] = useState(false);
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [dob, setDob] = useState("");
     const [consultationReason, setConsultationReason] = useState("");
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const filesArray = Array.from(e.target.files);
-            setSelectedFiles(filesArray);
+    useEffect(() => {
+        if (profile) {
+            setFullName(profile.fullName || "");
+            setEmail(profile.email || "");
         }
-    };
+    }, [profile]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,22 +52,12 @@ export default function TelemedicineRegistration() {
             const newInquiryDocRef = doc(inquiryColRef);
             const inquiryId = newInquiryDocRef.id;
 
-            // 2. Upload files to Firebase Storage
-            const documentUrls: string[] = [];
-            for (const file of selectedFiles) {
-                const storagePath = `inquiries/${inquiryId}/${Date.now()}_${file.name}`;
-                const fileRef = ref(storage, storagePath);
-                await uploadBytes(fileRef, file);
-                const downloadUrl = await getDownloadURL(fileRef);
-                documentUrls.push(downloadUrl);
-            }
-
-            // 3. Write Inquiry to Firestore
+            // 2. Write Inquiry to Firestore
             await setDoc(newInquiryDocRef, {
                 id: inquiryId,
-                patientId: user.uid,
-                patientName: profile.fullName,
-                patientEmail: profile.email,
+                clientId: user.uid,
+                clientName: fullName,
+                clientEmail: email,
                 phoneNumber: phoneNumber,
                 dateOfBirth: dob,
                 subject: "Telemedicine Consultation",
@@ -75,14 +65,14 @@ export default function TelemedicineRegistration() {
                 status: "pending",
                 doctorId: null,
                 doctorName: null,
-                documents: documentUrls,
+                documents: [],
                 createdAt: serverTimestamp(),
                 assignedAt: null,
                 answeredAt: null,
             });
 
-            // 4. Redirect to Patient Dashboard
-            router.push("/patient/dashboard");
+            // 4. Redirect to Client Dashboard
+            router.push("/client/dashboard");
         } catch (err: any) {
             console.error("Error submitting inquiry:", err);
             setError(err.message || "Failed to submit inquiry. Please try again.");
@@ -159,7 +149,7 @@ export default function TelemedicineRegistration() {
 
                         {/* Right Side: Form */}
                         <div className="lg:w-3/5 p-8 sm:p-14 lg:p-20 bg-white">
-                            <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Patient Registration</h2>
+                            <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Client Registration</h2>
                             <p className="text-slate-500 mb-10">Please fill out your details to schedule your consultation.</p>
 
                             {loading ? (
@@ -192,12 +182,12 @@ export default function TelemedicineRegistration() {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-slate-400">Full Name</label>
-                                            <input type="text" readOnly value={profile?.fullName || ""} className="w-full rounded-2xl border-slate-200 bg-slate-100 px-4 py-3.5 text-slate-500 cursor-not-allowed outline-none" />
+                                            <label className="text-sm font-semibold text-slate-900">Full Name</label>
+                                            <input type="text" required value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none" placeholder="John Doe" />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-slate-400">Email Address</label>
-                                            <input type="email" readOnly value={profile?.email || ""} className="w-full rounded-2xl border-slate-200 bg-slate-100 px-4 py-3.5 text-slate-500 cursor-not-allowed outline-none" />
+                                            <label className="text-sm font-semibold text-slate-900">Email Address</label>
+                                            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none" placeholder="john@example.com" />
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-sm font-semibold text-slate-900">Phone Number</label>
@@ -214,15 +204,7 @@ export default function TelemedicineRegistration() {
                                         <textarea required rows={3} value={consultationReason} onChange={(e) => setConsultationReason(e.target.value)} className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none resize-none" placeholder="Briefly describe your symptoms or request..."></textarea>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-slate-900">Upload Supporting Documents (Prescriptions, reports, scans)</label>
-                                        <input type="file" multiple onChange={handleFileChange} className="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer" />
-                                        {selectedFiles.length > 0 && (
-                                            <div className="mt-2 text-xs text-slate-500">
-                                                Selected {selectedFiles.length} file(s): {selectedFiles.map(f => f.name).join(", ")}
-                                            </div>
-                                        )}
-                                    </div>
+                                    {/* Document upload removed */}
 
                                     {/* Agreement Section */}
                                     <div className="space-y-4 pt-4 border-t border-slate-100">

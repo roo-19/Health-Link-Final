@@ -30,7 +30,7 @@ export default function SignUpPage() {
             } else if (profile.role === "doctor") {
                 router.push("/doctor/dashboard");
             } else {
-                router.push("/patient/dashboard");
+                router.push("/client/dashboard");
             }
         }
     }, [user, profile, loading, router]);
@@ -55,16 +55,16 @@ export default function SignUpPage() {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const firebaseUser = userCredential.user;
 
-            // Create patient profile in Firestore
+            // Create client profile in Firestore
             await setDoc(doc(db, "users", firebaseUser.uid), {
                 uid: firebaseUser.uid,
                 fullName,
                 email,
-                role: "patient",
+                role: "client",
                 createdAt: serverTimestamp(),
             });
 
-            router.push("/patient/dashboard");
+            router.push("/client/dashboard");
         } catch (err: any) {
             console.error("Sign up error:", err);
             if (err.code === "auth/email-already-in-use") {
@@ -107,7 +107,7 @@ export default function SignUpPage() {
                             />
                         </div>
                         <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Create Account</h1>
-                        <p className="text-slate-500 mt-2">Sign up as a Health Link patient</p>
+                        <p className="text-slate-500 mt-2">Sign up as a Health Link client</p>
                     </div>
 
                     {error && (

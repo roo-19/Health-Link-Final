@@ -28,7 +28,7 @@ export default function SignInPage() {
             } else if (profile.role === "doctor") {
                 router.push("/doctor/dashboard");
             } else {
-                router.push("/patient/dashboard");
+                router.push("/client/dashboard");
             }
         }
     }, [user, profile, loading, router]);
@@ -51,7 +51,7 @@ export default function SignInPage() {
                 } else if (userData.role === "doctor") {
                     router.push("/doctor/dashboard");
                 } else {
-                    router.push("/patient/dashboard");
+                    router.push("/client/dashboard");
                 }
             } else {
                 setError("User profile document not found. Please contact support.");
@@ -155,7 +155,7 @@ export default function SignInPage() {
                         <p className="text-slate-500 text-sm">
                             Don&apos;t have an account?{" "}
                             <Link href="/signup" className="text-sky-600 font-bold hover:underline">
-                                Sign Up as Patient
+                                Sign Up as Client
                             </Link>
                         </p>
                     </div>

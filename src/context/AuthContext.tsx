@@ -9,7 +9,7 @@ interface UserProfile {
     uid: string;
     fullName: string;
     email: string;
-    role: "patient" | "doctor" | "admin";
+    role: "client" | "doctor" | "admin";
     createdAt: any;
 }
 

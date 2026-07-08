@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { collection, query, where, orderBy, onSnapshot, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { auth, db, storage } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -32,7 +31,7 @@ interface Answer {
     createdAt: any;
 }
 
-export default function PatientDashboard() {
+export default function ClientDashboard() {
     const { user, profile, loading, logout } = useAuth();
     const router = useRouter();
     
@@ -45,7 +44,6 @@ export default function PatientDashboard() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [dob, setDob] = useState("");
     const [consultationReason, setConsultationReason] = useState("");
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [modalError, setModalError] = useState("");
 
@@ -54,7 +52,7 @@ export default function PatientDashboard() {
         if (!loading) {
             if (!user) {
                 router.push("/signin");
-            } else if (profile && profile.role !== "patient") {
+            } else if (profile && profile.role !== "client") {
                 // If they are admin or doctor, send them to their respective dashboards
                 if (profile.role === "admin") router.push("/admin/dashboard");
                 if (profile.role === "doctor") router.push("/doctor/dashboard");
@@ -64,12 +62,11 @@ export default function PatientDashboard() {
 
     // Fetch patient's inquiries
     useEffect(() => {
-        if (!user || (profile && profile.role !== "patient")) return;
+        if (!user || !profile || profile.role !== "client") return;
 
         const q = query(
             collection(db, "inquiries"),
-            where("patientId", "==", user.uid),
-            orderBy("createdAt", "desc")
+            where("clientId", "==", user.uid)
         );
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -77,6 +74,14 @@ export default function PatientDashboard() {
             snapshot.forEach((doc) => {
                 list.push(doc.data() as Inquiry);
             });
+            
+            // Sort client-side by createdAt desc to avoid composite index errors
+            list.sort((a, b) => {
+                const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+                const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+                return dateB - dateA;
+            });
+
             setInquiries(list);
             setLoadingInquiries(false);
         }, (err) => {
@@ -114,12 +119,6 @@ export default function PatientDashboard() {
         return () => unsubscribe();
     }, [inquiries]);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setSelectedFiles(Array.from(e.target.files));
-        }
-    };
-
     const handleNewInquirySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setModalError("");
@@ -129,20 +128,11 @@ export default function PatientDashboard() {
             const newInquiryRef = doc(collection(db, "inquiries"));
             const inquiryId = newInquiryRef.id;
 
-            const documentUrls: string[] = [];
-            for (const file of selectedFiles) {
-                const storagePath = `inquiries/${inquiryId}/${Date.now()}_${file.name}`;
-                const fileRef = ref(storage, storagePath);
-                await uploadBytes(fileRef, file);
-                const downloadUrl = await getDownloadURL(fileRef);
-                documentUrls.push(downloadUrl);
-            }
-
             await setDoc(newInquiryRef, {
                 id: inquiryId,
-                patientId: user!.uid,
-                patientName: profile!.fullName,
-                patientEmail: profile!.email,
+                clientId: user!.uid,
+                clientName: profile!.fullName,
+                clientEmail: profile!.email,
                 phoneNumber: phoneNumber,
                 dateOfBirth: dob,
                 subject: "Health Inquiry",
@@ -150,7 +140,7 @@ export default function PatientDashboard() {
                 status: "pending",
                 doctorId: null,
                 doctorName: null,
-                documents: documentUrls,
+                documents: [],
                 createdAt: serverTimestamp(),
                 assignedAt: null,
                 answeredAt: null,
@@ -160,7 +150,6 @@ export default function PatientDashboard() {
             setPhoneNumber("");
             setDob("");
             setConsultationReason("");
-            setSelectedFiles([]);
             setShowModal(false);
         } catch (err: any) {
             console.error("Error creating inquiry:", err);
@@ -186,7 +175,7 @@ export default function PatientDashboard() {
                 {/* Dashboard Header */}
                 <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-md border border-slate-200/50 mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                     <div>
-                        <span className="text-xs font-bold uppercase tracking-widest text-sky-600 block mb-2">Patient Dashboard</span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-sky-600 block mb-2">Client Dashboard</span>
                         <h1 className="text-4xl font-extrabold text-slate-950">Hello, {profile?.fullName}</h1>
                         <p className="text-slate-500 font-light mt-1">Manage your health inquiries and view responses from your assigned doctors.</p>
                     </div>
@@ -374,20 +363,7 @@ export default function PatientDashboard() {
                                 />
                             </div>
 
-                            <div className="space-y-1">
-                                <label className="text-sm font-semibold text-slate-900">Upload Attachments</label>
-                                <input 
-                                    type="file" 
-                                    multiple 
-                                    onChange={handleFileChange} 
-                                    className="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer" 
-                                />
-                                {selectedFiles.length > 0 && (
-                                    <div className="mt-2 text-xs text-slate-500">
-                                        Selected: {selectedFiles.map(f => f.name).join(", ")}
-                                    </div>
-                                )}
-                            </div>
+                            {/* Upload attachments removed */}
 
                             <button 
                                 type="submit" 

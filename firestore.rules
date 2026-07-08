@@ -24,25 +24,24 @@ service cloud.firestore {
       return isLoggedIn() && getUserRole(request.auth.uid) == 'doctor';
     }
     
-    function isPatient() {
-      return isLoggedIn() && getUserRole(request.auth.uid) == 'patient';
+    function isClient() {
+      return isLoggedIn() && getUserRole(request.auth.uid) == 'client';
     }
 
     // --- Users Collection ---
     match /users/{uid} {
-      // Anyone logged in can read user profiles (needed for patients to read doctor names, admins to list users)
+      // Anyone logged in can read user profiles (needed for clients to read doctor names, admins to list users)
       allow read: if isLoggedIn();
       
       // Creating profiles
-      allow create: if isLoggedIn() 
-                    && request.auth.uid == uid 
-                    && request.resource.data.role == 'patient'; // Patients can register themselves
+      allow create: if (isLoggedIn() && request.auth.uid == uid && request.resource.data.role == 'client') // Clients can register themselves
+                    || isAdmin(); // Admins can register doctors/others
                     
       // Updating profiles
       allow update: if isLoggedIn() 
                     && (
                       isAdmin() // Admin can update anyone
-                      || (request.auth.uid == uid && request.resource.data.role == resource.data.role) // Patients cannot alter their own role
+                      || (request.auth.uid == uid && request.resource.data.role == resource.data.role) // Clients cannot alter their own role
                     );
                     
       // Only admins can delete profiles
@@ -51,17 +50,17 @@ service cloud.firestore {
 
     // --- Inquiries Collection ---
     match /inquiries/{inquiryId} {
-      // Patients can read their own, assigned doctors can read theirs, admins can read all
+      // Clients can read their own, assigned doctors can read theirs, admins can read all
       allow read: if isLoggedIn() 
                     && (
                       isAdmin() 
                       || (isDoctor() && resource.data.doctorId == request.auth.uid)
-                      || (isPatient() && resource.data.patientId == request.auth.uid)
+                      || (isClient() && resource.data.clientId == request.auth.uid)
                     );
                     
-      // Patients can create new pending inquiries under their own UID
-      allow create: if isPatient() 
-                    && request.resource.data.patientId == request.auth.uid
+      // Clients can create new pending inquiries under their own UID
+      allow create: if isClient() 
+                    && request.resource.data.clientId == request.auth.uid
                     && request.resource.data.status == 'pending';
                     
       // Updating inquiries
@@ -73,7 +72,7 @@ service cloud.firestore {
                         && resource.data.doctorId == request.auth.uid // Must be assigned to this doctor
                         && request.resource.data.status == 'answered' // Doctor can only mark as answered
                         && request.resource.data.doctorId == resource.data.doctorId // Cannot change assigned doctor
-                        && request.resource.data.patientId == resource.data.patientId // Cannot change patient
+                        && request.resource.data.clientId == resource.data.clientId // Cannot change client
                       )
                     );
                     
@@ -83,12 +82,12 @@ service cloud.firestore {
 
     // --- Answers Collection ---
     match /answers/{answerId} {
-      // Readers must be logged in and either an admin, the answering doctor, or the patient who made the inquiry
+      // Readers must be logged in and either an admin, the answering doctor, or the client who made the inquiry
       allow read: if isLoggedIn() 
                     && (
                       isAdmin()
                       || (isDoctor() && resource.data.doctorId == request.auth.uid)
-                      || (isPatient() && get(/databases/$(database)/documents/inquiries/$(resource.data.inquiryId)).data.patientId == request.auth.uid)
+                      || (isClient() && get(/databases/$(database)/documents/inquiries/$(resource.data.inquiryId)).data.clientId == request.auth.uid)
                     );
                     
       // Only the assigned doctor can write the answer

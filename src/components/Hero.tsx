@@ -98,7 +98,7 @@ export default function Hero() {
             <div className="hidden lg:flex absolute bottom-16 right-64 gap-6 z-20">
                 <div className="glass-dark p-6 rounded-[2rem] max-w-[210px] shadow-2xl transition-transform hover:-translate-y-1.5 duration-300 border border-white/5">
                     <div className="text-3xl font-extrabold text-white mb-2 tracking-tight">10k+</div>
-                    <div className="text-xs text-slate-400 leading-normal">Patients trusted us with their health & wellness.</div>
+                    <div className="text-xs text-slate-400 leading-normal">Clients trusted us with their health & wellness.</div>
                 </div>
             </div>
 

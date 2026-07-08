@@ -14,15 +14,18 @@ interface UserProfile {
     uid: string;
     fullName: string;
     email: string;
-    role: "patient" | "doctor" | "admin";
+    role: "client" | "doctor" | "admin";
     createdAt: any;
+    specialization?: string;
+    licenseNumber?: string;
+    phoneNumber?: string;
 }
 
 interface Inquiry {
     id: string;
-    patientId: string;
-    patientName: string;
-    patientEmail: string;
+    clientId: string;
+    clientName: string;
+    clientEmail: string;
     phoneNumber: string;
     dateOfBirth: string;
     subject: string;
@@ -49,6 +52,9 @@ export default function AdminDashboard() {
     const [docName, setDocName] = useState("");
     const [docEmail, setDocEmail] = useState("");
     const [docPassword, setDocPassword] = useState("");
+    const [docSpecialization, setDocSpecialization] = useState("");
+    const [docLicenseNumber, setDocLicenseNumber] = useState("");
+    const [docPhone, setDocPhone] = useState("");
     const [isCreatingDoctor, setIsCreatingDoctor] = useState(false);
     const [doctorFormError, setDoctorFormError] = useState("");
     const [doctorFormSuccess, setDoctorFormSuccess] = useState("");
@@ -64,14 +70,14 @@ export default function AdminDashboard() {
                 router.push("/signin");
             } else if (profile && profile.role !== "admin") {
                 if (profile.role === "doctor") router.push("/doctor/dashboard");
-                if (profile.role === "patient") router.push("/patient/dashboard");
+                if (profile.role === "client") router.push("/client/dashboard");
             }
         }
     }, [user, profile, loading, router]);
 
     // Fetch all inquiries
     useEffect(() => {
-        if (!user || (profile && profile.role !== "admin")) return;
+        if (!user || !profile || profile.role !== "admin") return;
 
         const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -90,7 +96,7 @@ export default function AdminDashboard() {
 
     // Fetch all doctors
     useEffect(() => {
-        if (!user || (profile && profile.role !== "admin")) return;
+        if (!user || !profile || profile.role !== "admin") return;
 
         const q = query(collection(db, "users"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -141,6 +147,9 @@ export default function AdminDashboard() {
                 fullName: docName,
                 email: docEmail,
                 role: "doctor",
+                specialization: docSpecialization,
+                licenseNumber: docLicenseNumber,
+                phoneNumber: docPhone,
                 createdAt: serverTimestamp(),
             });
 
@@ -152,6 +161,9 @@ export default function AdminDashboard() {
             setDocName("");
             setDocEmail("");
             setDocPassword("");
+            setDocSpecialization("");
+            setDocLicenseNumber("");
+            setDocPhone("");
             setDoctorFormSuccess(`Doctor Dr. ${docName} registered successfully!`);
         } catch (err: any) {
             console.error("Error registering doctor:", err);
@@ -275,7 +287,7 @@ export default function AdminDashboard() {
                         {activeTab === "inquiries" && (
                             inquiries.length === 0 ? (
                                 <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-12 text-center shadow-sm">
-                                    <p className="text-slate-500 font-light">No patient inquiries submitted to the platform yet.</p>
+                                    <p className="text-slate-500 font-light">No client inquiries submitted to the platform yet.</p>
                                 </div>
                             ) : (
                                 <div className="space-y-6">
@@ -286,7 +298,7 @@ export default function AdminDashboard() {
                                                     <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Inquiry ID: {inq.id}</span>
                                                     <h3 className="text-xl font-bold text-slate-900 mt-1">{inq.subject}</h3>
                                                     <p className="text-xs text-slate-500 mt-1">
-                                                        Patient: <span className="font-semibold">{inq.patientName}</span> ({inq.patientEmail}) | DOB: {inq.dateOfBirth} | Phone: {inq.phoneNumber}
+                                                        Client: <span className="font-semibold">{inq.clientName}</span> ({inq.clientEmail}) | DOB: {inq.dateOfBirth} | Phone: {inq.phoneNumber}
                                                     </p>
                                                 </div>
                                                 <div>
@@ -310,7 +322,7 @@ export default function AdminDashboard() {
 
                                             <div className="space-y-6">
                                                 <div>
-                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Patient Inquiry Message</h4>
+                                                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Client Inquiry Message</h4>
                                                     <p className="text-slate-700 mt-2 text-sm whitespace-pre-line leading-relaxed font-light">{inq.message}</p>
                                                 </div>
 
@@ -381,11 +393,17 @@ export default function AdminDashboard() {
                                         <div className="space-y-4">
                                             {doctors.map((doc) => (
                                                 <div key={doc.uid} className="bg-white rounded-3xl border border-slate-200/50 p-6 flex justify-between items-center shadow-sm">
-                                                    <div>
+                                                    <div className="flex-1">
                                                         <h4 className="font-bold text-slate-900 text-lg">Dr. {doc.fullName}</h4>
-                                                        <p className="text-slate-500 text-sm font-light mt-0.5">{doc.email}</p>
+                                                        {doc.specialization && (
+                                                            <p className="text-sky-600 font-semibold text-sm mt-0.5">{doc.specialization}</p>
+                                                        )}
+                                                        <p className="text-slate-500 text-sm mt-0.5">{doc.email} • {doc.phoneNumber || "No Phone"}</p>
+                                                        {doc.licenseNumber && (
+                                                            <p className="text-slate-400 text-xs mt-0.5">License: {doc.licenseNumber}</p>
+                                                        )}
                                                         <p className="text-slate-400 text-xs mt-1">ID: {doc.uid}</p>
-                                                    </div>
+                                                     </div>
                                                     <button 
                                                         onClick={() => handleDeleteDoctor(doc.uid)} 
                                                         className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition-all border border-rose-200/50 cursor-pointer"
@@ -446,6 +464,39 @@ export default function AdminDashboard() {
                                                 onChange={(e) => setDocPassword(e.target.value)} 
                                                 className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm" 
                                                 placeholder="•••••••• (Min 6 chars)" 
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-sm font-semibold text-slate-900">Specialization</label>
+                                            <input 
+                                                type="text" 
+                                                required 
+                                                value={docSpecialization} 
+                                                onChange={(e) => setDocSpecialization(e.target.value)} 
+                                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm" 
+                                                placeholder="Cardiologist, Ayurvedic, etc." 
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-sm font-semibold text-slate-900">Medical License Number</label>
+                                            <input 
+                                                type="text" 
+                                                required 
+                                                value={docLicenseNumber} 
+                                                onChange={(e) => setDocLicenseNumber(e.target.value)} 
+                                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm" 
+                                                placeholder="SLMC-12345" 
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-sm font-semibold text-slate-900">Phone Number</label>
+                                            <input 
+                                                type="tel" 
+                                                required 
+                                                value={docPhone} 
+                                                onChange={(e) => setDocPhone(e.target.value)} 
+                                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm" 
+                                                placeholder="+94 77 123 4567" 
                                             />
                                         </div>
                                         <button 

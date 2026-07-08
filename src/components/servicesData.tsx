@@ -535,7 +535,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Personalized", "Multidisciplinary", "Mind-Body-Soul"],
         theme: "amber",
         microText: "Healing Designed for Your Life — Personalized Care for Body, Mind & Soul!",
-        intro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, and Naturopathy—supported by tailored lifestyle and nutrition plans. Our multidisciplinary approach delivers holistic, patient-centered care designed to restore balance, enhance wellbeing, and promote long-term health.",
+        intro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, and Naturopathy—supported by tailored lifestyle and nutrition plans. Our multidisciplinary approach delivers holistic, client-centered care designed to restore balance, enhance wellbeing, and promote long-term health.",
         features: ["Made just for you — individualized care", "Case management system", "Comprehensive healing packages", "Mutual agreement and accountability", "Ethical protocols & considerations"],
         cta: "Explore integrated plans",
         ctaLink: "/services/integrated-healing",
@@ -591,7 +591,7 @@ export const servicesData: ServiceData[] = [
             "Restore total system balance & vitality",
             "Evidence-based multidisciplinary care",
             "Long-term health & wellbeing promotion",
-            "Empowered, patient-centered healing journey"
+            "Empowered, client-centered healing journey"
         ],
         testimonials: [
             {

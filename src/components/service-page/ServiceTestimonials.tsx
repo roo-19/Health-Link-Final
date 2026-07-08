@@ -21,7 +21,7 @@ export default function ServiceTestimonials({ service }: ServiceTestimonialsProp
                         <span className="text-xs font-bold uppercase tracking-wide text-sky-700">Real Stories</span>
                     </div>
                     <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-                        Trusted by our patients
+                        Trusted by our clients
                     </h2>
                 </div>
 

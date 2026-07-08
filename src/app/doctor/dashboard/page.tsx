@@ -10,9 +10,9 @@ import Footer from "@/components/Footer";
 
 interface Inquiry {
     id: string;
-    patientId: string;
-    patientName: string;
-    patientEmail: string;
+    clientId: string;
+    clientName: string;
+    clientEmail: string;
     phoneNumber: string;
     dateOfBirth: string;
     subject: string;
@@ -56,19 +56,18 @@ export default function DoctorDashboard() {
                 router.push("/signin");
             } else if (profile && profile.role !== "doctor") {
                 if (profile.role === "admin") router.push("/admin/dashboard");
-                if (profile.role === "patient") router.push("/patient/dashboard");
+                if (profile.role === "client") router.push("/client/dashboard");
             }
         }
     }, [user, profile, loading, router]);
 
     // Fetch inquiries assigned to this doctor
     useEffect(() => {
-        if (!user || (profile && profile.role !== "doctor")) return;
+        if (!user || !profile || profile.role !== "doctor") return;
 
         const q = query(
             collection(db, "inquiries"),
-            where("doctorId", "==", user.uid),
-            orderBy("createdAt", "desc")
+            where("doctorId", "==", user.uid)
         );
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -76,6 +75,14 @@ export default function DoctorDashboard() {
             snapshot.forEach((doc) => {
                 list.push(doc.data() as Inquiry);
             });
+
+            // Sort client-side by createdAt desc to avoid composite index errors
+            list.sort((a, b) => {
+                const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+                const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+                return dateB - dateA;
+            });
+
             setInquiries(list);
             setLoadingInquiries(false);
         }, (err) => {
@@ -224,7 +231,7 @@ export default function DoctorDashboard() {
                                                 <div className="flex justify-between items-start gap-4 mb-4">
                                                     <div>
                                                         <h3 className="text-xl font-bold text-slate-900">{inq.subject}</h3>
-                                                        <p className="text-xs text-slate-400 mt-1">Patient: {inq.patientName} | DOB: {inq.dateOfBirth}</p>
+                                                        <p className="text-xs text-slate-400 mt-1">Client: {inq.clientName} | DOB: {inq.dateOfBirth}</p>
                                                     </div>
                                                     <span className="text-xs font-semibold text-slate-400 bg-slate-50 border border-slate-200 px-3 py-1 rounded-full">
                                                         Assigned
@@ -253,7 +260,7 @@ export default function DoctorDashboard() {
                                                 <div className="flex justify-between items-start gap-4 mb-4">
                                                     <div>
                                                         <h3 className="text-xl font-bold text-slate-900">{inq.subject}</h3>
-                                                        <p className="text-xs text-slate-400 mt-1">Patient: {inq.patientName}</p>
+                                                        <p className="text-xs text-slate-400 mt-1">Client: {inq.clientName}</p>
                                                     </div>
                                                     <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1 rounded-full">
                                                         Answered
@@ -276,14 +283,14 @@ export default function DoctorDashboard() {
                         {selectedInquiry ? (
                             <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-8 shadow-md sticky top-36">
                                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Case Workspace</h3>
-                                <p className="text-slate-500 text-sm mb-6 border-b border-slate-100 pb-4">Provide clinical answer to the patient</p>
+                                <p className="text-slate-500 text-sm mb-6 border-b border-slate-100 pb-4">Provide clinical answer to the client</p>
 
                                 <div className="space-y-6">
-                                    {/* Patient Info */}
+                                    {/* Client Info */}
                                     <div className="bg-slate-50 rounded-2xl p-4 text-sm border border-slate-200/50">
-                                        <h4 className="font-bold text-slate-800 mb-2">Patient Information</h4>
-                                        <p className="text-slate-600"><span className="font-semibold">Name:</span> {selectedInquiry.patientName}</p>
-                                        <p className="text-slate-600"><span className="font-semibold">Email:</span> {selectedInquiry.patientEmail}</p>
+                                        <h4 className="font-bold text-slate-800 mb-2">Client Information</h4>
+                                        <p className="text-slate-600"><span className="font-semibold">Name:</span> {selectedInquiry.clientName}</p>
+                                        <p className="text-slate-600"><span className="font-semibold">Email:</span> {selectedInquiry.clientEmail}</p>
                                         <p className="text-slate-600"><span className="font-semibold">Phone:</span> {selectedInquiry.phoneNumber}</p>
                                         <p className="text-slate-600"><span className="font-semibold">DOB:</span> {selectedInquiry.dateOfBirth}</p>
                                     </div>
@@ -297,7 +304,7 @@ export default function DoctorDashboard() {
                                     {/* Patient Documents */}
                                     {selectedInquiry.documents && selectedInquiry.documents.length > 0 && (
                                         <div>
-                                            <h4 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Patient Attachments</h4>
+                                            <h4 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Client Attachments</h4>
                                             <div className="flex flex-wrap gap-2 mt-2">
                                                 {selectedInquiry.documents.map((docUrl, idx) => (
                                                     <a 

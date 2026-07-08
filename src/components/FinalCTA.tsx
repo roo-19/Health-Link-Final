@@ -28,7 +28,7 @@ export default function FinalCTA() {
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-accent to-white font-black">of your health journey?</span>
                     </h2>
                     <p className="mx-auto mt-8 max-w-lg text-lg sm:text-xl leading-relaxed text-slate-200 font-light">
-                        Join thousands of patients who have trusted Health Link for clinical telemedicine and holistic wellness care. Professional, compassionate, and secure support is just a click away.
+                        Join thousands of clients who have trusted Health Link for clinical telemedicine and holistic wellness care. Professional, compassionate, and secure support is just a click away.
                     </p>
                     <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link

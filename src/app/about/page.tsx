@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 const values = [
   {
     title: "Compassionate Care",
-    description: "Our approach is rooted in empathy, treating every patient like family, prioritizing their emotional and physical well-being above all.",
+    description: "Our approach is rooted in empathy, treating every client like family, prioritizing their emotional and physical well-being above all.",
     image: "/benefits_home_care.png",
   },
   {
@@ -97,7 +97,7 @@ export default function AboutPage() {
               
               <div className="space-y-6 text-lg leading-8 text-slate-600 font-light">
                 <p>
-                  It started with a simple, unifying vision: to eliminate the logistical and geographic barriers communicating between patients and high-quality, compassionate care. Years ago, we recognized a significant gap in the healthcare system — an alarming lack of personalization and technological accessibility.
+                  It started with a simple, unifying vision: to eliminate the logistical and geographic barriers communicating between clients and high-quality, compassionate care. Years ago, we recognized a significant gap in the healthcare system — an alarming lack of personalization and technological accessibility.
                 </p>
                 <p>
                   Today, Health Link stands as a premier digital platform offering an array of comprehensive, inter-connected services from primary Telemedicine and Clinical Psychology to specialized Spiritual Care. Our network of vetted, experienced professionals is absolutely dedicated to fostering a healthier, more connected world.
@@ -108,7 +108,7 @@ export default function AboutPage() {
               <div className="mt-12 flex gap-4 sm:gap-6">
                 <div className="flex-1 bg-gradient-to-br from-accent/30 flex flex-col justify-center items-center to-white rounded-3xl p-6 sm:p-8 border border-secondary/15 shadow-sm group transition-all duration-300 hover:shadow-md hover:border-secondary/20 hover:-translate-y-1">
                   <div className="text-4xl sm:text-5xl font-black text-secondary tracking-tight transition-transform duration-500 group-hover:scale-110">10k+</div>
-                  <div className="mt-3 text-sm font-semibold text-primary/80 border-t border-secondary/10 pt-3 text-center w-full">Patients Served</div>
+                  <div className="mt-3 text-sm font-semibold text-primary/80 border-t border-secondary/10 pt-3 text-center w-full">Clients Served</div>
                 </div>
                 <div className="flex-1 bg-gradient-to-br from-primary/5 flex flex-col justify-center items-center to-white rounded-3xl p-6 sm:p-8 border border-primary/10 shadow-sm group transition-all duration-300 hover:shadow-md hover:border-primary/20 hover:-translate-y-1">
                   <div className="text-4xl sm:text-5xl font-black text-primary tracking-tight transition-transform duration-500 group-hover:scale-110">99%</div>

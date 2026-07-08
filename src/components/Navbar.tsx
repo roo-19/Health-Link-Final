@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function Navbar() {
     const { user, profile, loading, logout } = useAuth();
 
-    let dashboardLink = "/patient/dashboard";
+    let dashboardLink = "/client/dashboard";
     if (profile) {
         if (profile.role === "admin") dashboardLink = "/admin/dashboard";
         else if (profile.role === "doctor") dashboardLink = "/doctor/dashboard";
