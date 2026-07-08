@@ -7,7 +7,7 @@ export default function Hero() {
             {/* Background Image & Effects */}
             <div className="absolute inset-0">
                 <Image
-                    src="/hero2.png"
+                    src="/hero1.png"
                     alt="Healthcare Professional"
                     fill
                     className="object-cover object-top opacity-80 scale-105 animate-[slow-zoom_25s_ease-in-out_infinite_alternate]"
