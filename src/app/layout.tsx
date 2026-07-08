@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,8 +29,11 @@ export default function RootLayout({
         <div className="fixed top-0 w-full bg-yellow-500 text-black text-center py-2 z-[60] font-bold text-sm">
           🚧 HealthLink Preview – Under Construction 🚧
         </div>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
