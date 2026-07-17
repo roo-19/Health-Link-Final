@@ -171,11 +171,63 @@ export default function DoctorDashboard() {
         );
     }
 
+    // Render pending registration approval page if doctor profile is not approved
+    if (profile && profile.role === "doctor" && profile.approved === false) {
+        return (
+            <main className="min-h-screen bg-slate-50 flex flex-col font-sans">
+                <Navbar />
+                <section className="pt-40 sm:pt-48 pb-24 flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
+                    <div className="w-full max-w-2xl bg-white rounded-[2.5rem] shadow-2xl p-10 sm:p-14 border border-slate-200/50 text-center relative overflow-hidden">
+                        {/* Background subtle colors */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+                        
+                        <div className="relative z-10">
+                            <div className="w-20 h-20 mx-auto bg-amber-50 rounded-3xl flex items-center justify-center text-amber-500 mb-8 border border-amber-200">
+                                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            
+                            <h1 className="text-3xl font-extrabold text-slate-900 mb-4">Registration Pending Approval</h1>
+                            <p className="text-slate-600 font-light leading-relaxed mb-8 max-w-md mx-auto">
+                                Thank you, <span className="font-semibold text-slate-800">Dr. {profile.fullName}</span>, for registering with Health Link.
+                                <br />
+                                Your medical credentials and SLMC license (<span className="font-mono text-xs font-semibold bg-slate-100 px-2 py-0.5 rounded text-slate-800">{profile.licenseNumber || "Pending"}</span>) are currently being reviewed by the administration.
+                                <br /><br />
+                                Once verified and approved by our team, you will gain full access to your doctor dashboard.
+                            </p>
+                            
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button 
+                                    onClick={() => window.location.reload()}
+                                    className="px-6 py-3.5 bg-slate-900 hover:bg-sky-600 text-white rounded-2xl font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                                >
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4.79M9 9h-5.586M9 9V3.586" />
+                                    </svg>
+                                    Check Status
+                                </button>
+                                <button 
+                                    onClick={() => logout()}
+                                    className="px-6 py-3.5 border border-slate-200 hover:bg-rose-50 hover:text-rose-600 text-slate-700 rounded-2xl font-bold transition-all cursor-pointer"
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <Footer />
+            </main>
+        );
+    }
+
     return (
         <main className="min-h-screen bg-slate-50 flex flex-col font-sans">
             <Navbar />
 
-            <section className="pt-32 pb-24 flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="pt-40 sm:pt-48 pb-24 flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-md border border-slate-200/50 mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                     <div>

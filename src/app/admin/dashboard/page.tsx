@@ -9,6 +9,7 @@ import { auth, db, firebaseConfig } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CountryList from "country-list-with-dial-code-and-flag";
 
 interface UserProfile {
     uid: string;
@@ -16,6 +17,7 @@ interface UserProfile {
     email: string;
     role: "client" | "doctor" | "admin";
     createdAt: any;
+    approved?: boolean;
     specialization?: string;
     licenseNumber?: string;
     phoneNumber?: string;
@@ -45,6 +47,8 @@ export default function AdminDashboard() {
 
     const [inquiries, setInquiries] = useState<Inquiry[]>([]);
     const [doctors, setDoctors] = useState<UserProfile[]>([]);
+    const [answers, setAnswers] = useState<any[]>([]);
+    const [selectedDoctorForView, setSelectedDoctorForView] = useState<UserProfile | null>(null);
     const [loadingData, setLoadingData] = useState(true);
     const [activeTab, setActiveTab] = useState<"inquiries" | "doctors" | "stats">("inquiries");
 
@@ -54,8 +58,16 @@ export default function AdminDashboard() {
     const [docPassword, setDocPassword] = useState("");
     const [docSpecialization, setDocSpecialization] = useState("");
     const [docLicenseNumber, setDocLicenseNumber] = useState("");
+    const [docCountryCode, setDocCountryCode] = useState("+94");
     const [docPhone, setDocPhone] = useState("");
     const [isCreatingDoctor, setIsCreatingDoctor] = useState(false);
+
+    const countries = React.useMemo(() => {
+        const list = CountryList.getAll();
+        const lk = list.find((c) => c.code === "LK");
+        const rest = list.filter((c) => c.code !== "LK").sort((a, b) => a.name.localeCompare(b.name));
+        return [lk, ...rest].filter((c): c is any => !!c);
+    }, []);
     const [doctorFormError, setDoctorFormError] = useState("");
     const [doctorFormSuccess, setDoctorFormSuccess] = useState("");
 
@@ -89,6 +101,24 @@ export default function AdminDashboard() {
             setLoadingData(false);
         }, (err) => {
             console.error("Error fetching inquiries:", err);
+        });
+
+        return () => unsubscribe();
+    }, [user, profile]);
+
+    // Fetch all answers
+    useEffect(() => {
+        if (!user || !profile || profile.role !== "admin") return;
+
+        const q = query(collection(db, "answers"), orderBy("createdAt", "desc"));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const list: any[] = [];
+            snapshot.forEach((doc) => {
+                list.push(doc.data());
+            });
+            setAnswers(list);
+        }, (err) => {
+            console.error("Error fetching answers:", err);
         });
 
         return () => unsubscribe();
@@ -147,9 +177,10 @@ export default function AdminDashboard() {
                 fullName: docName,
                 email: docEmail,
                 role: "doctor",
+                approved: true, // Admin-created doctors are approved automatically
                 specialization: docSpecialization,
                 licenseNumber: docLicenseNumber,
-                phoneNumber: docPhone,
+                phoneNumber: `${docCountryCode} ${docPhone}`,
                 createdAt: serverTimestamp(),
             });
 
@@ -220,11 +251,36 @@ export default function AdminDashboard() {
         }
     };
 
+    const handleApproveDoctor = async (doctorUid: string) => {
+        try {
+            await updateDoc(doc(db, "users", doctorUid), {
+                approved: true
+            });
+            alert("Doctor approved successfully!");
+        } catch (err: any) {
+            console.error("Error approving doctor:", err);
+            alert(err.message || "Failed to approve doctor.");
+        }
+    };
+
+    const handleDeclineDoctor = async (doctorUid: string, docName: string) => {
+        if (!confirm(`Are you sure you want to decline and remove the registration request for Dr. ${docName}?`)) return;
+        try {
+            await deleteDoc(doc(db, "users", doctorUid));
+        } catch (err) {
+            console.error("Error declining doctor:", err);
+            alert("Error declining doctor request.");
+        }
+    };
+
     // Computations for stats
     const totalInquiries = inquiries.length;
     const pendingInquiries = inquiries.filter((i) => i.status === "pending").length;
     const assignedInquiries = inquiries.filter((i) => i.status === "assigned").length;
     const answeredInquiries = inquiries.filter((i) => i.status === "answered").length;
+
+    const pendingDoctors = doctors.filter((doc) => doc.approved === false);
+    const activeDoctors = doctors.filter((doc) => doc.approved !== false);
 
     if (loading || (user && !profile)) {
         return (
@@ -238,7 +294,7 @@ export default function AdminDashboard() {
         <main className="min-h-screen bg-slate-50 flex flex-col font-sans">
             <Navbar />
 
-            <section className="pt-32 pb-24 flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="pt-40 sm:pt-48 pb-24 flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-md border border-slate-200/50 mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                     <div>
@@ -382,38 +438,107 @@ export default function AdminDashboard() {
                         {activeTab === "doctors" && (
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                                 {/* Doctor List */}
-                                <div className="lg:col-span-7 space-y-6">
-                                    <h3 className="text-2xl font-extrabold text-slate-900">Registered Doctors ({doctors.length})</h3>
+                                <div className="lg:col-span-7 space-y-8">
                                     
-                                    {doctors.length === 0 ? (
-                                        <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-10 text-center shadow-sm">
-                                            <p className="text-slate-500 font-light">No doctors registered on the platform yet.</p>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-4">
-                                            {doctors.map((doc) => (
-                                                <div key={doc.uid} className="bg-white rounded-3xl border border-slate-200/50 p-6 flex justify-between items-center shadow-sm">
-                                                    <div className="flex-1">
-                                                        <h4 className="font-bold text-slate-900 text-lg">Dr. {doc.fullName}</h4>
-                                                        {doc.specialization && (
-                                                            <p className="text-sky-600 font-semibold text-sm mt-0.5">{doc.specialization}</p>
-                                                        )}
-                                                        <p className="text-slate-500 text-sm mt-0.5">{doc.email} • {doc.phoneNumber || "No Phone"}</p>
-                                                        {doc.licenseNumber && (
-                                                            <p className="text-slate-400 text-xs mt-0.5">License: {doc.licenseNumber}</p>
-                                                        )}
-                                                        <p className="text-slate-400 text-xs mt-1">ID: {doc.uid}</p>
-                                                     </div>
-                                                    <button 
-                                                        onClick={() => handleDeleteDoctor(doc.uid)} 
-                                                        className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition-all border border-rose-200/50 cursor-pointer"
-                                                    >
-                                                        Remove
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                    {/* Section A: Pending Approvals */}
+                                    <div>
+                                        <h3 className="text-2xl font-extrabold text-slate-900 flex items-center gap-3">
+                                            Pending Approvals 
+                                            {pendingDoctors.length > 0 && (
+                                                <span className="bg-amber-105 border border-amber-200 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-full animate-pulse">
+                                                    {pendingDoctors.length} New
+                                                </span>
+                                            )}
+                                        </h3>
+                                        
+                                        {pendingDoctors.length === 0 ? (
+                                            <div className="bg-slate-50 border border-dashed border-slate-200 rounded-[2rem] p-6 text-center mt-4">
+                                                <p className="text-slate-400 font-light text-sm">No pending registration requests.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-4 mt-4">
+                                                {pendingDoctors.map((doc) => (
+                                                    <div key={doc.uid} className="bg-white rounded-3xl border border-amber-200 p-6 shadow-sm border-l-4 border-l-amber-500">
+                                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                                            <div className="flex-1">
+                                                                <div className="flex items-center gap-2">
+                                                                    <h4 className="font-bold text-slate-900 text-lg">Dr. {doc.fullName}</h4>
+                                                                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-md uppercase">SLMC Review Required</span>
+                                                                </div>
+                                                                {doc.specialization && (
+                                                                    <p className="text-indigo-600 font-semibold text-sm mt-0.5">{doc.specialization}</p>
+                                                                )}
+                                                                <p className="text-slate-500 text-sm mt-0.5">{doc.email} • {doc.phoneNumber || "No Phone"}</p>
+                                                                {doc.licenseNumber && (
+                                                                    <div className="mt-2 bg-slate-50 border border-slate-100 rounded-lg p-2 flex items-center justify-between w-fit gap-4">
+                                                                        <span className="text-slate-500 text-xs font-medium">SLMC Number:</span>
+                                                                        <span className="text-slate-800 font-mono text-xs font-bold bg-white px-2 py-0.5 rounded border border-slate-200 shadow-sm">{doc.licenseNumber}</span>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                                                <button 
+                                                                    onClick={() => handleApproveDoctor(doc.uid)} 
+                                                                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-600/10 cursor-pointer"
+                                                                >
+                                                                    Approve
+                                                                </button>
+                                                                <button 
+                                                                    onClick={() => handleDeclineDoctor(doc.uid, doc.fullName)} 
+                                                                    className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition-all border border-rose-200/50 cursor-pointer"
+                                                                >
+                                                                    Decline
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Section B: Active Doctors */}
+                                    <div className="pt-6 border-t border-slate-200">
+                                        <h3 className="text-2xl font-extrabold text-slate-900">Active Doctors ({activeDoctors.length})</h3>
+                                        
+                                        {activeDoctors.length === 0 ? (
+                                            <div className="bg-white rounded-[2.5rem] border border-slate-200/60 p-10 text-center shadow-sm mt-4">
+                                                <p className="text-slate-500 font-light">No active doctors on the platform yet.</p>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-4 mt-4">
+                                                {activeDoctors.map((doc) => (
+                                                    <div key={doc.uid} className="bg-white rounded-3xl border border-slate-200/50 p-6 flex justify-between items-center shadow-sm">
+                                                        <div className="flex-1">
+                                                            <h4 className="font-bold text-slate-900 text-lg">Dr. {doc.fullName}</h4>
+                                                            {doc.specialization && (
+                                                                <p className="text-sky-600 font-semibold text-sm mt-0.5">{doc.specialization}</p>
+                                                            )}
+                                                            <p className="text-slate-500 text-sm mt-0.5">{doc.email} • {doc.phoneNumber || "No Phone"}</p>
+                                                            {doc.licenseNumber && (
+                                                                <p className="text-slate-400 text-xs mt-0.5">License: {doc.licenseNumber}</p>
+                                                            )}
+                                                            <p className="text-slate-400 text-xs mt-1">ID: {doc.uid}</p>
+                                                         </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <button 
+                                                                onClick={() => setSelectedDoctorForView(doc)} 
+                                                                className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition-all border border-slate-200 cursor-pointer"
+                                                            >
+                                                                View Activity
+                                                            </button>
+                                                            <button 
+                                                                onClick={() => handleDeleteDoctor(doc.uid)} 
+                                                                className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-bold transition-all border border-rose-200/50 cursor-pointer"
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Doctor Registration Form */}
@@ -490,14 +615,27 @@ export default function AdminDashboard() {
                                         </div>
                                         <div className="space-y-1">
                                             <label className="text-sm font-semibold text-slate-900">Phone Number</label>
-                                            <input 
-                                                type="tel" 
-                                                required 
-                                                value={docPhone} 
-                                                onChange={(e) => setDocPhone(e.target.value)} 
-                                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm" 
-                                                placeholder="+94 77 123 4567" 
-                                            />
+                                            <div className="flex rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
+                                                <select 
+                                                    value={docCountryCode} 
+                                                    onChange={(e) => setDocCountryCode(e.target.value)} 
+                                                    className="bg-transparent pl-4 pr-1 text-slate-800 font-semibold outline-none border-r border-slate-200 cursor-pointer text-sm shrink-0 max-w-[120px]"
+                                                >
+                                                    {countries.map((c, idx) => (
+                                                        <option key={`${c.code}-${c.dialCode}-${idx}`} value={c.dialCode}>
+                                                            {c.flag} {c.dialCode} ({c.code})
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <input 
+                                                    type="tel" 
+                                                    required 
+                                                    value={docPhone} 
+                                                    onChange={(e) => setDocPhone(e.target.value)} 
+                                                    className="w-full bg-transparent px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm" 
+                                                    placeholder="77 123 4567" 
+                                                />
+                                            </div>
                                         </div>
                                         <button 
                                             type="submit" 
@@ -553,6 +691,146 @@ export default function AdminDashboard() {
                     </div>
                 )}
             </section>
+
+                        {/* 4. DOCTOR DETAILS VIEW MODAL */}
+                        {selectedDoctorForView && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+                                <div className="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-200 flex flex-col max-h-[90vh]">
+                                    {/* Modal Header */}
+                                    <div className="px-8 py-6 bg-slate-900 text-white flex justify-between items-center">
+                                        <div>
+                                            <h3 className="text-xl font-extrabold">Practitioner Activity Profile</h3>
+                                            <p className="text-slate-400 text-xs mt-1">Reviewing clinical actions and patient responses</p>
+                                        </div>
+                                        <button 
+                                            onClick={() => setSelectedDoctorForView(null)}
+                                            className="text-slate-400 hover:text-white transition-colors cursor-pointer p-2 rounded-full hover:bg-slate-800"
+                                        >
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    {/* Modal Content */}
+                                    <div className="p-8 overflow-y-auto space-y-8 flex-1">
+                                        {/* Doctor Profile Details Header Card */}
+                                        <div className="bg-slate-50 border border-slate-200/60 rounded-3xl p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Doctor Name</p>
+                                                <p className="text-base font-extrabold text-slate-900">{selectedDoctorForView.fullName}</p>
+                                                <p className="text-xs text-sky-600 font-semibold mt-1">🩺 {selectedDoctorForView.specialization}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</p>
+                                                <p className="text-sm font-semibold text-slate-800 break-all">{selectedDoctorForView.email}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Contact Number</p>
+                                                <p className="text-sm font-semibold text-slate-800">{selectedDoctorForView.phoneNumber || "Not Provided"}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">SLMC License</p>
+                                                <p className="text-sm font-bold text-slate-900 bg-slate-200/60 px-3 py-1 rounded-xl inline-block mt-0.5">
+                                                    {selectedDoctorForView.licenseNumber}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Activity Stats */}
+                                        {(() => {
+                                            const assignedInquiries = inquiries.filter(i => i.doctorId === selectedDoctorForView.uid);
+                                            const answeredCount = assignedInquiries.filter(i => i.status === 'answered').length;
+                                            const pendingCount = assignedInquiries.length - answeredCount;
+
+                                            return (
+                                                <div className="space-y-6">
+                                                    <div className="grid grid-cols-3 gap-4">
+                                                        <div className="bg-slate-50 border border-slate-200/50 p-5 rounded-2xl text-center shadow-sm">
+                                                            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Assigned Cases</p>
+                                                            <p className="text-3xl font-black text-slate-900">{assignedInquiries.length}</p>
+                                                        </div>
+                                                        <div className="bg-emerald-50 border border-emerald-100 p-5 rounded-2xl text-center shadow-sm">
+                                                            <p className="text-emerald-500 text-xs font-bold uppercase tracking-wider mb-1">Resolved Cases</p>
+                                                            <p className="text-3xl font-black text-emerald-700">{answeredCount}</p>
+                                                        </div>
+                                                        <div className="bg-amber-50 border border-amber-100 p-5 rounded-2xl text-center shadow-sm">
+                                                            <p className="text-amber-500 text-xs font-bold uppercase tracking-wider mb-1">Pending Cases</p>
+                                                            <p className="text-3xl font-black text-amber-700">{pendingCount}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Inquiries & Answers List */}
+                                                    <div className="space-y-4">
+                                                        <h4 className="text-lg font-bold text-slate-900">Assigned Inquiries & Practitioner Answers</h4>
+
+                                                        {assignedInquiries.length === 0 ? (
+                                                            <div className="text-center py-12 border border-dashed border-slate-200 rounded-3xl bg-slate-50/50">
+                                                                <p className="text-slate-400 text-sm">No cases have been assigned to this doctor yet.</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="space-y-6">
+                                                                {assignedInquiries.map((inq) => {
+                                                                    const inqAnswer = answers.find(a => a.inquiryId === inq.id && a.doctorId === selectedDoctorForView.uid);
+
+                                                                    return (
+                                                                        <div key={inq.id} className="border border-slate-200/80 bg-white rounded-3xl p-6 space-y-4 shadow-sm hover:border-slate-300 transition-colors">
+                                                                            {/* Inquiry Header */}
+                                                                            <div className="flex flex-wrap justify-between items-start gap-2">
+                                                                                <div>
+                                                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Patient Details</span>
+                                                                                    <p className="text-sm font-semibold text-slate-800">
+                                                                                        {inq.clientName} (DOB: {inq.dateOfBirth})
+                                                                                    </p>
+                                                                                </div>
+                                                                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                                                                                    inq.status === "answered" 
+                                                                                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200/50" 
+                                                                                        : "bg-amber-50 text-amber-700 border border-amber-200/50"
+                                                                                }`}>
+                                                                                    {inq.status}
+                                                                                </span>
+                                                                            </div>
+
+                                                                            {/* Subject & Patient Message */}
+                                                                            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 space-y-2">
+                                                                                <p className="text-sm font-bold text-slate-900">Subject: {inq.subject}</p>
+                                                                                <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">
+                                                                                    {inq.message}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            {/* Answer Details */}
+                                                                            {inq.status === "answered" && (
+                                                                                <div className="border-t border-slate-100 pt-4 space-y-2">
+                                                                                    <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                                                                                        <span className="font-bold text-emerald-600">RESPONSE BY DOCTOR</span>
+                                                                                        <span>•</span>
+                                                                                        <span>
+                                                                                            {inqAnswer?.createdAt?.seconds 
+                                                                                                ? new Date(inqAnswer.createdAt.seconds * 1000).toLocaleString()
+                                                                                                : "Recently submitted"
+                                                                                            }
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <p className="text-sm text-slate-800 font-semibold bg-emerald-50/30 border border-emerald-100/50 rounded-2xl p-4 whitespace-pre-wrap leading-relaxed">
+                                                                                        {inqAnswer?.answer || "Answer loaded successfully (details saved in records)"}
+                                                                                    </p>
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
             <Footer />
         </main>

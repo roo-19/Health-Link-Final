@@ -49,7 +49,7 @@ export default function Hero() {
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center">
                         <Link
-                            href="/services/telemedicine/register"
+                            href="/signup"
                             className="rounded-full bg-secondary px-8 py-4 text-base font-bold text-white shadow-xl shadow-secondary/20 hover:bg-secondary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-all duration-300 hover:scale-105 hover:shadow-secondary/35 text-center"
                         >
                             Get care now

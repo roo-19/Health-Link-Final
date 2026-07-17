@@ -34,14 +34,21 @@ service cloud.firestore {
       allow read: if isLoggedIn();
       
       // Creating profiles
-      allow create: if (isLoggedIn() && request.auth.uid == uid && request.resource.data.role == 'client') // Clients can register themselves
+      allow create: if (isLoggedIn() && request.auth.uid == uid && (
+                        request.resource.data.role == 'client' || 
+                        (request.resource.data.role == 'doctor' && request.resource.data.approved == false)
+                      )) // Clients & unapproved doctors can register themselves
                     || isAdmin(); // Admins can register doctors/others
                     
       // Updating profiles
       allow update: if isLoggedIn() 
                     && (
                       isAdmin() // Admin can update anyone
-                      || (request.auth.uid == uid && request.resource.data.role == resource.data.role) // Clients cannot alter their own role
+                      || (
+                        request.auth.uid == uid 
+                        && request.resource.data.role == resource.data.role // Cannot change role
+                        && (!('approved' in request.resource.data) || request.resource.data.approved == resource.data.approved) // Cannot change approved status
+                      )
                     );
                     
       // Only admins can delete profiles

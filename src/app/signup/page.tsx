@@ -17,10 +17,19 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
+    const [selectedRole, setSelectedRole] = useState<"client" | "doctor" | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const router = useRouter();
     const { user, profile, loading } = useAuth();
+
+    const handleRoleSelect = (role: "client" | "doctor") => {
+        if (role === "doctor") {
+            router.push("/doctor/register");
+        } else {
+            setSelectedRole("client");
+        }
+    };
 
     // If user is already logged in, redirect them
     useEffect(() => {
@@ -91,107 +100,181 @@ export default function SignUpPage() {
         <main className="min-h-screen bg-slate-50 flex flex-col font-sans">
             <Navbar />
 
-            <section className="relative pt-32 pb-16 flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
+            <section className="relative pt-40 sm:pt-48 pb-16 flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8">
                 {/* Visual Background Elements */}
                 <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-sky-500/10 blur-[100px] rounded-full pointer-events-none" />
                 <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none" />
 
-                <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-10 ring-1 ring-slate-200/50 relative z-10">
-                    <div className="text-center mb-8">
-                        <div className="relative h-14 w-14 mx-auto mb-4 overflow-hidden rounded-2xl">
-                            <Image
-                                src="/logo.png"
-                                alt="Health Link Logo"
-                                fill
-                                className="object-contain"
-                            />
-                        </div>
-                        <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Create Account</h1>
-                        <p className="text-slate-500 mt-2">Sign up as a Health Link client</p>
-                    </div>
+                <div className="w-full max-w-xl bg-white rounded-[2.5rem] shadow-2xl p-10 ring-1 ring-slate-200/50 relative z-10">
+                    {selectedRole === null ? (
+                        <div>
+                            <div className="text-center mb-8">
+                                <div className="relative h-14 w-14 mx-auto mb-4 overflow-hidden rounded-2xl">
+                                    <Image
+                                        src="/logo.png"
+                                        alt="Health Link Logo"
+                                        fill
+                                        className="object-contain"
+                                    />
+                                </div>
+                                <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Create Account</h1>
+                                <p className="text-slate-500 mt-2">Choose the account type that matches your needs to get started</p>
+                            </div>
 
-                    {error && (
-                        <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold rounded-2xl flex items-center gap-3">
-                            <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <span>{error}</span>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                                {/* Card A: Client/Patient */}
+                                <button
+                                    type="button"
+                                    onClick={() => handleRoleSelect("client")}
+                                    className="flex flex-col items-center justify-between text-center p-6 bg-slate-50/50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 rounded-[2rem] transition-all duration-300 group cursor-pointer min-h-[220px]"
+                                >
+                                    <div className="h-12 w-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="font-extrabold text-slate-900 text-base mb-1">Patient Portal</h3>
+                                    <p className="text-xs text-slate-500 font-light mb-4 flex-grow">
+                                        Consult with doctors online, manage inquiries, and view prescriptions.
+                                    </p>
+                                    <span className="text-xs font-bold text-sky-600 group-hover:underline">
+                                        Register as Patient &rarr;
+                                    </span>
+                                </button>
+
+                                {/* Card B: Practitioner/Doctor */}
+                                <button
+                                    type="button"
+                                    onClick={() => handleRoleSelect("doctor")}
+                                    className="flex flex-col items-center justify-between text-center p-6 bg-slate-50/50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-[2rem] transition-all duration-300 group cursor-pointer min-h-[220px]"
+                                >
+                                    <div className="h-12 w-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="font-extrabold text-slate-900 text-base mb-1">Doctor Portal</h3>
+                                    <p className="text-xs text-slate-500 font-light mb-4 flex-grow">
+                                        Provide telemedicine services, respond to patients, and manage your schedule.
+                                    </p>
+                                    <span className="text-xs font-bold text-indigo-600 group-hover:underline">
+                                        Join as Doctor &rarr;
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+                                <p className="text-slate-500 text-sm">
+                                    Already have an account?{" "}
+                                    <Link href="/signin" className="text-sky-600 font-bold hover:underline">
+                                        Sign In
+                                    </Link>
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="flex justify-between items-center mb-6">
+                                <button
+                                    onClick={() => setSelectedRole(null)}
+                                    className="flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                                >
+                                    &larr; Back to Selection
+                                </button>
+                                <span className="text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1 rounded-xl">
+                                    Patient Account
+                                </span>
+                            </div>
+
+                            <div className="text-center mb-8">
+                                <h1 className="text-3xl font-extrabold text-slate-950 tracking-tight">Create Patient Account</h1>
+                                <p className="text-slate-500 mt-2">Sign up as a Health Link patient</p>
+                            </div>
+
+                            {error && (
+                                <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold rounded-2xl flex items-center gap-3">
+                                    <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    <span>{error}</span>
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="space-y-1">
+                                    <label className="text-sm font-semibold text-slate-900">Full Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
+                                        className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
+                                        placeholder="John Doe"
+                                    />
+                                </div>
+
+                                <div className="space-y-1">
+                                    <label className="text-sm font-semibold text-slate-900">Email Address</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
+                                        placeholder="john@example.com"
+                                    />
+                                </div>
+
+                                <div className="space-y-1">
+                                    <label className="text-sm font-semibold text-slate-900">Password</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
+                                        placeholder="•••••••• (Min 6 characters)"
+                                    />
+                                </div>
+
+                                <div className="space-y-1">
+                                    <label className="text-sm font-semibold text-slate-900">Confirm Password</label>
+                                    <input
+                                        type="password"
+                                        required
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="w-full rounded-2xl bg-slate-900 py-3.5 px-8 text-lg font-bold text-white shadow-xl shadow-slate-900/10 hover:bg-sky-600 hover:shadow-sky-600/30 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-3 mt-4 cursor-pointer"
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                                            Creating Account...
+                                        </>
+                                    ) : (
+                                        "Sign Up"
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+                                <p className="text-slate-500 text-sm">
+                                    Already have an account?{" "}
+                                    <Link href="/signin" className="text-sky-600 font-bold hover:underline">
+                                        Sign In
+                                    </Link>
+                                </p>
+                            </div>
                         </div>
                     )}
-
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-1">
-                            <label className="text-sm font-semibold text-slate-900">Full Name</label>
-                            <input
-                                type="text"
-                                required
-                                value={fullName}
-                                onChange={(e) => setFullName(e.target.value)}
-                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
-                                placeholder="John Doe"
-                            />
-                        </div>
-
-                        <div className="space-y-1">
-                            <label className="text-sm font-semibold text-slate-900">Email Address</label>
-                            <input
-                                type="email"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
-                                placeholder="john@example.com"
-                            />
-                        </div>
-
-                        <div className="space-y-1">
-                            <label className="text-sm font-semibold text-slate-900">Password</label>
-                            <input
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
-                                placeholder="•••••••• (Min 6 characters)"
-                            />
-                        </div>
-
-                        <div className="space-y-1">
-                            <label className="text-sm font-semibold text-slate-900">Confirm Password</label>
-                            <input
-                                type="password"
-                                required
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
-                                placeholder="••••••••"
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full rounded-2xl bg-slate-900 py-3.5 px-8 text-lg font-bold text-white shadow-xl shadow-slate-900/10 hover:bg-sky-600 hover:shadow-sky-600/30 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-3 mt-4 cursor-pointer"
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
-                                    Creating Account...
-                                </>
-                            ) : (
-                                "Sign Up"
-                            )}
-                        </button>
-                    </form>
-
-                    <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-                        <p className="text-slate-500 text-sm">
-                            Already have an account?{" "}
-                            <Link href="/signin" className="text-sky-600 font-bold hover:underline">
-                                Sign In
-                            </Link>
-                        </p>
-                    </div>
                 </div>
             </section>
 

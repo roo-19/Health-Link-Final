@@ -32,7 +32,7 @@ export default function FinalCTA() {
                     </p>
                     <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
-                            href="/services/telemedicine/register"
+                            href="/signup"
                             className="rounded-full bg-secondary px-8 py-4 text-base font-bold text-white shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-all duration-300 hover:scale-105 hover:shadow-secondary/35 text-center w-full sm:w-auto"
                         >
                             Get care now

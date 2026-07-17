@@ -26,6 +26,7 @@ export default function Footer() {
                         <Link href="/community" className="text-sm text-slate-500 hover:text-primary transition-colors font-medium">Community</Link>
                         <Link href="/contact" className="text-sm text-slate-500 hover:text-primary transition-colors font-medium">Contact Us</Link>
                         <Link href="/careers" className="text-sm text-slate-500 hover:text-primary transition-colors font-medium">Careers</Link>
+                        <Link href="/doctor/register" className="text-sm text-slate-500 hover:text-primary transition-colors font-medium">Join as Doctor</Link>
                     </div>
 
                     {/* Legal & Language */}

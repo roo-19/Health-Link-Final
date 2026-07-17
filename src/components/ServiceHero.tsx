@@ -9,7 +9,7 @@ interface ServiceHeroProps {
 
 export default function ServiceHero({ service, imageSrc }: ServiceHeroProps) {
     return (
-        <section className="relative overflow-hidden bg-slate-50 pt-32 pb-16 sm:pt-40 sm:pb-24 lg:pb-32 min-h-[85vh] flex items-center">
+        <section className="relative overflow-hidden bg-slate-50 pt-40 pb-16 sm:pt-48 sm:pb-24 lg:pb-32 min-h-[85vh] flex items-center">
             {/* Background glowing accents */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-200/50 rounded-full blur-[120px] translate-x-1/3 -translate-y-1/4 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-200/30 rounded-full blur-[150px] -translate-x-1/3 translate-y-1/3 pointer-events-none" />

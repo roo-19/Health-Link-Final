@@ -11,6 +11,11 @@ interface UserProfile {
     email: string;
     role: "client" | "doctor" | "admin";
     createdAt: any;
+    approved?: boolean;
+    specialization?: string;
+    licenseNumber?: string;
+    phoneNumber?: string;
+    dateOfBirth?: string;
 }
 
 interface AuthContextType {

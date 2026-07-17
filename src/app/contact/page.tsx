@@ -36,7 +36,7 @@ export default function ContactPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-900">
+            <section className="relative pt-40 sm:pt-48 pb-20 lg:pt-56 lg:pb-32 overflow-hidden bg-slate-900">
                 <div className="absolute inset-0 w-full h-full">
                     <Image
                         src="/contactbanner.png"

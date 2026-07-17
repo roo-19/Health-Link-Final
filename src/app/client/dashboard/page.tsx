@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { collection, query, where, orderBy, onSnapshot, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, where, orderBy, onSnapshot, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CountryList from "country-list-with-dial-code-and-flag";
 
 interface Inquiry {
     id: string;
@@ -39,12 +40,19 @@ export default function ClientDashboard() {
     const [answers, setAnswers] = useState<Record<string, Answer>>({});
     const [loadingInquiries, setLoadingInquiries] = useState(true);
     
-    // Modal state for new inquiry
     const [showModal, setShowModal] = useState(false);
+    const [countryCode, setCountryCode] = useState("+94");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [dob, setDob] = useState("");
     const [consultationReason, setConsultationReason] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const countries = React.useMemo(() => {
+        const list = CountryList.getAll();
+        const lk = list.find((c) => c.code === "LK");
+        const rest = list.filter((c) => c.code !== "LK").sort((a, b) => a.name.localeCompare(b.name));
+        return [lk, ...rest].filter((c): c is any => !!c);
+    }, []);
     const [modalError, setModalError] = useState("");
 
     // Authorization check
@@ -59,6 +67,24 @@ export default function ClientDashboard() {
             }
         }
     }, [user, profile, loading, router]);
+
+    // Pre-fill profile phone number and DOB if they exist
+    useEffect(() => {
+        if (profile) {
+            if (profile.phoneNumber) {
+                const parts = profile.phoneNumber.trim().split(/\s+/);
+                if (parts.length > 1 && parts[0].startsWith("+")) {
+                    setCountryCode(parts[0]);
+                    setPhoneNumber(parts.slice(1).join(" "));
+                } else {
+                    setPhoneNumber(profile.phoneNumber);
+                }
+            }
+            if (profile.dateOfBirth) {
+                setDob(profile.dateOfBirth);
+            }
+        }
+    }, [profile]);
 
     // Fetch patient's inquiries
     useEffect(() => {
@@ -133,7 +159,7 @@ export default function ClientDashboard() {
                 clientId: user!.uid,
                 clientName: profile!.fullName,
                 clientEmail: profile!.email,
-                phoneNumber: phoneNumber,
+                phoneNumber: `${countryCode} ${phoneNumber}`,
                 dateOfBirth: dob,
                 subject: "Health Inquiry",
                 message: consultationReason,
@@ -144,6 +170,13 @@ export default function ClientDashboard() {
                 createdAt: serverTimestamp(),
                 assignedAt: null,
                 answeredAt: null,
+            });
+
+            // Update user profile document so details are persisted
+            const userDocRef = doc(db, "users", user!.uid);
+            await updateDoc(userDocRef, {
+                phoneNumber: `${countryCode} ${phoneNumber}`,
+                dateOfBirth: dob,
             });
 
             // Reset form
@@ -171,7 +204,7 @@ export default function ClientDashboard() {
         <main className="min-h-screen bg-slate-50 flex flex-col font-sans">
             <Navbar />
 
-            <section className="pt-32 pb-24 flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="pt-40 sm:pt-48 pb-24 flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Dashboard Header */}
                 <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-md border border-slate-200/50 mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                     <div>
@@ -192,6 +225,35 @@ export default function ClientDashboard() {
                         >
                             Sign Out
                         </button>
+                    </div>
+                </div>
+
+                {/* Emergency Hotline Banner */}
+                <div className="bg-rose-50 border border-rose-200 rounded-[2rem] p-6 mb-12 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm shadow-rose-100/50">
+                    <div className="flex items-center gap-4 text-center md:text-left">
+                        <div className="h-12 w-12 rounded-2xl bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 mx-auto md:mx-0">
+                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 className="text-rose-950 font-extrabold text-lg">Medical Emergency?</h3>
+                            <p className="text-rose-700/80 text-sm font-medium mt-0.5">If you are experiencing a medical emergency, please call our hotline or medical services immediately.</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto shrink-0">
+                        <a 
+                            href="tel:1990" 
+                            className="w-full sm:w-auto px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold shadow-md shadow-rose-600/10 transition-all text-center text-sm cursor-pointer"
+                        >
+                            🚨 Call 1990 (Ambulance)
+                        </a>
+                        <a 
+                            href="tel:+94112345678" 
+                            className="w-full sm:w-auto px-5 py-3 bg-white hover:bg-slate-50 text-rose-900 border border-rose-200 rounded-xl font-bold shadow-sm transition-all text-center text-sm cursor-pointer"
+                        >
+                            📞 Hotline: +94 11 234 5678
+                        </a>
                     </div>
                 </div>
 
@@ -330,14 +392,27 @@ export default function ClientDashboard() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <label className="text-sm font-semibold text-slate-900">Phone Number</label>
-                                    <input 
-                                        type="tel" 
-                                        required 
-                                        value={phoneNumber} 
-                                        onChange={(e) => setPhoneNumber(e.target.value)} 
-                                        className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none" 
-                                        placeholder="+1 (555) 000-0000" 
-                                    />
+                                    <div className="flex rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
+                                        <select 
+                                            value={countryCode} 
+                                            onChange={(e) => setCountryCode(e.target.value)} 
+                                            className="bg-transparent pl-4 pr-1 text-slate-800 font-semibold outline-none border-r border-slate-200 cursor-pointer text-sm shrink-0 max-w-[120px]"
+                                        >
+                                            {countries.map((c, idx) => (
+                                                <option key={`${c.code}-${c.dialCode}-${idx}`} value={c.dialCode}>
+                                                    {c.flag} {c.dialCode} ({c.code})
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <input 
+                                            type="tel" 
+                                            required 
+                                            value={phoneNumber} 
+                                            onChange={(e) => setPhoneNumber(e.target.value)} 
+                                            className="w-full bg-transparent px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm" 
+                                            placeholder="77 123 4567" 
+                                        />
+                                    </div>
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-sm font-semibold text-slate-900">Date of Birth</label>
@@ -352,7 +427,7 @@ export default function ClientDashboard() {
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-sm font-semibold text-slate-900">Describe Your Symptoms or Inquiry</label>
+                                <label className="text-sm font-semibold text-slate-900">Detailed description of your symptoms/inquiry</label>
                                 <textarea 
                                     required 
                                     rows={4} 

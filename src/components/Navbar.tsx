@@ -38,7 +38,8 @@ export default function Navbar() {
                         { name: 'Home', path: '/' },
                         { name: 'About Us', path: '/about' },
                         { name: 'Community', path: '/community' },
-                        { name: 'Contact Us', path: '/contact' }
+                        { name: 'Contact Us', path: '/contact' },
+                        { name: 'Join as Doctor', path: '/doctor/register' }
                     ].map((item) => (
                         <Link
                             key={item.name}
@@ -75,7 +76,7 @@ export default function Navbar() {
                                 Sign in
                             </Link>
                             <Link
-                                href="/services/telemedicine/register"
+                                href="/signup"
                                 className="rounded-full bg-secondary px-6 py-3 text-sm font-bold text-white shadow-md shadow-secondary/10 hover:shadow-lg hover:shadow-secondary/25 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-all duration-300"
                             >
                                 Register now
