@@ -20,11 +20,10 @@ export default function Positioning() {
 
                     {/* Right Column (descriptive focus) */}
                     <div className="lg:col-span-5 lg:pt-16">
-                        <p className="text-lg text-slate-600 leading-relaxed font-light mb-8">
-                            Health Link coordinates certified home care, multifaith spiritual chaplaincy, and clinical psychology under a single, encrypted digital platform. By bridging Western science with traditional wisdom, we ensure that healing is compassionate, secure, and designed entirely around your life.
-                        </p>
-                        <Link 
-                            href="/about" 
+                        <p className="text-lg text-slate-600 leading-relaxed font-semibold mb-8">
+                            Health Link creates a unique platform that integrates Western medicine with natural and alternative holistic modalities to form a personalized circle of care, helping each individual achieve a superior level of well‑being.                        </p>
+                        <Link
+                            href="/about"
                             className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-secondary group transition-colors duration-300"
                         >
                             Discover our vision

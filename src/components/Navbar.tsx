@@ -18,16 +18,16 @@ export default function Navbar() {
             <div className="mx-auto flex h-20 items-center justify-between px-8">
                 {/* Logo Section */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative h-11 w-11 overflow-hidden rounded-xl transition-transform duration-300 group-hover:scale-105">
+                    <div className="relative h-14 w-14 overflow-hidden rounded-xl transition-transform duration-300 group-hover:scale-105">
                         <Image
                             src="/logo.png"
                             alt="Health Link Logo"
-                            width={44}
-                            height={44}
+                            width={56}
+                            height={56}
                             className="object-contain"
                         />
                     </div>
-                    <span className="text-2xl font-black tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary">
+                    <span className="text-3xl font-black tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary">
                         Health Link
                     </span>
                 </Link>

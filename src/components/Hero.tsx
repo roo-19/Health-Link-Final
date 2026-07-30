@@ -10,7 +10,7 @@ export default function Hero() {
                     src="/hero1.png"
                     alt="Healthcare Professional"
                     fill
-                    className="object-cover object-top opacity-60 scale-105 animate-[slow-zoom_30s_ease-in-out_infinite_alternate]"
+                    className="object-cover object-top opacity-500 scale-105 animate-[slow-zoom_30s_ease-in-out_infinite_alternate]"
                     priority
                 />
                 
@@ -18,8 +18,8 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:32px_32px] opacity-15 pointer-events-none" />
 
                 {/* Modern Dark Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/65 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-90/65 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
 
                 {/* Abstract Glowing Orbs */}
                 <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-primary/25 blur-[100px] rounded-full pointer-events-none" />
@@ -45,7 +45,7 @@ export default function Hero() {
                         </span>
                     </h1>
                     <p className="mt-8 max-w-lg text-lg sm:text-xl text-slate-300 font-light leading-relaxed">
-                        Bridging western medical care and holistic traditional wisdom to provide a truly personalized care journey designed around your life.
+                        Bridging western medical care and traditional holistic wisdom to provide a truly personalized care journey designed around your life.
                     </p>
                     <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:items-center">
                         <Link
@@ -70,7 +70,7 @@ export default function Hero() {
                         </defs>
                         <text className="text-[7.2px] fill-white/60 font-bold uppercase tracking-[0.26em]" style={{ fontFamily: 'sans-serif' }}>
                             <textPath href="#circlePath" startOffset="0%">
-                                health link • secure & trusted • 24/7 care •
+                                health link • secure & trusted • 24/7 •
                             </textPath>
                         </text>
                     </svg>
@@ -94,13 +94,6 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* Floating Glass Stats Card */}
-            <div className="hidden lg:flex absolute bottom-16 right-64 gap-6 z-20">
-                <div className="glass-dark p-6 rounded-[2rem] max-w-[210px] shadow-2xl transition-transform hover:-translate-y-1.5 duration-300 border border-white/5">
-                    <div className="text-3xl font-extrabold text-white mb-2 tracking-tight">10k+</div>
-                    <div className="text-xs text-slate-400 leading-normal">Clients trusted us with their health & wellness.</div>
-                </div>
-            </div>
 
             {/* CSS Animation for background breathing effect */}
             <style dangerouslySetInnerHTML={{

@@ -64,26 +64,7 @@ export default function TrustSafety() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent pointer-events-none mix-blend-multiply" />
 
-                        {/* Physical Stamp Sticker Style Badge overlay */}
-                        <div className="absolute -bottom-6 -left-6 z-20">
-                            <div className="relative w-36 h-36 flex items-center justify-center rounded-full bg-white shadow-2xl border border-[#002B9A]/10">
-                                <svg className="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-                                    <defs>
-                                        <path id="stampPath" d="M 50, 50 m -32, 0 a 32,32 0 1,1 64,0 a 32,32 0 1,1 -64,0" />
-                                    </defs>
-                                    <text className="text-[6.5px] fill-primary font-bold uppercase tracking-[0.24em]" style={{ fontFamily: 'sans-serif' }}>
-                                        <textPath href="#stampPath" startOffset="0%">
-                                            health link • secure data • 100% compliant •
-                                        </textPath>
-                                    </text>
-                                </svg>
-                                <div className="w-16 h-16 rounded-full bg-accent border border-secondary/20 flex items-center justify-center text-secondary shadow-inner">
-                                    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

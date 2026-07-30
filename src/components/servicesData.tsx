@@ -61,13 +61,12 @@ export const servicesData: ServiceData[] = [
     {
         id: "telemedicine",
         title: "24/7 On demand – Tele medical consulting service",
-        subtitle: "(western medicine), referral service, prescription writing",
         navTitle: "Telemedicine",
         tag: "Consult",
         tags: ["Western Medicine", "24/7", "Tourist-friendly"],
         theme: "blue",
         microText: "Instant video consults, referrals & prescriptions.",
-        intro: "Instant access to licensed doctors for consultations, referrals, and prescriptions wherever you are (home or hotel).",
+        intro: "Instant access to licensed doctors for consultations, referrals, and prescriptions - wherever you are",
         features: ["On-demand doctor consultations (video/online)", "Referral service when needed", "Prescription writing (where appropriate)"],
         callout: {
             note: "Doctor onboarding follows platform agreements.",
@@ -111,20 +110,20 @@ export const servicesData: ServiceData[] = [
         ],
         richFeatures: [
             {
-                title: "On-Demand Access",
-                description: "Skip the waiting room. Speak to a doctor within minutes, day or night."
+                title: "Instant Doctor Access",
+                description: "Connect with licensed healthcare professionals 24/7 from wherever you are, avoiding long clinic waits."
             },
             {
-                title: "Digital Prescriptions",
-                description: "Secure, electronic prescriptions sent directly to your preferred pharmacy."
+                title: "Secure Medical Records",
+                description: "Gain secure, on-demand access to your electronic health charts, diagnoses, and medical history."
             },
             {
-                title: "Specialist Referrals",
-                description: "Seamless transitions to our network of top-rated specialists when needed."
+                title: "Integrated Care Pathways",
+                description: "Explore integrated wellness services and get seamless referrals to clinical and holistic specialists."
             },
             {
-                title: "Secure Health Records",
-                description: "Your consultation history is safely stored in our encrypted portal."
+                title: "Traveler & Professional Support",
+                description: "Experience hassle-free consultations perfect for busy corporate professionals and active travelers on the go."
             }
         ],
         benefits: [
@@ -134,6 +133,11 @@ export const servicesData: ServiceData[] = [
             "Continuous access to your medical history"
         ],
         testimonials: [
+            {
+                quote: "When I was traveling in Sri Lanka I developed severe back pain. Dr. Nizam treated me right away and referred me to an Ayurvedic specialist, who arranged targeted treatments that greatly reduced my pain. Their timely, coordinated care made all the difference and let me enjoy the rest of my trip.",
+                name: "Sudesh Perera",
+                title: "Canada"
+            },
             {
                 quote: "I was feeling terrible in my hotel room at 2 AM. Within 10 minutes, I was on a video call with a doctor who prescribed exactly what I needed.",
                 name: "Sarah Jenkins",
@@ -149,7 +153,6 @@ export const servicesData: ServiceData[] = [
     {
         id: "home-care",
         title: "AyuCare: Compassionate Home Care in Sri Lanka",
-        subtitle: "coordinating and arranging home care services for Sri Lankans",
         navTitle: "Home Care",
         tag: "Care",
         tags: ["Sri Lanka", "Home Care", "Sinhala | Tamil | English"],
@@ -211,8 +214,8 @@ export const servicesData: ServiceData[] = [
         ],
         richFeatures: [
             {
-                title: "Skilled Nursing",
-                description: "Professional medical support, vital monitoring, and medication management at home."
+                title: "Skilled Professional Care Givers",
+                description: "Skilled support workers assist with daily living, medication management, and health monitoring to keep you safe and independent."
             },
             {
                 title: "Elder Companionship",
@@ -237,25 +240,23 @@ export const servicesData: ServiceData[] = [
             {
                 quote: "The nurse from HealthLink didn't just provide medical care; she became a part of our family. The respect she showed my mother was beautiful.",
                 name: "Rohan Fernando",
-                title: "Family Member"
+                title: "Family Member in Canada"
             },
             {
                 quote: "Knowing my father was in safe, certified hands while I was at work gave me my life back.",
                 name: "Amina Hussein",
-                title: "Daughter"
+                title: "Daughter in UK"
             }
         ]
     },
     {
         id: "spiritual-care",
         title: "Sacred Space Sri Lanka: Integrated Spiritual Care & Healing",
-        subtitle: "Integrated Spiritual Care & Healing",
         navTitle: "Spiritual Healing",
         tag: "Spirit",
         tags: ["Integrated Spiritual Care", "Multifaith", "Free of charge"],
         theme: "violet",
         microText: "Multifaith counseling, rituals, grief support.",
-        badge: "You can experience this service Free of Charge",
         intro: (
             <div className="flex flex-col gap-4">
                 <div className="italic text-2xl font-semibold text-[#B8860B] drop-shadow-sm">
@@ -426,13 +427,17 @@ export const servicesData: ServiceData[] = [
                 quote: "A truly beautiful integration of the spiritual traditions that make Sri Lanka unique. A quiet, holding space.",
                 name: "Priyanga D.",
                 title: "Teacher"
+            },
+            {
+                quote: "I suffered from severe insomnia with no identifiable physical cause. Guided meditation sessions with Rev. Revatha helped me relax and restored my sleep. I'm truly grateful for the care and support.",
+                name: "Nimali Senanayake",
+                title: "Student"
             }
         ]
     },
     {
         id: "psychology",
         title: "Serene Counseling",
-        subtitle: "Where Healing Begins and Hope Grows",
         navTitle: "Serene Counseling",
         tag: "Mind",
         tags: ["Psychotherapy", "Confidential", "Evidence-based"],
@@ -440,12 +445,12 @@ export const servicesData: ServiceData[] = [
         microText: "CBT, mindfulness, trauma & relationship support.",
         intro: (
             <div className="flex flex-col gap-6">
-                <p>Step into a sanctuary of support and understanding—a place designed just for you. At <span className="font-bold text-rose-600">Serene Counseling</span>, we don&apos;t just treat symptoms; we walk alongside you on your journey toward emotional freedom and lasting well-being. Our warm, confidential, and deeply personalized therapy sessions provide a safe space to explore your thoughts, heal from pain, and reconnect with your inner strength.</p>
+                <p>Step into a sanctuary of support and understanding—a place designed just for you. At <span className="font-bold text-[#B8860B] drop-shadow-sm">Serene Counseling</span>, we don&apos;t just treat symptoms; we walk alongside you on your journey toward emotional freedom and lasting well-being. Our warm, confidential, and deeply personalized therapy sessions provide a safe space to explore your thoughts, heal from pain, and reconnect with your inner strength.</p>
                 <p>Whether you&apos;re navigating anxiety, healing from trauma, mending relationships, or simply seeking greater joy and clarity, our compassionate and highly skilled therapists are here to guide you with expertise and heart. Using evidence-based approaches like <span className="font-semibold">Cognitive Behavioral Therapy (CBT)</span>, mindfulness, and emotionally focused techniques, we tailor every session to honor your unique story and goals.</p>
                 <p className="font-medium text-slate-900 italic">&quot;You deserve to thrive, not just cope. Let us help you unlock resilience, restore balance, and create meaningful change in your life.&quot;</p>
             </div>
         ),
-        features: ["Anxiety & stress support", "Trauma healing", "Relationship guidance", "Clarity, resilience & growth"],
+        features: ["Anxiety & stress support", "Addiction counceling", "Trauma healing", "Relationship guidance", "Empowering clarity, resilience & growth"],
         callout: {
             note: "Ready to write a new chapter?"
         },
@@ -511,7 +516,9 @@ export const servicesData: ServiceData[] = [
             "Break cycles of anxiety and depression",
             "Develop lifelong emotional coping strategies",
             "Improve communication and intimacy in relationships",
-            "Reclaim your sense of self-worth"
+            "Reclaim your sense of self-worth",
+            "Trauma counceling - Trauma as a force of transformation",
+            "Addiction counceling - Reclaim your life from addiction"
         ],
         testimonials: [
             {
@@ -523,19 +530,23 @@ export const servicesData: ServiceData[] = [
                 quote: "A truly modern approach to mental health. The sessions are completely secure, and the care is transformative.",
                 name: "Dr. L. Weerasinghe",
                 title: "Physician"
+            },
+            {
+                quote: "My son experienced exam-related anxiety. With psychological counseling, he improved significantly and achieved strong exam results. The support made a real difference for our family.",
+                name: "Mrs. Suneetha Silva",
+                title: "From UK"
             }
         ]
     },
     {
         id: "integrated-healing",
         title: "Integrated Healing",
-        subtitle: "Heal Uniquely. Live Fully. – made Just for YOU!",
         navTitle: "Integrated Healing",
         tag: "Holistic",
         tags: ["Personalized", "Multidisciplinary", "Mind-Body-Soul"],
         theme: "amber",
         microText: "Healing Designed for Your Life — Personalized Care for Body, Mind & Soul!",
-        intro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, and Naturopathy—supported by tailored lifestyle and nutrition plans. Our multidisciplinary approach delivers holistic, client-centered care designed to restore balance, enhance wellbeing, and promote long-term health.",
+        intro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, Naturopathy and Functional medicine - supported by tailored lifestyle and nutrition plans. Our multidisciplinary approach delivers holistic, client-centered care designed to restore balance, enhance wellbeing, and promote long-term health.",
         features: ["Made just for you — individualized care", "Case management system", "Comprehensive healing packages", "Mutual agreement and accountability", "Ethical protocols & considerations"],
         cta: "Explore integrated plans",
         ctaLink: "/services/integrated-healing",
