@@ -135,57 +135,6 @@ export const MediaHub = () => (
     </section>
 );
 
-// --- Expert & Educational Hub ---
-export const ExpertHub = () => (
-    <section className="py-24 bg-slate-950 text-white overflow-hidden relative">
-        {/* Glow effect matching active brand color */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/15 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/10 blur-[130px] rounded-full -translate-x-1/3 translate-y-1/3"></div>
-        
-        <div className="container mx-auto px-8 sm:px-12 lg:px-16 relative z-10">
-            <div className="flex flex-col lg:flex-row gap-16 items-center">
-                <div className="lg:w-1/2">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-secondary/15 rounded-full border border-secondary/25 text-secondary text-xs font-semibold mb-6">
-                        <span className="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
-                        Expert-Led Knowledge
-                    </div>
-                    <h3 className="text-4xl md:text-5xl font-extrabold mb-8 leading-tight font-serif">Foundational Wisdom & Clinical Insight</h3>
-                    <p className="text-xl text-slate-300 mb-10 leading-relaxed font-light">Establish your journey on a credible foundation. Access deep-dives into neuroscience, mindfulness studies, and evidence-based wellness guides curated by certified professionals.</p>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {[
-                            "Expert-Driven Articles",
-                            "Myth-Busting Explainers",
-                            "Condition Support",
-                            "AMAs with MDs/RDs"
-                        ].map((feat, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-slate-900">
-                                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                                <span className="font-semibold text-slate-100">{feat}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="lg:w-1/2 flex justify-center">
-                    <div className="relative w-full max-w-md aspect-square bg-white/5 rounded-[60px] border border-white/10 flex items-center justify-center group overflow-hidden shadow-2xl">
-                        <Image
-                            src="/images/community/interaction.png"
-                            alt="Community Interaction Illustration"
-                            width={500}
-                            height={500}
-                            className="w-4/5 h-4/5 object-contain relative z-10"
-                        />
-                        <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-);
 
 // --- Practical Hub (Recipes/Routines) ---
 export const PracticalLibrary = () => (
