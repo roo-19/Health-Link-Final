@@ -79,7 +79,7 @@ export default function AboutPage() {
               <div className="relative rounded-3xl bg-white shadow-2xl shadow-slate-200/50 p-8 sm:p-16 border border-slate-100/80 flex aspect-square items-center justify-center group overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-slate-50/20 z-0"></div>
                 <Image
-                  src="/logo.png"
+                  src="/logo111.png"
                   alt="Health Link Logo"
                   width={340}
                   height={340}

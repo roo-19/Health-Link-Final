@@ -182,7 +182,7 @@ export default function DoctorRegistration() {
                             <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Doctor Registration</h2>
                             <p className="text-slate-500 mb-10">Provide your credentials to register. Admin verification is required prior to dashboard access.</p>
 
-                            <form onSubmit={handleSubmit} className="space-y-6">
+                            <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                                 {error && (
                                     <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold rounded-2xl">
                                         {error}
@@ -197,6 +197,7 @@ export default function DoctorRegistration() {
                                             required 
                                             value={fullName} 
                                             onChange={(e) => setFullName(e.target.value)} 
+                                            autoComplete="off"
                                             className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none" 
                                             placeholder="Dr. Sithika Perera" 
                                         />
@@ -208,6 +209,7 @@ export default function DoctorRegistration() {
                                             required 
                                             value={email} 
                                             onChange={(e) => setEmail(e.target.value)} 
+                                            autoComplete="off"
                                             className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none" 
                                             placeholder="doctor@healthlink.lk" 
                                         />
@@ -219,6 +221,7 @@ export default function DoctorRegistration() {
                                             required 
                                             value={password} 
                                             onChange={(e) => setPassword(e.target.value)} 
+                                            autoComplete="new-password"
                                             className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none" 
                                             placeholder="••••••••" 
                                         />
@@ -230,6 +233,7 @@ export default function DoctorRegistration() {
                                             required 
                                             value={confirmPassword} 
                                             onChange={(e) => setConfirmPassword(e.target.value)} 
+                                            autoComplete="new-password"
                                             className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none" 
                                             placeholder="••••••••" 
                                         />
@@ -275,6 +279,7 @@ export default function DoctorRegistration() {
                                                 required 
                                                 value={phoneNumber} 
                                                 onChange={(e) => setPhoneNumber(e.target.value)} 
+                                                autoComplete="off"
                                                 className="w-full bg-transparent px-4 py-3.5 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm" 
                                                 placeholder="77 123 4567" 
                                             />

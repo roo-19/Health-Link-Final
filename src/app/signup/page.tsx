@@ -200,7 +200,7 @@ export default function SignUpPage() {
                                 </div>
                             )}
 
-                            <form onSubmit={handleSubmit} className="space-y-4">
+                            <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
                                 <div className="space-y-1">
                                     <label className="text-sm font-semibold text-slate-900">Full Name</label>
                                     <input
@@ -208,6 +208,7 @@ export default function SignUpPage() {
                                         required
                                         value={fullName}
                                         onChange={(e) => setFullName(e.target.value)}
+                                        autoComplete="off"
                                         className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                         placeholder="John Doe"
                                     />
@@ -220,6 +221,7 @@ export default function SignUpPage() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        autoComplete="off"
                                         className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                         placeholder="john@example.com"
                                     />
@@ -232,6 +234,7 @@ export default function SignUpPage() {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
+                                        autoComplete="new-password"
                                         className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                         placeholder="•••••••• (Min 6 characters)"
                                     />
@@ -244,6 +247,7 @@ export default function SignUpPage() {
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
+                                        autoComplete="new-password"
                                         className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                         placeholder="••••••••"
                                     />

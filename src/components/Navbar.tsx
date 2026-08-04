@@ -20,7 +20,7 @@ export default function Navbar() {
                 <Link href="/" className="flex items-center gap-3 group">
                     <div className="relative h-14 w-14 overflow-hidden rounded-xl transition-transform duration-300 group-hover:scale-105">
                         <Image
-                            src="/logo.png"
+                            src="/logo111.png"
                             alt="Health Link Logo"
                             width={56}
                             height={56}

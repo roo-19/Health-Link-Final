@@ -152,7 +152,7 @@ export default function SignInPage() {
                     )}
 
                     {isForgotPassword ? (
-                        <form onSubmit={handleForgotPasswordSubmit} className="space-y-6">
+                        <form onSubmit={handleForgotPasswordSubmit} className="space-y-6" autoComplete="off">
                             <div className="space-y-2">
                                 <label className="text-sm font-semibold text-slate-900">Email Address</label>
                                 <input
@@ -160,6 +160,7 @@ export default function SignInPage() {
                                     required
                                     value={resetEmail}
                                     onChange={(e) => setResetEmail(e.target.value)}
+                                    autoComplete="off"
                                     className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                     placeholder="john@example.com"
                                 />
@@ -193,7 +194,7 @@ export default function SignInPage() {
                             </button>
                         </form>
                     ) : (
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                             <div className="space-y-2">
                                 <label className="text-sm font-semibold text-slate-900">Email Address</label>
                                 <input
@@ -201,6 +202,7 @@ export default function SignInPage() {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    autoComplete="off"
                                     className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                     placeholder="john@example.com"
                                 />
@@ -226,6 +228,7 @@ export default function SignInPage() {
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    autoComplete="new-password"
                                     className="w-full rounded-2xl border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none"
                                     placeholder="••••••••"
                                 />

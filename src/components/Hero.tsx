@@ -7,7 +7,7 @@ export default function Hero() {
             {/* Background Image & Effects */}
             <div className="absolute inset-0">
                 <Image
-                    src="/hero1.png"
+                    src="/hero3.png"
                     alt="Healthcare Professional"
                     fill
                     className="object-cover object-top opacity-500 scale-105 animate-[slow-zoom_30s_ease-in-out_infinite_alternate]"
@@ -18,8 +18,8 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1.2px,transparent_1.2px)] [background-size:32px_32px] opacity-15 pointer-events-none" />
 
                 {/* Modern Dark Gradient Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-90/65 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-90/65 to-slate-900" />
+                <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-slate-900" />
 
                 {/* Abstract Glowing Orbs */}
                 <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-primary/25 blur-[100px] rounded-full pointer-events-none" />
@@ -29,14 +29,6 @@ export default function Hero() {
             {/* Hero Content */}
             <div className="relative mx-auto flex w-full max-w-7xl items-center px-8 sm:px-12 lg:px-16 mt-20 sm:mt-12">
                 <div className="max-w-3xl">
-                    {/* Upper Badge */}
-                    <div className="inline-flex items-center gap-2.5 rounded-full border border-secondary/20 bg-secondary/15 px-4.5 py-2 text-xs sm:text-sm font-semibold tracking-wide text-secondary mb-8 backdrop-blur-sm self-center shadow-lg shadow-black/10">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
-                        </span>
-                        Sri Lanka's Premier Digital Health Platform
-                    </div>
 
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight text-white leading-[1.08] drop-shadow-md">
                         Empowering <br />
