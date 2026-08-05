@@ -197,10 +197,50 @@ export default function ClientDashboard() {
     const [expandedInquiryId, setExpandedInquiryId] = useState<string | null>(null);
 
     const categories = [
-        { id: "General Health", name: "General Symptoms", icon: "🩺", desc: "Fever, cough, body pain, checkups", color: "from-sky-500/10 to-blue-500/5 text-sky-600 border-sky-200" },
-        { id: "Prescriptions", name: "Medicine Advice", icon: "💊", desc: "Dosage, side effects, refills", color: "from-purple-500/10 to-indigo-500/5 text-purple-600 border-purple-200" },
-        { id: "Lab Reports", name: "Lab & Test Results", icon: "🧪", desc: "Blood work, scans, reports review", color: "from-emerald-500/10 to-teal-500/5 text-emerald-600 border-emerald-200" },
-        { id: "Mental Health", name: "Mental Wellness", icon: "🧠", desc: "Stress, sleep issues, anxiety", color: "from-amber-500/10 to-orange-500/5 text-amber-600 border-amber-200" }
+        { 
+            id: "General Health", 
+            name: "General Symptoms", 
+            icon: (
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sky-400 to-blue-600 text-white flex items-center justify-center shadow-lg shadow-sky-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.684a4.5 4.5 0 00-7.682-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                </div>
+            ), 
+            desc: "Fever, cough, body pain, checkups", 
+            color: "from-sky-500/10 to-blue-500/5 text-sky-600 border-sky-200" 
+        },
+        { 
+            id: "Prescriptions", 
+            name: "Medicine Advice", 
+            icon: (
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                </div>
+            ), 
+            desc: "Dosage, side effects, refills", 
+            color: "from-purple-500/10 to-indigo-500/5 text-purple-600 border-purple-200" 
+        },
+        { 
+            id: "Lab Reports", 
+            name: "Lab & Test Results", 
+            icon: (
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                </div>
+            ), 
+            desc: "Blood work, scans, reports review", 
+            color: "from-emerald-500/10 to-teal-500/5 text-emerald-600 border-emerald-200" 
+        },
+        { 
+            id: "Mental Health", 
+            name: "Mental Wellness", 
+            icon: (
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-4a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                </div>
+            ), 
+            desc: "Stress, sleep issues, anxiety", 
+            color: "from-amber-500/10 to-orange-500/5 text-amber-600 border-amber-200" 
+        }
     ];
 
     const openInquiryModalWithCategory = (catName: string) => {
@@ -372,8 +412,10 @@ export default function ClientDashboard() {
                 {/* Emergency Hotline Banner */}
                 <div className="bg-rose-500/10 border-2 border-rose-200/80 rounded-[2rem] p-6 mb-10 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
                     <div className="flex items-center gap-4 text-center lg:text-left">
-                        <div className="h-14 w-14 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-rose-600/30 shrink-0 mx-auto lg:mx-0 animate-pulse">
-                            🚑
+                        <div className="h-14 w-14 rounded-2xl bg-rose-600 text-white flex items-center justify-center shadow-lg shadow-rose-600/30 shrink-0 mx-auto lg:mx-0 animate-pulse">
+                            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
                         </div>
                         <div>
                             <div className="flex items-center gap-2 justify-center lg:justify-start">
@@ -390,13 +432,15 @@ export default function ClientDashboard() {
                             href="tel:1990" 
                             className="w-full sm:w-auto px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-black shadow-lg shadow-rose-600/30 transition-all text-center text-sm cursor-pointer flex items-center justify-center gap-2"
                         >
-                            <span>🚨 Call 1990 (Ambulance)</span>
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                            <span>Call 1990 (Ambulance)</span>
                         </a>
                         <a 
                             href="tel:+94112345678" 
                             className="w-full sm:w-auto px-5 py-3.5 bg-white hover:bg-rose-50 text-rose-900 border border-rose-300 rounded-2xl font-bold shadow-sm transition-all text-center text-sm cursor-pointer flex items-center justify-center gap-2"
                         >
-                            <span>📞 Hospital Helpline: +94 11 234 5678</span>
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                            <span>Hospital Helpline: +94 11 234 5678</span>
                         </a>
                     </div>
                 </div>
@@ -415,25 +459,25 @@ export default function ClientDashboard() {
                                 onClick={() => setFilterStatus("all")}
                                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${filterStatus === "all" ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
                             >
-                                🌐 All ({inquiries.length})
+                                All ({inquiries.length})
                             </button>
                             <button
                                 onClick={() => setFilterStatus("pending")}
                                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${filterStatus === "pending" ? "bg-white text-amber-700 shadow-sm" : "text-slate-600 hover:text-amber-700"}`}
                             >
-                                ⏳ Pending ({pendingCount})
+                                Pending ({pendingCount})
                             </button>
                             <button
                                 onClick={() => setFilterStatus("assigned")}
                                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${filterStatus === "assigned" ? "bg-white text-sky-700 shadow-sm" : "text-slate-600 hover:text-sky-700"}`}
                             >
-                                👨‍⚕️ Reviewing ({assignedCount})
+                                Reviewing ({assignedCount})
                             </button>
                             <button
                                 onClick={() => setFilterStatus("answered")}
                                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${filterStatus === "answered" ? "bg-white text-emerald-700 shadow-sm" : "text-slate-600 hover:text-emerald-700"}`}
                             >
-                                ✅ Answered ({answeredCount})
+                                Answered ({answeredCount})
                             </button>
                         </div>
                     </div>
@@ -531,188 +575,187 @@ export default function ClientDashboard() {
                                                 {inq.status === "pending" && (
                                                     <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-extrabold bg-amber-50 text-amber-800 border border-amber-300 shadow-xs">
                                                         <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
-                                                        ⏳ Waiting for Doctor Assignment
+                                                        <span>Waiting for Doctor Assignment</span>
                                                     </span>
                                                 )}
                                                 {inq.status === "assigned" && (
                                                     <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-extrabold bg-sky-50 text-sky-800 border border-sky-300 shadow-xs">
                                                         <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />
-                                                        👨‍⚕️ Assigned to {inq.doctorName || "Medical Doctor"}
+                                                        <span>Assigned to {inq.doctorName || "Medical Doctor"}</span>
                                                     </span>
                                                 )}
                                                 {inq.status === "answered" && (
                                                     <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-xs">
-                                                        ✅ Verified Doctor Answer
+                                                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                                        <span>Verified Doctor Answer</span>
                                                     </span>
                                                 )}
                                             </div>
                                         </div>
 
-                                        {/* Symptom Details */}
-                                        <div className="space-y-4">
-                                            <div>
-                                                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Your Question / Symptoms</h4>
-                                                <p className="text-slate-800 font-light text-sm sm:text-base whitespace-pre-line leading-relaxed bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
-                                                    {inq.message}
-                                                </p>
-                                            </div>
+                                         {/* Symptom Details */}
+                                         <div className="space-y-4">
+                                             <div>
+                                                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Your Question / Symptoms</h4>
+                                                 <p className="text-slate-800 font-light text-sm sm:text-base whitespace-pre-line leading-relaxed bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                                                     {inq.message}
+                                                 </p>
+                                             </div>
 
-                                            {/* Doctor Answer Display Box */}
-                                            {inq.status === "answered" && answers[inq.id] && (
-                                                <div className="mt-6 p-6 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-sky-500/10 rounded-3xl border border-emerald-200 shadow-sm">
-                                                    <div className="flex items-center justify-between border-b border-emerald-200/60 pb-4 mb-4">
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="h-12 w-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-lg shadow-md shadow-emerald-600/20">
-                                                                Dr
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="font-extrabold text-slate-900 text-base">Dr. {answers[inq.id].doctorName}</h4>
-                                                                <p className="text-xs text-emerald-800 font-medium">Verified Health Link Medical Specialist</p>
-                                                            </div>
-                                                        </div>
-                                                        <span className="text-xs font-bold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">
-                                                            Answered: {answers[inq.id].createdAt?.toDate ? answers[inq.id].createdAt.toDate().toLocaleDateString() : "Recently"}
-                                                        </span>
-                                                    </div>
+                                             {/* Doctor Answer Display Box */}
+                                             {inq.status === "answered" && answers[inq.id] && (
+                                                 <div className="mt-6 p-6 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-sky-500/10 rounded-3xl border border-emerald-200 shadow-sm">
+                                                     <div className="flex items-center justify-between border-b border-emerald-200/60 pb-4 mb-4">
+                                                         <div className="flex items-center gap-3">
+                                                             <div className="h-12 w-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-lg shadow-md shadow-emerald-600/20">
+                                                                 Dr
+                                                             </div>
+                                                             <div>
+                                                                 <h4 className="font-extrabold text-slate-900 text-base">Dr. {answers[inq.id].doctorName}</h4>
+                                                                 <p className="text-xs text-emerald-800 font-medium">Verified Health Link Medical Specialist</p>
+                                                             </div>
+                                                         </div>
+                                                         <span className="text-xs font-bold text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200">
+                                                             Answered: {answers[inq.id].createdAt?.toDate ? answers[inq.id].createdAt.toDate().toLocaleDateString() : "Recently"}
+                                                         </span>
+                                                     </div>
 
-                                                    <div>
-                                                        <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-2">Medical Advice & Instructions</span>
-                                                        <div className="text-slate-800 text-sm sm:text-base font-normal leading-relaxed whitespace-pre-line bg-white/80 p-5 rounded-2xl border border-emerald-100 shadow-xs">
-                                                            {answers[inq.id].answer}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-            </section>
+                                                     <div>
+                                                         <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-2">Medical Advice & Instructions</span>
+                                                         <div className="text-slate-800 text-sm sm:text-base font-normal leading-relaxed whitespace-pre-line bg-white/80 p-5 rounded-2xl border border-emerald-100 shadow-xs">
+                                                             {answers[inq.id].answer}
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             )}
+                                         </div>
+                                     </div>
+                                 );
+                             })}
+                         </div>
+                     )}
+                 </div>
+             </section>
 
-            {/* Intuitive New Inquiry Modal */}
-            {showModal && (
-                <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
-                    <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl p-6 sm:p-10 border border-slate-200 max-h-[92vh] overflow-y-auto relative animate-in fade-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <span className="text-xs font-bold uppercase tracking-wider text-sky-600 block mb-1">Online Medical Consultation</span>
-                                <h3 className="text-2xl sm:text-3xl font-black text-slate-900">Ask a Doctor</h3>
-                                <p className="text-slate-500 text-xs sm:text-sm mt-1">Submit your health question to be reviewed by a licensed physician.</p>
-                            </div>
-                            <button 
-                                onClick={() => setShowModal(false)} 
-                                className="text-slate-400 hover:text-slate-700 h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer text-xl font-bold"
-                            >
-                                ✕
-                            </button>
-                        </div>
+             {/* Intuitive New Inquiry Modal */}
+             {showModal && (
+                 <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+                     <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl p-6 sm:p-10 border border-slate-200 max-h-[92vh] overflow-y-auto relative animate-in fade-in zoom-in-95 duration-200">
+                         <div className="flex justify-between items-start mb-6">
+                             <div>
+                                 <span className="text-xs font-bold uppercase tracking-wider text-sky-600 block mb-1">Online Medical Consultation</span>
+                                 <h3 className="text-2xl sm:text-3xl font-black text-slate-900">Ask a Doctor</h3>
+                                 <p className="text-slate-500 text-xs sm:text-sm mt-1">Submit your health question to be reviewed by a licensed physician.</p>
+                             </div>
+                             <button 
+                                 onClick={() => setShowModal(false)} 
+                                 className="text-slate-400 hover:text-slate-700 h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer text-xl font-bold"
+                             >
+                                 ✕
+                             </button>
+                         </div>
 
-                        {modalError && (
-                            <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold rounded-2xl flex items-center gap-2">
-                                <span>⚠️</span>
-                                <span>{modalError}</span>
-                            </div>
-                        )}
+                         {modalError && (
+                             <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold rounded-2xl flex items-center gap-2">
+                                 <svg className="w-5 h-5 text-rose-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                 <span>{modalError}</span>
+                             </div>
+                         )}
 
-                        <form onSubmit={handleNewInquirySubmitWithCategory} className="space-y-6">
-                            
-                            {/* Category Quick Selector */}
-                            <div>
-                                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">1. Select Consultation Topic</label>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                    {categories.map((cat) => (
-                                        <button
-                                            type="button"
-                                            key={cat.id}
-                                            onClick={() => setSelectedCategory(cat.id)}
-                                            className={`p-3 rounded-2xl text-xs font-bold flex flex-col items-center justify-center gap-1 border transition-all cursor-pointer ${selectedCategory === cat.id ? "bg-slate-900 text-white border-slate-900 shadow-md" : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"}`}
-                                        >
-                                            <span className="text-xl">{cat.icon}</span>
-                                            <span>{cat.name}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+                         <form onSubmit={handleNewInquirySubmitWithCategory} className="space-y-6">
+                             
+                             {/* Category Quick Selector */}
+                             <div>
+                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">1. Select Consultation Topic</label>
+                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                     {categories.map((cat) => (
+                                         <button
+                                             type="button"
+                                             key={cat.id}
+                                             onClick={() => setSelectedCategory(cat.id)}
+                                             className={`p-3.5 rounded-2xl text-xs font-extrabold flex flex-col items-center justify-center gap-2 border transition-all cursor-pointer group ${selectedCategory === cat.id ? "bg-slate-900 text-white border-slate-900 shadow-lg scale-105" : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"}`}
+                                         >
+                                             <div className="shrink-0">{cat.icon}</div>
+                                             <span>{cat.name}</span>
+                                         </button>
+                                     ))}
+                                 </div>
+                             </div>
 
-                            {/* Patient Contact Info */}
-                            <div>
-                                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">2. Patient Details</label>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-slate-500">Phone Number (For Urgent Follow-up)</label>
-                                        <div className="flex rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
-                                            <select 
-                                                value={countryCode} 
-                                                onChange={(e) => setCountryCode(e.target.value)} 
-                                                className="bg-transparent pl-3 pr-1 text-slate-800 font-semibold outline-none border-r border-slate-200 cursor-pointer text-xs shrink-0 max-w-[110px]"
-                                            >
-                                                {countries.map((c, idx) => (
-                                                    <option key={`${c.code}-${c.dialCode}-${idx}`} value={c.dialCode}>
-                                                        {c.flag} {c.dialCode}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <input 
-                                                type="tel" 
-                                                required 
-                                                value={phoneNumber} 
-                                                onChange={(e) => setPhoneNumber(e.target.value)} 
-                                                className="w-full bg-transparent px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm font-medium" 
-                                                placeholder="77 123 4567" 
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-semibold text-slate-500">Date of Birth</label>
-                                        <input 
-                                            type="date" 
-                                            required 
-                                            value={dob} 
-                                            onChange={(e) => setDob(e.target.value)} 
-                                            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm font-medium" 
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                             {/* Patient Contact Info */}
+                             <div>
+                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">2. Patient Details</label>
+                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                     <div className="space-y-1">
+                                         <label className="text-xs font-semibold text-slate-500">Phone Number (For Urgent Follow-up)</label>
+                                         <div className="flex rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
+                                             <select 
+                                                 value={countryCode} 
+                                                 onChange={(e) => setCountryCode(e.target.value)} 
+                                                 className="bg-transparent pl-3 pr-1 text-slate-800 font-semibold outline-none border-r border-slate-200 cursor-pointer text-xs shrink-0 max-w-[110px]"
+                                             >
+                                                 {countries.map((c, idx) => (
+                                                     <option key={`${c.code}-${c.dialCode}-${idx}`} value={c.dialCode}>
+                                                         {c.dialCode} ({c.code})
+                                                     </option>
+                                                 ))}
+                                             </select>
+                                             <input 
+                                                 type="tel" 
+                                                 required 
+                                                 value={phoneNumber} 
+                                                 onChange={(e) => setPhoneNumber(e.target.value)} 
+                                                 className="w-full bg-transparent px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm font-medium" 
+                                                 placeholder="77 123 4567" 
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="space-y-1">
+                                         <label className="text-xs font-semibold text-slate-500">Date of Birth</label>
+                                         <input 
+                                             type="date" 
+                                             required 
+                                             value={dob} 
+                                             onChange={(e) => setDob(e.target.value)} 
+                                             className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm font-medium" 
+                                         />
+                                     </div>
+                                 </div>
+                             </div>
 
-                            {/* Symptoms / Question Description */}
-                            <div className="space-y-1">
-                                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-1">
-                                    3. Describe Your Health Symptoms / Question
-                                </label>
-                                <textarea 
-                                    required 
-                                    rows={5} 
-                                    value={consultationReason} 
-                                    onChange={(e) => setConsultationReason(e.target.value)} 
-                                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none resize-none text-sm font-medium leading-relaxed" 
-                                    placeholder="Please describe: What are your symptoms? How many days have you felt this way? Any current medicines you are taking?"
-                                />
-                            </div>
+                             {/* Symptoms / Question Description */}
+                             <div className="space-y-1">
+                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-1">
+                                     3. Describe Your Health Symptoms / Question
+                                 </label>
+                                 <textarea 
+                                     required 
+                                     rows={5} 
+                                     value={consultationReason} 
+                                     onChange={(e) => setConsultationReason(e.target.value)} 
+                                     className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none resize-none text-sm font-medium leading-relaxed" 
+                                     placeholder="Please describe: What are your symptoms? How many days have you felt this way? Any current medicines you are taking?"
+                                 />
+                             </div>
 
-                            <button 
-                                type="submit" 
-                                disabled={isSubmitting}
-                                className="w-full rounded-2xl bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-500 hover:to-teal-500 py-4 px-8 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer"
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
-                                        <span>Submitting to Doctor...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span>📤 Submit Medical Inquiry Now</span>
-                                    </>
-                                )}
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            )}
+                             <button 
+                                 type="submit" 
+                                 disabled={isSubmitting}
+                                 className="w-full rounded-2xl bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-500 hover:to-teal-500 py-4 px-8 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer"
+                             >
+                                 {isSubmitting ? (
+                                     <>
+                                         <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                                         <span>Submitting to Doctor...</span>
+                                     </>
+                                 ) : (
+                                     <span>Submit Medical Inquiry Now ➔</span>
+                                 )}
+                             </button>
+                         </form>
+                     </div>
+                 </div>
+             )}
 
             <Footer />
         </main>

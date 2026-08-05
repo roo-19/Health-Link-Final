@@ -76,10 +76,10 @@ export default function Hero() {
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 pt-2">
                             <Link
                                 href="/signup"
-                                className="group relative inline-flex items-center justify-center gap-3 rounded-2xl bg-secondary px-8 py-4.5 text-base font-bold text-white shadow-xl shadow-secondary/20 hover:bg-secondary/90 transition-all duration-300 hover:scale-105"
+                                className="group relative inline-flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 animate-shimmer-bg px-8 py-4.5 text-base font-extrabold text-white shadow-xl shadow-emerald-600/30 hover:scale-105 transition-all duration-300 active:scale-95"
                             >
                                 <span>Get care now</span>
-                                <span className="text-lg transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
+                                <span className="text-lg transition-transform duration-300 group-hover:translate-x-1.5 group-hover:-translate-y-1">↗</span>
                             </Link>
 
                             <p className="max-w-xs text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
@@ -90,7 +90,7 @@ export default function Hero() {
                         {/* Trust Features Strip */}
                         <div className="mt-10 pt-6 border-t border-slate-200/80 flex flex-wrap items-center gap-6 text-xs text-slate-600 font-semibold">
                             <span className="flex items-center gap-2">
-                                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-sm shadow-emerald-500" />
                                 On-Demand Doctors Active
                             </span>
                             <span className="hidden sm:inline text-slate-300">•</span>
@@ -100,21 +100,26 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    {/* Right Column: Cozy Glassmorphic Highlight Card */}
+                    {/* Right Column: Vibrant 3D Floating Showcase Badge */}
                     <div className="lg:col-span-5 hidden lg:flex flex-col items-end justify-center">
                         <div 
-                            className="p-6 rounded-3xl bg-white/85 backdrop-blur-xl border border-slate-200/80 shadow-xl max-w-sm transition-all duration-500 hover:scale-105 hover:border-secondary/40"
+                            className="p-6 rounded-3xl bg-white/90 backdrop-blur-xl border border-emerald-100 shadow-2xl shadow-emerald-900/10 max-w-sm transition-all duration-500 hover:scale-105 hover:border-emerald-300 animate-float-slow"
                             style={{
                                 transform: `translate3d(${-mousePos.x * 12}px, ${-mousePos.y * 12}px, 0)`
                             }}
                         >
                             <div className="flex items-center gap-4 mb-3">
-                                <div className="h-12 w-12 rounded-2xl bg-accent border border-secondary/20 flex items-center justify-center text-secondary text-2xl shadow-sm">
-                                    🩺 🧘‍♀️
+                                <div className="relative h-14 w-14 rounded-2xl overflow-hidden border border-emerald-200 shadow-md shrink-0 bg-emerald-50">
+                                    <Image
+                                        src="/images/health_vibrant_badge.png"
+                                        alt="Health Link Care Badge"
+                                        fill
+                                        className="object-cover"
+                                    />
                                 </div>
                                 <div>
                                     <h3 className="text-sm font-extrabold text-primary">Medical &amp; Yoga Harmony</h3>
-                                    <p className="text-xs text-secondary font-bold">Comprehensive Circle of Care</p>
+                                    <p className="text-xs text-emerald-600 font-extrabold">Comprehensive Circle of Care</p>
                                 </div>
                             </div>
                             <p className="text-xs text-slate-600 leading-relaxed font-normal">

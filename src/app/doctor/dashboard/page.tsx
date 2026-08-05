@@ -226,10 +226,10 @@ export default function DoctorDashboard() {
     const [searchQuery, setSearchQuery] = useState("");
 
     const quickTemplates = [
-        { label: "🏥 Recommend Hospital Visit", text: "Based on the symptoms described, we recommend visiting the nearest hospital emergency room or outpatient department for a physical exam and vital checks." },
-        { label: "💊 Rest & Hydration Advice", text: "Maintain adequate rest, drink plenty of fluids, and monitor your temperature. If symptoms escalate beyond 48 hours, seek immediate in-person consultation." },
-        { label: "📋 Prescription Follow-up", text: "Please continue your current prescribed medication as directed. Ensure you do not stop dosage prematurely. Schedule a follow-up if symptoms persist." },
-        { label: "🧪 Lab Test Recommended", text: "We suggest having a Routine Blood Count (FBC) and relevant lab tests performed. Please share the test report once available for further review." }
+        { label: "Recommend Hospital Visit", text: "Based on the symptoms described, we recommend visiting the nearest hospital emergency room or outpatient department for a physical exam and vital checks." },
+        { label: "Rest & Hydration Advice", text: "Maintain adequate rest, drink plenty of fluids, and monitor your temperature. If symptoms escalate beyond 48 hours, seek immediate in-person consultation." },
+        { label: "Prescription Follow-up", text: "Please continue your current prescribed medication as directed. Ensure you do not stop dosage prematurely. Schedule a follow-up if symptoms persist." },
+        { label: "Lab Test Recommended", text: "We suggest having a Routine Blood Count (FBC) and relevant lab tests performed. Please share the test report once available for further review." }
     ];
 
     const applyTemplate = (templateText: string) => {
@@ -284,7 +284,7 @@ export default function DoctorDashboard() {
                         <div className="flex flex-wrap sm:flex-nowrap gap-3 w-full lg:w-auto shrink-0">
                             <div className="bg-indigo-500/20 border border-indigo-400/30 px-4 py-3 rounded-2xl flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">
-                                    👨‍⚕️
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                                 </div>
                                 <div className="text-left">
                                     <span className="text-[10px] uppercase font-bold text-indigo-300 block">SLMC License</span>
@@ -328,7 +328,9 @@ export default function DoctorDashboard() {
                             
                             {/* Search Input */}
                             <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                                </span>
                                 <input
                                     type="text"
                                     value={searchQuery}
@@ -352,7 +354,7 @@ export default function DoctorDashboard() {
                                     onClick={() => { setActiveTab("pending"); setSelectedInquiry(null); }}
                                     className={`pb-3 text-sm sm:text-base font-extrabold transition-all border-b-2 cursor-pointer flex items-center gap-2 ${activeTab === "pending" ? "border-indigo-600 text-indigo-900" : "border-transparent text-slate-400 hover:text-slate-700"}`}
                                 >
-                                    <span>⏳ Pending Response</span>
+                                    <span>Pending Response</span>
                                     <span className={`px-2.5 py-0.5 rounded-full text-xs ${activeTab === "pending" ? "bg-amber-100 text-amber-800" : "bg-slate-100 text-slate-500"}`}>
                                         {pendingInquiries.length}
                                     </span>
@@ -361,7 +363,7 @@ export default function DoctorDashboard() {
                                     onClick={() => { setActiveTab("answered"); setSelectedInquiry(null); }}
                                     className={`pb-3 text-sm sm:text-base font-extrabold transition-all border-b-2 cursor-pointer flex items-center gap-2 ${activeTab === "answered" ? "border-indigo-600 text-indigo-900" : "border-transparent text-slate-400 hover:text-slate-700"}`}
                                 >
-                                    <span>✅ Answered Cases</span>
+                                    <span>Answered Cases</span>
                                     <span className={`px-2.5 py-0.5 rounded-full text-xs ${activeTab === "answered" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-500"}`}>
                                         {answeredInquiries.length}
                                     </span>
