@@ -67,6 +67,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Western Medicine", "24/7", "Tourist-friendly"],
         theme: "blue",
         microText: "Instant video consults, referrals & prescriptions.",
+        previewIntro: "Instant 24/7 access to licensed doctors for online video consultations, medical referrals, and digital prescriptions wherever you are.",
         intro: "Instant access to licensed doctors for consultations, referrals, and prescriptions - wherever you are",
         features: ["On-demand doctor consultations (video/online)", "Referral service when needed", "Prescription writing (where appropriate)"],
         callout: {
@@ -159,6 +160,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Sri Lanka", "Home Care", "Sinhala | Tamil | English"],
         theme: "emerald",
         microText: "Nursing, elder companionship & daily support.",
+        previewIntro: "Bringing quality care to your doorstep. We provide trusted nursing, elder companionship, and daily support in the comfort of home.",
         intro: "Bringing quality care to your doorstep. We provide trusted nursing, elder companionship, and daily support, all in the comfort of home. Our trained, compassionate caregivers offer personalized care with respect and warmth, tailored to Sri Lankan family values.\n\nLet us help your loved ones live safely and independently at home.",
         features: ["Trusted nursing support", "Elder companionship", "Daily support for routines"],
         subFeatures: {
@@ -258,6 +260,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Integrated Spiritual Care", "Multifaith", "Free of charge"],
         theme: "violet",
         microText: "Multifaith counseling, rituals, grief support.",
+        previewIntro: "Guided by Faith, Supported by Care. Sacred Space Sri Lanka offers a welcoming multifaith sanctuary for spiritual healing, interfaith mindfulness, and compassionate chaplaincy.",
         intro: (
             <div className="flex flex-col gap-4">
                 <div className="italic text-2xl font-semibold text-[#B8860B] drop-shadow-sm">
@@ -444,6 +447,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Psychotherapy", "Confidential", "Evidence-based"],
         theme: "rose",
         microText: "CBT, mindfulness, trauma & relationship support.",
+        previewIntro: "A warm, confidential sanctuary providing Cognitive Behavioral Therapy (CBT), mindfulness, and trauma-informed care to restore emotional balance.",
         intro: (
             <div className="flex flex-col gap-6">
                 <p>Step into a sanctuary of support and understanding—a place designed just for you. At <span className="font-bold text-[#B8860B] drop-shadow-sm">Serene Counseling</span>, we don&apos;t just treat symptoms; we walk alongside you on your journey toward emotional freedom and lasting well-being. Our warm, confidential, and deeply personalized therapy sessions provide a safe space to explore your thoughts, heal from pain, and reconnect with your inner strength.</p>
@@ -547,6 +551,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Personalized", "Multidisciplinary", "Mind-Body-Soul"],
         theme: "amber",
         microText: "Healing Designed for Your Life — Personalized Care for Body, Mind & Soul!",
+        previewIntro: "Personalized integrative healing uniting evidence-based Western medicine with Ayurveda, Indigenous traditions, Reiki, and custom nutrition.",
         intro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, Naturopathy and Functional medicine - supported by tailored lifestyle and nutrition plans. Our multidisciplinary approach delivers holistic, client-centered care designed to restore balance, enhance wellbeing, and promote long-term health.",
         features: ["Made just for you — individualized care", "Case management system", "Comprehensive healing packages", "Mutual agreement and accountability", "Ethical protocols & considerations"],
         cta: "Explore integrated plans",
@@ -627,6 +632,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Community", "Mind • Body • Spirit", "Stories & Support"],
         theme: "indigo",
         microText: "Share experiences, learn & grow together.",
+        previewIntro: "A compassionate wellness network where you can share authentic stories, connect with experts, and grow mind, body, and spirit together.",
         intro: "A space where your journey matters. Connect with like-minded people, exchange experiences, and learn from real stories—supporting holistic well-being across mind, body, and spirit.",
         features: ["Share your story authentically", "Learn collectively from others", "Grow intentionally with community support"],
         subFeatures: {
