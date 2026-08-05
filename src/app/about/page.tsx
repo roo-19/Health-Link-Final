@@ -111,8 +111,8 @@ export default function AboutPage() {
               <div className="relative rounded-[2.5rem] overflow-hidden border border-slate-200/80 bg-white p-3 shadow-2xl shadow-slate-900/10 group">
                 <div className="relative h-[420px] sm:h-[480px] w-full rounded-[2rem] overflow-hidden">
                   <Image
-                    src="/images/about_us_team_hero.png"
-                    alt="Health Link Medical & Wellness Team"
+                    src="/images/sri_lankan_about_team.png"
+                    alt="Health Link Sri Lankan Medical & Wellness Team"
                     fill
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                     priority
