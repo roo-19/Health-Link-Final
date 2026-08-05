@@ -8,6 +8,7 @@ export interface ServiceData {
     tag: string; // Nav tag
     tags: string[]; // Panel top pills
     microText: string;
+    previewIntro?: string; // Standardized clean preview text for Homepage carousel
     intro: string | ReactNode; // Longer intro text
     description?: string; // Optional legacy description, prefer intro
     features: string[]; // Legacy simple features
