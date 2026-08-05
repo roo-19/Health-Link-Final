@@ -10,7 +10,7 @@ export default function ServicesCircleNav() {
     const activeService = servicesData[activeIdx];
 
     return (
-        <section className="bg-background py-24 sm:py-32 relative overflow-hidden" id="services">
+        <section className="bg-background py-12 sm:py-16 relative overflow-hidden" id="services">
             {/* Background decorative elements */}
             <div className="absolute top-1/4 left-0 w-96 h-96 bg-accent/20 rounded-full blur-[120px] -translate-x-1/2 pointer-events-none" />
             <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] translate-x-1/3 pointer-events-none" />
@@ -19,14 +19,14 @@ export default function ServicesCircleNav() {
             <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,43,154,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,43,154,0.015)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
             {/* ── Wider container ── */}
-            <div className="w-full max-w-[1700px] mx-auto px-8 xl:px-12 2xl:px-16 relative z-10">
+            <div className="w-full max-w-[1700px] mx-auto px-6 xl:px-12 2xl:px-16 relative z-10">
 
                 {/* Header Section */}
-                <div className="max-w-4xl mb-16">
-                    <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-4">
+                <div className="max-w-4xl mb-8">
+                    <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-2">
                         Our Specialized Services
                     </span>
-                    <h2 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-primary leading-tight">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary leading-tight">
                         Healthcare &amp; Wellness designed around your life.
                     </h2>
                 </div>
@@ -88,19 +88,20 @@ export default function ServicesCircleNav() {
                     </div>
 
                     {/* ── Center Image Panel — 4 cols (≈30%) ── */}
-                    <div className="lg:col-span-4 flex items-center justify-center py-2">
-                        <div className="w-full aspect-square rounded-[2rem] overflow-hidden shadow-md group border border-slate-100 relative">
+                    <div className="lg:col-span-4 flex items-center justify-center py-2 h-full">
+                        <div className="w-full aspect-square max-h-[380px] rounded-[2rem] overflow-hidden shadow-md group border border-slate-100 relative">
                             <Image
+                                key={activeService.id}
                                 src={activeService.image}
                                 alt={activeService.navTitle}
                                 fill
-                                className="object-cover object-center transition-transform duration-[1s] group-hover:scale-105"
+                                className="object-cover object-center transition-all duration-500 group-hover:scale-105 animate-in fade-in"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 via-transparent to-transparent pointer-events-none" />
 
                             {/* Theme Badge overlay */}
-                            <div className="absolute top-6 right-6">
-                                <span className="inline-flex items-center rounded-full bg-slate-950/40 backdrop-blur-md px-4 py-1.5 text-xs font-bold text-white border border-white/10">
+                            <div className="absolute top-4 right-4">
+                                <span className="inline-flex items-center rounded-full bg-slate-950/40 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-white border border-white/10">
                                     {activeService.badge || activeService.tags[0]}
                                 </span>
                             </div>
@@ -108,15 +109,16 @@ export default function ServicesCircleNav() {
                     </div>
 
                     {/* ── Right Content Panel — 5 cols (≈45%) ── */}
-                    <div className="lg:col-span-5 flex flex-col justify-between p-2 sm:p-6 min-h-[500px]">
+                    <div className="lg:col-span-5 flex flex-col justify-between p-2 sm:p-4 lg:h-[430px]">
 
-                        {/* Tags */}
-                        <div>
-                            <div className="flex flex-wrap items-center gap-2 mb-5">
-                                {activeService.tags.map((t) => (
+                        {/* Top Content Box (Fixed Height bounds) */}
+                        <div key={activeService.id} className="animate-in fade-in duration-300">
+                            {/* Tags */}
+                            <div className="flex flex-wrap items-center gap-2 mb-4 h-8 overflow-hidden">
+                                {activeService.tags.slice(0, 3).map((t) => (
                                     <span
                                         key={t}
-                                        className="inline-flex items-center rounded-full bg-accent px-3.5 py-1.5 text-sm font-bold text-secondary border border-secondary/10"
+                                        className="inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs font-bold text-secondary border border-secondary/10"
                                     >
                                         {t}
                                     </span>
@@ -124,46 +126,46 @@ export default function ServicesCircleNav() {
                             </div>
 
                             {/* Service Title */}
-                            <h3 className="text-5xl xl:text-6xl font-extrabold text-primary mb-5 leading-snug">
-                                {activeService.title}
+                            <h3 className="text-3xl xl:text-4xl font-extrabold text-primary mb-3 leading-snug line-clamp-1 h-11 flex items-center">
+                                {activeService.navTitle}
                             </h3>
 
-                            {/* Description */}
-                            <p className="text-slate-600 font-light leading-relaxed text-lg xl:text-xl">
-                                {activeService.intro}
+                            {/* Standardized Preview Description */}
+                            <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base line-clamp-3 h-18">
+                                {activeService.previewIntro || (typeof activeService.intro === "string" ? activeService.intro : activeService.microText)}
                             </p>
                         </div>
 
                         {/* Features & CTA */}
-                        <div className="flex flex-col gap-6 mt-8 border-t border-slate-100 pt-8">
+                        <div className="flex flex-col gap-4 border-t border-slate-100 pt-5">
                             <div>
-                                <h4 className="text-sm font-bold uppercase tracking-widest text-primary mb-5">
-                                    Service Features
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-3">
+                                    Key Service Highlights
                                 </h4>
-                                <ul className="space-y-3">
-                                    {activeService.features.map((feature) => (
+                                <ul className="space-y-2">
+                                    {activeService.features.slice(0, 3).map((feature) => (
                                         <li
                                             key={feature}
-                                            className="flex items-center gap-3 text-base text-slate-700 font-semibold bg-accent/20 border border-secondary/5 px-4 py-3 rounded-xl"
+                                            className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 font-semibold bg-accent/20 border border-secondary/5 px-3.5 py-2.5 rounded-xl line-clamp-1"
                                         >
-                                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-secondary text-white text-[10px]">
+                                            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-secondary text-white text-[9px] font-bold">
                                                 ✓
                                             </span>
-                                            {feature}
+                                            <span>{feature}</span>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
                             {/* Action Buttons */}
-                            <div className="pt-2">
+                            <div className="pt-1">
                                 <Link
                                     href={activeService.detailLink}
-                                    className="w-full text-center block rounded-full bg-secondary px-6 py-4 text-base font-bold text-white shadow-md shadow-secondary/15 hover:bg-secondary/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                                    className="w-full text-center block rounded-full bg-secondary px-6 py-3.5 text-sm font-bold text-white shadow-md shadow-secondary/15 hover:bg-secondary/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
                                 >
-                                    Explore Details
+                                    Explore Full Service Details ➔
                                 </Link>
-                                <p className="text-xs text-slate-400 font-semibold text-center mt-3">
+                                <p className="text-[11px] text-slate-400 font-semibold text-center mt-2.5 truncate">
                                     {activeService.trust}
                                 </p>
                             </div>

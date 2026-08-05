@@ -30,34 +30,34 @@ export default function FAQ() {
     ];
 
     return (
-        <section className="bg-background py-24 sm:py-32 relative overflow-hidden" id="faq">
-            <div className="mx-auto max-w-7xl px-8 sm:px-12 lg:px-16 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <section className="bg-background py-12 sm:py-16 relative overflow-hidden" id="faq">
+            <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                     {/* Left Column: Heading */}
-                    <div className="lg:col-span-4 lg:sticky lg:top-36">
-                        <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-4">
+                    <div className="lg:col-span-4 lg:sticky lg:top-32">
+                        <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-3">
                             Support & FAQ
                         </span>
-                        <h2 className="text-4xl font-extrabold text-primary leading-tight mb-6">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-primary leading-tight mb-4">
                             Frequently Asked Questions
                         </h2>
-                        <p className="text-slate-600 font-light leading-relaxed mb-8">
+                        <p className="text-slate-600 font-light leading-relaxed mb-6 text-sm sm:text-base">
                             Everything you need to know about our services, privacy controls, and clinical care.
                         </p>
                         <Link 
                             href="/contact"
-                            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-white shadow-md hover:bg-primary/95 transition-all duration-300"
+                            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-xs sm:text-sm font-bold text-white shadow-md hover:bg-primary/95 transition-all duration-300"
                         >
                             Contact our team
                         </Link>
                     </div>
 
                     {/* Right Column: Accordion */}
-                    <div className="lg:col-span-8 divide-y divide-slate-200/80 border-t border-b divide-y divide-slate-200/80 border-slate-200/80">
+                    <div className="lg:col-span-8 divide-y divide-slate-200/80 border-t border-b border-slate-200/80">
                         {faqs.map((faq, idx) => {
                             const isOpen = openIdx === idx;
                             return (
-                                <div key={idx} className="py-6">
+                                <div key={idx} className="py-4 sm:py-5">
                                     <button
                                         onClick={() => toggle(idx)}
                                         className="w-full flex items-center justify-between text-left group focus:outline-none"
