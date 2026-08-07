@@ -56,22 +56,43 @@ export default function Navbar() {
 
                 {/* Center Navigation Links */}
                 <div className="hidden lg:flex items-center gap-8">
-                    {[
-                        { name: "Home", path: "/" },
-                        { name: "About", path: "/about" },
-                        { name: "Services", path: "/#services" },
-                        { name: "Spiritual Care", path: "/services/spiritual-care" },
-                        { name: "Community", path: "/community" },
-                        { name: "Contact", path: "/contact" },
-                    ].map((item) => (
-                        <Link
-                            key={item.name}
-                            href={item.path}
-                            className="text-xs sm:text-sm font-bold text-slate-700 hover:text-primary transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary after:transition-all hover:after:w-full"
-                        >
-                            {item.name}
-                        </Link>
-                    ))}
+                    <Link
+                        href="/"
+                        className="text-xs sm:text-sm font-bold text-slate-700 hover:text-primary transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary after:transition-all hover:after:w-full"
+                    >
+                        Home
+                    </Link>
+                    <button
+                        onClick={() => {
+                            const el = document.getElementById("services");
+                            if (el) {
+                                el.scrollIntoView({ behavior: "smooth" });
+                            } else {
+                                window.location.href = "/#services";
+                            }
+                        }}
+                        className="text-xs sm:text-sm font-bold text-slate-700 hover:text-primary transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary after:transition-all hover:after:w-full cursor-pointer"
+                    >
+                        Services
+                    </button>
+                    <Link
+                        href="/about"
+                        className="text-xs sm:text-sm font-bold text-slate-700 hover:text-primary transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary after:transition-all hover:after:w-full"
+                    >
+                        About
+                    </Link>
+                    <Link
+                        href="/contact"
+                        className="text-xs sm:text-sm font-bold text-slate-700 hover:text-primary transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary after:transition-all hover:after:w-full"
+                    >
+                        Contact Us
+                    </Link>
+                    <Link
+                        href="/doctor/register"
+                        className="text-xs sm:text-sm font-bold text-slate-700 hover:text-primary transition-colors tracking-wide relative py-1 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 after:bg-secondary after:transition-all hover:after:w-full"
+                    >
+                        Join as a Doctor
+                    </Link>
                 </div>
 
                 {/* Right Actions */}
@@ -130,24 +151,48 @@ export default function Navbar() {
             {/* Mobile Dropdown Drawer */}
             {mobileMenuOpen && (
                 <div className="lg:hidden bg-white/98 border-t border-slate-200 rounded-b-3xl px-6 py-4 flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 shadow-xl">
-                    {[
-                        { name: "Home", path: "/" },
-                        { name: "About Us", path: "/about" },
-                        { name: "Services", path: "/#services" },
-                        { name: "Spiritual Care", path: "/services/spiritual-care" },
-                        { name: "Community", path: "/community" },
-                        { name: "Contact Us", path: "/contact" },
-                        { name: "Join as Doctor", path: "/doctor/register" }
-                    ].map((item) => (
-                        <Link
-                            key={item.name}
-                            href={item.path}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="text-sm font-bold text-slate-700 hover:text-primary py-1.5"
-                        >
-                            {item.name}
-                        </Link>
-                    ))}
+                    <Link
+                        href="/"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-sm font-bold text-slate-700 hover:text-primary py-1.5"
+                    >
+                        Home
+                    </Link>
+                    <button
+                        onClick={() => {
+                            setMobileMenuOpen(false);
+                            const el = document.getElementById("services");
+                            if (el) {
+                                el.scrollIntoView({ behavior: "smooth" });
+                            } else {
+                                window.location.href = "/#services";
+                            }
+                        }}
+                        className="text-sm font-bold text-slate-700 hover:text-primary py-1.5 text-left cursor-pointer"
+                    >
+                        Services
+                    </button>
+                    <Link
+                        href="/about"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-sm font-bold text-slate-700 hover:text-primary py-1.5"
+                    >
+                        About Us
+                    </Link>
+                    <Link
+                        href="/contact"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-sm font-bold text-slate-700 hover:text-primary py-1.5"
+                    >
+                        Contact Us
+                    </Link>
+                    <Link
+                        href="/doctor/register"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-sm font-bold text-slate-700 hover:text-primary py-1.5"
+                    >
+                        Join as a Doctor
+                    </Link>
                 </div>
             )}
         </header>

@@ -101,7 +101,7 @@ export default function ServicesCircleNav() {
 
                             {/* Theme Badge overlay */}
                             <div className="absolute top-4 right-4">
-                                <span className="inline-flex items-center rounded-full bg-slate-950/40 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-white border border-white/10">
+                                <span className="inline-flex items-center rounded-full bg-primary/60 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-white border border-primary/10">
                                     {activeService.badge || activeService.tags[0]}
                                 </span>
                             </div>
@@ -131,7 +131,7 @@ export default function ServicesCircleNav() {
                             </h3>
 
                             {/* Standardized Preview Description */}
-                            <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base line-clamp-3 h-18">
+                            <p className="text-slate-600 font-light leading-relaxed text-sm sm:text-base line-clamp-4 h-26">
                                 {activeService.previewIntro || (typeof activeService.intro === "string" ? activeService.intro : activeService.microText)}
                             </p>
                         </div>

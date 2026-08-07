@@ -46,12 +46,12 @@ export default function ServiceHero({ service, imageSrc }: ServiceHeroProps) {
                                     {service.subtitle}
                                 </p>
                             )}
-                            <h1 className="relative text-5xl font-extrabold tracking-tight text-primary sm:text-6xl lg:text-7xl leading-[1.1]">
+                            <h1 className="relative text-3xl font-extrabold tracking-tight text-primary sm:text-4xl lg:text-5xl leading-tight">
                                 {service.title}
                             </h1>
                         </div>
 
-                        <div className="text-lg text-slate-600 leading-relaxed mb-10 sm:text-xl font-light">
+                        <div className="text-lg text-slate-600 leading-relaxed mb-10 sm:text-xl font-light text-justify">
                             {service.intro}
                         </div>
 

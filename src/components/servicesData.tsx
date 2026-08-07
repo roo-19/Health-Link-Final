@@ -68,7 +68,7 @@ export const servicesData: ServiceData[] = [
         theme: "blue",
         microText: "Instant video consults, referrals & prescriptions.",
         previewIntro: "Instant 24/7 access to licensed doctors for online video consultations, medical referrals, and digital prescriptions wherever you are.",
-        intro: "Instant access to licensed doctors for consultations, referrals, and prescriptions - wherever you are",
+        intro: "Instant access to licensed doctors for consultations, referrals, prescriptions, and personalized medical guidance - wherever you are, whenever you need it, making trusted healthcare more accessible, convenient, and available at your fingertips.",
         features: ["On-demand doctor consultations (video/online)", "Referral service when needed", "Prescription writing (where appropriate)"],
         callout: {
             note: "Doctor onboarding follows platform agreements.",
@@ -112,7 +112,7 @@ export const servicesData: ServiceData[] = [
         ],
         richFeatures: [
             {
-                title: "Instant Doctor Access",
+                title: "Instant Access to Doctors",
                 description: "Connect with licensed healthcare professionals 24/7 from wherever you are, avoiding long clinic waits."
             },
             {
@@ -121,7 +121,7 @@ export const servicesData: ServiceData[] = [
             },
             {
                 title: "Integrated Care Pathways",
-                description: "Explore integrated wellness services and get seamless referrals to clinical and holistic specialists."
+                description: "Explore integrated wellness services and get seamless referrals to clinical and holistic practitioners."
             },
             {
                 title: "Traveler & Professional Support",
@@ -130,7 +130,6 @@ export const servicesData: ServiceData[] = [
         ],
         benefits: [
             "Immediate peace of mind without leaving home",
-            "Avoid exposure to waiting room illnesses",
             "Perfect for busy professionals and travelers",
             "Continuous access to your medical history"
         ],
@@ -160,7 +159,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Sri Lanka", "Home Care", "Sinhala | Tamil | English"],
         theme: "emerald",
         microText: "Nursing, elder companionship & daily support.",
-        previewIntro: "Bringing quality care to your doorstep. We provide trusted nursing, elder companionship, and daily support in the comfort of home.",
+        previewIntro: "Bringing quality care to your doorstep. We provide trusted nursing care, elder companionship, and daily support in the comfort of home.",
         intro: "Bringing quality care to your doorstep. We provide trusted nursing, elder companionship, and daily support, all in the comfort of home. Our trained, compassionate caregivers offer personalized care with respect and warmth, tailored to Sri Lankan family values.\n\nLet us help your loved ones live safely and independently at home.",
         features: ["Trusted nursing support", "Elder companionship", "Daily support for routines"],
         subFeatures: {
@@ -208,11 +207,11 @@ export const servicesData: ServiceData[] = [
             },
             {
                 title: "Caregiver Matching",
-                description: "We pair you with a certified professional who fits your family values."
+                description: "We match you with a certified caregiver who fits your family values."
             },
             {
                 title: "Ongoing Support",
-                description: "Receive compassionate daily care with regular check-ins."
+                description: "Receive compassionate daily care with regular check-ins from qualified doctors."
             }
         ],
         richFeatures: [
@@ -447,7 +446,7 @@ export const servicesData: ServiceData[] = [
         tags: ["Psychotherapy", "Confidential", "Evidence-based"],
         theme: "rose",
         microText: "CBT, mindfulness, trauma & relationship support.",
-        previewIntro: "A warm, confidential sanctuary providing Cognitive Behavioral Therapy (CBT), mindfulness, and trauma-informed care to restore emotional balance.",
+        previewIntro: "A warm, confidential sanctuary providing psychological counseling, Cognitive Behavioral Therapy (CBT), mindfulness, and trauma-informed care to restore emotional balance.",
         intro: (
             <div className="flex flex-col gap-6">
                 <p>Step into a sanctuary of support and understanding—a place designed just for you. At <span className="font-bold text-[#B8860B] drop-shadow-sm">Serene Counseling</span>, we don&apos;t just treat symptoms; we walk alongside you on your journey toward emotional freedom and lasting well-being. Our warm, confidential, and deeply personalized therapy sessions provide a safe space to explore your thoughts, heal from pain, and reconnect with your inner strength.</p>
@@ -522,8 +521,8 @@ export const servicesData: ServiceData[] = [
             "Develop lifelong emotional coping strategies",
             "Improve communication and intimacy in relationships",
             "Reclaim your sense of self-worth",
-            "Trauma counceling - Trauma as a force of transformation",
-            "Addiction counceling - Reclaim your life from addiction"
+            "Trauma counseling - Trauma as a force of transformation",
+            "Addiction counseling - Reclaim your life from addiction"
         ],
         testimonials: [
             {
@@ -548,10 +547,10 @@ export const servicesData: ServiceData[] = [
         title: "Integrated Healing",
         navTitle: "Integrated Healing",
         tag: "Holistic",
-        tags: ["Personalized", "Multidisciplinary", "Mind-Body-Soul"],
+        tags: ["Personalized", "Multidisciplinary", "Mind-Body-Soul & Spirit"],
         theme: "amber",
         microText: "Healing Designed for Your Life — Personalized Care for Body, Mind & Soul!",
-        previewIntro: "Personalized integrative healing uniting evidence-based Western medicine with Ayurveda, Indigenous traditions, Reiki, and custom nutrition.",
+        previewIntro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, Naturopathy and Functional medicine - supported by tailored lifestyle and nutrition plans.",
         intro: "Personalized integrative healing that unites evidence-based Western medicine with Ayurveda, Indigenous medicine, Vedic wisdom, Reiki, Naturopathy and Functional medicine - supported by tailored lifestyle and nutrition plans. Our multidisciplinary approach delivers holistic, client-centered care designed to restore balance, enhance wellbeing, and promote long-term health.",
         features: ["Made just for you — individualized care", "Case management system", "Comprehensive healing packages", "Mutual agreement and accountability", "Ethical protocols & considerations"],
         cta: "Explore integrated plans",
@@ -575,7 +574,7 @@ export const servicesData: ServiceData[] = [
         howItWorks: [
             {
                 title: "Consultation & Agreement",
-                description: "We begin with a deep dive into your history and a mutual agreement on your healing path."
+                description: "We begin with a deep dive into your health history and a mutual agreement on your healing path."
             },
             {
                 title: "Personalized Plan Creation",
@@ -597,7 +596,7 @@ export const servicesData: ServiceData[] = [
             },
             {
                 title: "Lifestyle & Nutrition",
-                description: "Personalized nutrition plans and life-balancing protocols designed specifically for you."
+                description: "Personalized nutrition plans and health optimizing protocols designed specifically for you."
             },
             {
                 title: "Accountability & Ethics",
@@ -629,10 +628,10 @@ export const servicesData: ServiceData[] = [
         subtitle: "Mind•Body•Spirit",
         navTitle: "Community",
         tag: "Grow",
-        tags: ["Community", "Mind • Body • Spirit", "Stories & Support"],
+        tags: ["Community", "Mind-Body-Soul & Spirit", "Stories & Support"],
         theme: "indigo",
         microText: "Share experiences, learn & grow together.",
-        previewIntro: "A compassionate wellness network where you can share authentic stories, connect with experts, and grow mind, body, and spirit together.",
+        previewIntro: "A compassionate wellness network where you can share authentic stories, connect with experts, and grow mind, body, soul and spirit together.",
         intro: "A space where your journey matters. Connect with like-minded people, exchange experiences, and learn from real stories—supporting holistic well-being across mind, body, and spirit.",
         features: ["Share your story authentically", "Learn collectively from others", "Grow intentionally with community support"],
         subFeatures: {

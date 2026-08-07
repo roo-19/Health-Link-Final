@@ -17,7 +17,7 @@ export default function FAQ() {
         },
         {
             question: "How quickly can I connect with a doctor?",
-            answer: "For our on-demand telemedical consulting, we aim to connect you with a licensed western practitioner within 30 minutes of submitting your request via our encrypted portal.",
+            answer: "For our on-demand telemedical consulting, we aim to connect you with a licensed western medical doctor within 30 minutes of submitting your request via our encrypted portal.",
         },
         {
             question: "How do digital prescriptions and referrals work?",

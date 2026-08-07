@@ -19,7 +19,7 @@ export const CommunityHero = () => (
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:28px_28px] opacity-10 pointer-events-none" />
 
         <div className="container mx-auto px-8 relative z-10 text-center">
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 drop-shadow-2xl font-serif tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6 drop-shadow-2xl font-serif tracking-tight">
                 Join Our Wellness Community
             </h1>
             <p className="text-xl md:text-2xl text-slate-200 max-w-3xl mx-auto mb-10 font-light drop-shadow-md">

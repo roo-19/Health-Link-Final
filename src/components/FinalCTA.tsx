@@ -37,15 +37,7 @@ export default function FinalCTA() {
                         >
                             Get care now
                         </Link>
-                        <Link 
-                            href="/careers" 
-                            className="text-xs sm:text-sm font-semibold leading-6 text-white hover:text-secondary transition-colors group flex items-center gap-2"
-                        >
-                            Apply to join our network 
-                            <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1.5">
-                                →
-                            </span>
-                        </Link>
+                        
                     </div>
                 </div>
             </div>

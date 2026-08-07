@@ -77,12 +77,15 @@ export default function Hero() {
                                 <span>Get care now</span>
                             </Link>
 
-                            <Link
-                                href="/#services"
+                            <button
+                                onClick={() => {
+                                    const el = document.getElementById("services");
+                                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                                }}
                                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 text-white px-7 py-4 text-sm sm:text-base font-semibold transition-all duration-300 backdrop-blur-md hover:scale-105 active:scale-95 cursor-pointer"
                             >
                                 <span>Learn more →</span>
-                            </Link>
+                            </button>
                         </div>
                     </div>
 
@@ -99,9 +102,9 @@ export default function Hero() {
                             d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
                             fill="none"
                         />
-                        <text className="text-[9px] font-black uppercase tracking-[2.8px] fill-slate-300/80">
+                        <text className="text-[8.5px] font-black uppercase tracking-[2.8px] fill-slate-300/80">
                             <textPath href="#circlePath" startOffset="0%">
-                                SECURE &amp; TRUSTED • 24/7 • HEALTH LINK •
+                                SECURE & TRUSTED Care • 24/7 •
                             </textPath>
                         </text>
                     </svg>
