@@ -37,7 +37,7 @@ export default function Hero() {
                     }}
                 >
                     <Image
-                        src="/hero1.png"
+                        src="/hero3.png"
                         alt="Health Link - Empowering Healing"
                         fill
                         className="object-cover object-center transition-transform duration-[2s] ease-out group-hover:scale-105"
@@ -56,12 +56,6 @@ export default function Hero() {
 
                     {/* Left Column: Tagline, Headline & CTAs */}
                     <div className="lg:col-span-8">
-
-                        {/* Top Badge Pill */}
-                        <div className="inline-flex items-center gap-2.5 rounded-full bg-emerald-950/60 border border-emerald-500/30 backdrop-blur-md px-4 py-1.5 mb-6 text-xs sm:text-sm font-semibold text-emerald-300 shadow-lg">
-                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400" />
-                            <span>Sri Lanka&apos;s Premier Digital Health Platform</span>
-                        </div>
 
                         {/* Exact Main Headline from Uploaded Design */}
                         <h1 className="text-5xl sm:text-7xl lg:text-[6.25rem] font-black text-white leading-[1.02] tracking-tight mb-6 drop-shadow-md">
@@ -89,27 +83,6 @@ export default function Hero() {
                             >
                                 <span>Learn more →</span>
                             </Link>
-                        </div>
-                    </div>
-
-                    {/* Right Column: Top Right Floating Status Card */}
-                    <div className="lg:col-span-4 hidden lg:flex flex-col items-end justify-start pt-6">
-                        <div
-                            className="p-4 sm:p-5 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl max-w-xs transition-all duration-500 hover:scale-105 animate-float-slow"
-                            style={{
-                                transform: `translate3d(${-mousePos.x * 15}px, ${-mousePos.y * 15}px, 0)`
-                            }}
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className="relative flex h-3 w-3 shrink-0">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xs font-bold text-white tracking-wide">Clinicians Active Now</h3>
-                                    <p className="text-[11px] text-slate-300 font-medium">Average response: 3-5 mins</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
