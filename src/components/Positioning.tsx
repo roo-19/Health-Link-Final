@@ -1,25 +1,38 @@
+import Link from "next/link";
+
 export default function Positioning() {
     return (
-        <section className="bg-slate-50 py-20 sm:py-32 relative overflow-hidden">
-            {/* Soft decorative blur */}
-            <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[600px] h-[600px] bg-sky-200 rounded-full blur-[120px] opacity-40 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[500px] h-[500px] bg-indigo-200 rounded-full blur-[120px] opacity-30 pointer-events-none" />
-            
-            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 z-10">
-                <div className="mx-auto max-w-4xl text-center space-y-8">
-                    <div className="inline-block relative">
-                        <span className="absolute -inset-1 block bg-gradient-to-r from-sky-300 to-indigo-300 blur-2xl opacity-40 rounded-3xl"></span>
-                        <h2 className="relative text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                            Sri Lanka's Pioneer in<br/>
-                            <span className="text-gradient">Personalized Holistic Care.</span>
+        <section className="bg-white py-12 sm:py-16 relative overflow-hidden">
+            {/* Soft brand glowing highlights */}
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] bg-accent/30 rounded-full blur-[120px] pointer-events-none" />
+
+            <div className="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                    {/* Left Column (typography focus) */}
+                    <div className="lg:col-span-7">
+                        <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-3">
+                            Pioneering Holistic Care
+                        </span>
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary leading-snug tracking-tight">
+                            Integrating <span className="underline decoration-secondary decoration-4 underline-offset-4">24/7 on-demand medical care</span> with <span className="text-secondary font-black">personalized wellness</span> to pioneer a new era of comprehensive health.
                         </h2>
                     </div>
-                    
-                    <div className="mx-auto w-24 h-1.5 bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full shadow-sm" />
-                    
-                    <h3 className="font-sans text-xl sm:text-2xl lg:text-3xl font-medium tracking-tight text-slate-600 leading-relaxed max-w-3xl mx-auto">
-                        Integrating <span className="font-semibold text-slate-900">Round-the-Clock On-Demand Care</span> with <span className="font-semibold text-slate-900">Holistic Wellness</span> for Comprehensive <span className="font-semibold text-slate-900">Health Solutions.</span>
-                    </h3>
+
+                    {/* Right Column (descriptive focus) */}
+                    <div className="lg:col-span-5 lg:pt-4">
+                        <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal mb-6">
+                            Health Link creates a unique platform that integrates Western medicine with natural and alternative holistic modalities to form a personalized circle of care, helping each individual achieve a superior level of well‑being.
+                        </p>
+                        <Link
+                            href="/about"
+                            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-primary hover:text-secondary group transition-colors duration-300"
+                        >
+                            Discover our vision
+                            <span className="inline-block transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true">
+                                →
+                            </span>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </section>

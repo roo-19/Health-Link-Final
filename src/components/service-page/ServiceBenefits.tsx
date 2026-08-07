@@ -19,8 +19,8 @@ export default function ServiceBenefits({ service, imageSrc }: ServiceBenefitsPr
 
                     {/* Left: Benefits List */}
                     <div className="mb-16 lg:mb-0">
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 mb-6">
-                            <span className="text-xs font-bold uppercase tracking-wide text-emerald-600">The Benefits</span>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/20 mb-6">
+                            <span className="text-xl font-extrabold uppercase tracking-widest text-primary">The Benefits</span>
                         </div>
                         <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl mb-10 leading-[1.15]">
                             Experience the <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-sky-600">difference</span> down to every detail.

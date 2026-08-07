@@ -8,7 +8,6 @@ import {
     CommunityHero, 
     ExperienceSharing, 
     MediaHub, 
-    ExpertHub, 
     PracticalLibrary, 
     InteractiveCommunity 
 } from "@/components/community/WellnessCommunityComponents";
@@ -30,8 +29,6 @@ export default function CommunityPage() {
             <ExperienceSharing />
             
             <MediaHub />
-            
-            <ExpertHub />
             
             <PracticalLibrary />
             

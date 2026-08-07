@@ -1,0 +1,184 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: 🚧 HealthLink Preview – Under Construction 🚧
+  - main [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Health Link Logo Health Link" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Health Link Logo" [ref=e8]
+          - generic [ref=e9]: Health Link
+        - generic [ref=e10]:
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: /
+          - link "About Us" [ref=e12] [cursor=pointer]:
+            - /url: /about
+          - link "Community" [ref=e13] [cursor=pointer]:
+            - /url: /community
+          - link "Contact Us" [ref=e14] [cursor=pointer]:
+            - /url: /contact
+          - link "Join as Doctor" [ref=e15] [cursor=pointer]:
+            - /url: /doctor/register
+    - generic [ref=e18]:
+      - img "Healthcare Professional" [ref=e20]
+      - generic [ref=e24]:
+        - generic [ref=e25]: Sri Lanka's Premier Digital Health Platform
+        - heading "Empowering Healing." [level=1] [ref=e29]
+        - paragraph [ref=e30]: Bridging western medical care and holistic traditional wisdom to provide a truly personalized care journey designed around your life.
+        - generic [ref=e31]:
+          - link "Get care now" [ref=e32] [cursor=pointer]:
+            - /url: /signup
+          - link "Learn more" [ref=e33] [cursor=pointer]:
+            - /url: /about
+            - text: Learn more
+            - generic [ref=e34]: →
+      - img [ref=e37]:
+        - generic [ref=e38]: health link • secure & trusted • 24/7 care •
+      - generic [ref=e43]:
+        - generic [ref=e44]: 10k+
+        - generic [ref=e45]: Clients trusted us with their health & wellness.
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e50]: Pioneering Connected Care
+        - heading "Integrating 24/7 on-demand medical care with personalized wellness to pioneer a new era of comprehensive health." [level=2] [ref=e51]
+      - generic [ref=e52]:
+        - paragraph [ref=e53]: Health Link coordinates certified home care, multifaith spiritual chaplaincy, and clinical psychology under a single, encrypted digital platform. By bridging Western science with traditional wisdom, we ensure that healing is compassionate, secure, and designed entirely around your life.
+        - link "Discover our vision" [ref=e54] [cursor=pointer]:
+          - /url: /about
+          - text: Discover our vision
+          - generic [ref=e55]: →
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]: Our Specialized Services
+        - heading "Healthcare & Wellness designed around your life." [level=2] [ref=e60]
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - button [ref=e63] [cursor=pointer]:
+            - generic [ref=e68]:
+              - paragraph [ref=e69]: Telemedicine
+              - paragraph [ref=e70]: Consult
+          - button [ref=e74] [cursor=pointer]:
+            - generic [ref=e79]:
+              - paragraph [ref=e80]: Home Care
+              - paragraph [ref=e81]: Care
+          - button [ref=e85] [cursor=pointer]:
+            - generic [ref=e90]:
+              - paragraph [ref=e91]: Spiritual Healing
+              - paragraph [ref=e92]: Spirit
+          - button [ref=e96] [cursor=pointer]:
+            - generic [ref=e101]:
+              - paragraph [ref=e102]: Serene Counseling
+              - paragraph [ref=e103]: Mind
+          - button [ref=e107] [cursor=pointer]:
+            - generic [ref=e112]:
+              - paragraph [ref=e113]: Integrated Healing
+              - paragraph [ref=e114]: Holistic
+          - button [ref=e118] [cursor=pointer]:
+            - generic [ref=e123]:
+              - paragraph [ref=e124]: Community
+              - paragraph [ref=e125]: Grow
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - img "Telemedicine" [ref=e131]
+            - generic [ref=e132]: Western Medicine
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - generic [ref=e136]:
+                - generic [ref=e137]: Western Medicine
+                - generic [ref=e138]: 24/7
+                - generic [ref=e139]: Tourist-friendly
+              - heading "24/7 On demand – Tele medical consulting service" [level=3] [ref=e140]
+              - paragraph [ref=e141]: Instant access to licensed doctors for consultations, referrals, and prescriptions wherever you are (home or hotel).
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - heading "Service Features" [level=4] [ref=e144]
+                - list [ref=e145]:
+                  - listitem [ref=e146]:
+                    - generic [ref=e147]: ✓
+                    - text: On-demand doctor consultations (video/online)
+                  - listitem [ref=e148]:
+                    - generic [ref=e149]: ✓
+                    - text: Referral service when needed
+                  - listitem [ref=e150]:
+                    - generic [ref=e151]: ✓
+                    - text: Prescription writing (where appropriate)
+              - generic [ref=e152]:
+                - link "Explore Details" [ref=e153] [cursor=pointer]:
+                  - /url: /services/telemedicine
+                - paragraph [ref=e154]: Licensed doctors • Secure portal • Encrypted by default
+    - generic [ref=e157]:
+      - generic [ref=e158]:
+        - generic [ref=e159]: Security & Trust
+        - heading "Clinical safety and digital privacy, built in." [level=2] [ref=e160]
+        - paragraph [ref=e161]: Your health information is extremely sensitive. We adhere to strictly enforced clinical compliance and data protection standards, ensuring your records remain encrypted and confidential at all times.
+        - generic [ref=e162]:
+          - generic [ref=e167]:
+            - heading "End-to-End Encryption" [level=4] [ref=e168]
+            - paragraph [ref=e169]: All information is encrypted in transit and at rest using banking-level standards, keeping your consultations private.
+          - generic [ref=e174]:
+            - heading "Strict Clinical Compliance" [level=4] [ref=e175]
+            - paragraph [ref=e176]: Data governance aligns with local and international health regulations, utilizing strict role-based access controls.
+        - link "Learn how we protect your data" [ref=e178] [cursor=pointer]:
+          - /url: /privacy
+          - text: Learn how we protect your data
+          - generic [ref=e179]: →
+      - generic [ref=e180]:
+        - img "Trust and Care" [ref=e181]
+        - img [ref=e184]:
+          - generic [ref=e185]: health link • secure data • 100% compliant •
+    - generic [ref=e191]:
+      - generic [ref=e192]:
+        - generic [ref=e193]: Support & FAQ
+        - heading "Frequently Asked Questions" [level=2] [ref=e194]
+        - paragraph [ref=e195]: Everything you need to know about our services, privacy controls, and clinical care.
+        - link "Contact our team" [ref=e196] [cursor=pointer]:
+          - /url: /contact
+      - generic [ref=e197]:
+        - generic [ref=e198]:
+          - button "Is Health Link an emergency medical service?" [ref=e199]
+          - paragraph [ref=e204]: No. Health Link is coordinated for non-emergency medical consultations, daily care support, and holistic wellness. In case of an active medical emergency, please contact 1990 (in Sri Lanka) or your local emergency response service immediately.
+        - generic [ref=e205]:
+          - button "How quickly can I connect with a doctor?" [ref=e206]
+          - paragraph [ref=e211]: For our on-demand telemedical consulting, we aim to connect you with a licensed western practitioner within 30 minutes of submitting your request via our encrypted portal.
+        - generic [ref=e212]:
+          - button "How do digital prescriptions and referrals work?" [ref=e213]
+          - paragraph [ref=e218]: If the consulting doctor determines a prescription is appropriate, a signed digital prescription will be issued. We can also coordinate referrals to specialized clinical facilities within our partner network.
+        - generic [ref=e219]:
+          - button "How is my personal health data secured?" [ref=e220]
+          - paragraph [ref=e225]: All personal information and clinical histories are fully encrypted at rest and in transit using banking-grade security protocols. Only you and your authorized clinical practitioners have access to your files.
+    - generic [ref=e228]:
+      - heading "Ready to take control of your health journey?" [level=2] [ref=e229]
+      - paragraph [ref=e230]: Join thousands of clients who have trusted Health Link for clinical telemedicine and holistic wellness care. Professional, compassionate, and secure support is just a click away.
+      - generic [ref=e231]:
+        - link "Get care now" [ref=e232] [cursor=pointer]:
+          - /url: /signup
+        - link "Apply to join our network" [ref=e233] [cursor=pointer]:
+          - /url: /careers
+          - text: Apply to join our network
+          - generic [ref=e234]: →
+    - generic [ref=e236]:
+      - generic [ref=e237]:
+        - generic [ref=e238]:
+          - link "Health Link" [ref=e239] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=e240]: Empowering healing by bridging expert medical care and holistic wellness directly to your life. Available round-the-clock.
+          - generic [ref=e241]: 🌍 Sinhala | Tamil | English
+        - generic [ref=e243]:
+          - heading "Company" [level=3] [ref=e244]
+          - link "About Us" [ref=e245] [cursor=pointer]:
+            - /url: /about
+          - link "Community" [ref=e246] [cursor=pointer]:
+            - /url: /community
+          - link "Contact Us" [ref=e247] [cursor=pointer]:
+            - /url: /contact
+          - link "Careers" [ref=e248] [cursor=pointer]:
+            - /url: /careers
+          - link "Join as Doctor" [ref=e249] [cursor=pointer]:
+            - /url: /doctor/register
+        - generic [ref=e250]:
+          - heading "Legal" [level=3] [ref=e251]
+          - link "Privacy Policy" [ref=e252] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Service" [ref=e253] [cursor=pointer]:
+            - /url: /terms
+      - paragraph [ref=e255]: © 2026 Health Link Pvt Ltd. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e261] [cursor=pointer]

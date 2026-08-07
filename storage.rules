@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if user is logged in
+    function isLoggedIn() {
+      return request.auth != null;
+    }
+    
+    // Helper to get user's role from Firestore
+    function getUserRole() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    match /inquiries/{inquiryId}/{fileName} {
+      
+      // Allow read access if user is:
+      // 1. Admin
+      // 2. The patient who submitted the inquiry (checks Firestore record)
+      // 3. The doctor assigned to the inquiry (checks Firestore record)
+      allow read: if isLoggedIn() 
+                    && (
+                      getUserRole() == 'admin'
+                      || firestore.get(/databases/(default)/documents/inquiries/{inquiryId}).data.patientId == request.auth.uid
+                      || firestore.get(/databases/(default)/documents/inquiries/{inquiryId}).data.doctorId == request.auth.uid
+                    );
+
+      // Allow upload (create) if user is logged in and file size is under 10MB
+      allow create: if isLoggedIn() 
+                    && request.resource.size < 10 * 1024 * 1024; // 10MB limit
+
+      // Only Admins can update or delete documents once uploaded
+      allow update, delete: if isLoggedIn() 
+                              && getUserRole() == 'admin';
+    }
+  }
+}

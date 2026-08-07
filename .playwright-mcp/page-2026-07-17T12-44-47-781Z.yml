@@ -1,0 +1,78 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]: 🚧 HealthLink Preview – Under Construction 🚧
+  - button "Open Next.js Dev Tools" [ref=f1e8] [cursor=pointer]
+  - alert [ref=f1e12]
+  - main [ref=f1e13]:
+    - navigation [ref=f1e14]:
+      - generic [ref=f1e15]:
+        - link "Health Link Logo Health Link" [ref=f1e16] [cursor=pointer]:
+          - /url: /
+          - img "Health Link Logo" [ref=f1e18]
+          - generic [ref=f1e19]: Health Link
+        - generic [ref=f1e20]:
+          - link "Home" [ref=f1e21] [cursor=pointer]:
+            - /url: /
+          - link "About Us" [ref=f1e22] [cursor=pointer]:
+            - /url: /about
+          - link "Community" [ref=f1e23] [cursor=pointer]:
+            - /url: /community
+          - link "Contact Us" [ref=f1e24] [cursor=pointer]:
+            - /url: /contact
+          - link "Join as Doctor" [ref=f1e25] [cursor=pointer]:
+            - /url: /doctor/register
+        - generic [ref=f1e26]:
+          - link "Sign in" [ref=f1e27] [cursor=pointer]:
+            - /url: /signin
+          - link "Register now" [ref=f1e28] [cursor=pointer]:
+            - /url: /signup
+    - generic [ref=f1e31]:
+      - generic [ref=f1e32]:
+        - button "← Back to Selection" [ref=f1e76] [cursor=pointer]
+        - generic [ref=f1e77]: Patient Account
+      - generic [ref=f1e37]:
+        - heading "Create Patient Account" [level=1] [ref=f1e78]
+        - paragraph [ref=f1e79]: Sign up as a Health Link patient
+      - generic [ref=f1e80]:
+        - generic [ref=f1e81]:
+          - text: Full Name
+          - textbox "John Doe" [ref=f1e82]
+        - generic [ref=f1e83]:
+          - text: Email Address
+          - textbox "john@example.com" [ref=f1e84]
+        - generic [ref=f1e85]:
+          - text: Password
+          - textbox "•••••••• (Min 6 characters)" [ref=f1e86]
+        - generic [ref=f1e87]:
+          - text: Confirm Password
+          - textbox "••••••••" [ref=f1e88]
+        - button "Sign Up" [ref=f1e89] [cursor=pointer]
+      - paragraph [ref=f1e91]:
+        - text: Already have an account?
+        - link "Sign In" [ref=f1e92] [cursor=pointer]:
+          - /url: /signin
+    - generic [ref=f1e56]:
+      - generic [ref=f1e57]:
+        - generic [ref=f1e58]:
+          - link "Health Link" [ref=f1e59] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=f1e60]: Empowering healing by bridging expert medical care and holistic wellness directly to your life. Available round-the-clock.
+          - generic [ref=f1e61]: 🌍 Sinhala | Tamil | English
+        - generic [ref=f1e63]:
+          - heading "Company" [level=3] [ref=f1e64]
+          - link "About Us" [ref=f1e65] [cursor=pointer]:
+            - /url: /about
+          - link "Community" [ref=f1e66] [cursor=pointer]:
+            - /url: /community
+          - link "Contact Us" [ref=f1e67] [cursor=pointer]:
+            - /url: /contact
+          - link "Careers" [ref=f1e68] [cursor=pointer]:
+            - /url: /careers
+          - link "Join as Doctor" [ref=f1e69] [cursor=pointer]:
+            - /url: /doctor/register
+        - generic [ref=f1e70]:
+          - heading "Legal" [level=3] [ref=f1e71]
+          - link "Privacy Policy" [ref=f1e72] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Service" [ref=f1e73] [cursor=pointer]:
+            - /url: /terms
+      - paragraph [ref=f1e75]: © 2026 Health Link Pvt Ltd. All rights reserved.

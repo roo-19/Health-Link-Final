@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #0f172a;
-  /* Premium Palette */
-  --primary: #0284c7;
-  --secondary: #38bdf8;
-  --accent: #f0f9ff;
+  --background: #faf8f5;
+  --foreground: #0a1329;
+  /* Logo Palette */
+  --primary: #002B9A;
+  --secondary: #00A86B;
+  --accent: #f0faf5;
 }
 
 @theme inline {
@@ -16,14 +16,18 @@
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
+  --font-serif: var(--font-outfit);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
-  @apply antialiased selection:bg-sky-200 selection:text-sky-900;
+  @apply antialiased selection:bg-[#002B9A]/10 selection:text-[#002B9A];
 }
 
 h1,
@@ -51,28 +55,53 @@ h6 {
 
   /* Text Gradients */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-600 via-indigo-500 to-sky-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary;
   }
   .text-gradient-dark {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-sky-900 to-slate-800;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-slate-950 to-primary;
   }
   .text-gradient-light {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-sky-100 to-slate-200;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-accent to-white;
   }
 
   /* Background Gradients */
   .bg-gradient-premium {
-    @apply bg-gradient-to-br from-slate-50 via-white to-sky-50/50;
+    @apply bg-gradient-to-br from-background via-white to-accent/50;
   }
   .bg-gradient-dark {
-    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950;
+    @apply bg-gradient-to-br from-primary via-slate-950 to-slate-900;
   }
 
   /* Fancy Glows */
   .glow-sky {
-    @apply absolute w-[500px] h-[500px] bg-sky-400/20 blur-[120px] rounded-full pointer-events-none;
+    @apply absolute w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none;
   }
   .glow-indigo {
-    @apply absolute w-[600px] h-[600px] bg-indigo-400/10 blur-[150px] rounded-full pointer-events-none;
+    @apply absolute w-[600px] h-[600px] bg-secondary/10 blur-[150px] rounded-full pointer-events-none;
   }
+
+  /* Spin Slow */
+  .animate-spin-slow {
+    animation: spin 25s linear infinite;
+  }
+  
+  /* Fluid Float & Pulse Animations */
+  .animate-float-slow {
+    animation: floatSlow 4s ease-in-out infinite;
+  }
+  .animate-shimmer-bg {
+    background-size: 200% 200%;
+    animation: shimmerBg 4s ease infinite;
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes shimmerBg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

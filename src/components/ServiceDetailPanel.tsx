@@ -44,7 +44,7 @@ export default function ServiceDetailPanel({ service }: ServiceDetailPanelProps)
                     <div className="flex items-start justify-between gap-4">
                         <div>
                             {service.subtitle && <p className="text-sm font-semibold text-sky-600 mb-1">{service.subtitle}</p>}
-                            <h3 className="text-2xl font-bold text-slate-900">{service.title}</h3>
+                            <h3 className="text-2xl font-bold text-primary">{service.title}</h3>
                         </div>
                         <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-sky-50 text-sky-600 ring-1 ring-sky-100">
                             {service.icon}
@@ -113,7 +113,7 @@ export default function ServiceDetailPanel({ service }: ServiceDetailPanelProps)
                         href={service.ctaLink}
                         target={service.ctaLink.startsWith('http') ? "_blank" : undefined}
                         rel={service.ctaLink.startsWith('http') ? "noopener noreferrer" : undefined}
-                        className="w-full sm:w-auto rounded-full px-6 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-colors bg-sky-600 hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+                        className="w-full sm:w-auto rounded-full px-6 py-2.5 text-center text-sm font-bold text-white shadow-md shadow-secondary/10 hover:shadow-lg hover:shadow-secondary/25 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-all duration-300 bg-secondary hover:bg-secondary/90"
                     >
                         {service.cta}
                     </Link>

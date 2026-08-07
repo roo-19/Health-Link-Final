@@ -42,10 +42,12 @@ export default function ServiceFeatures({ service }: ServiceFeaturesProps) {
                                 </svg>
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-sky-700 transition-colors">{feature.title}</h3>
-                                <div className="text-base text-slate-600 leading-relaxed">
-                                    {feature.description}
-                                </div>
+                                <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors">{feature.title}</h3>
+                                {feature.description && (
+                                    <div className="text-lg text-slate-600 leading-relaxed">
+                                        {feature.description}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}

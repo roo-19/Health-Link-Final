@@ -128,7 +128,7 @@ export default function ServicesOverview() {
                                     </div>
                                 </div>
 
-                                <h3 className="text-2xl font-bold text-slate-900 leading-tight group-hover:text-sky-700 transition-colors">{service.title}</h3>
+                                <h3 className="text-2xl font-bold text-primary leading-tight group-hover:text-secondary transition-colors">{service.title}</h3>
                                 {service.tagline && <p className="mt-2 text-sm italic text-slate-500">{service.tagline}</p>}
 
                                 <p className="mt-4 text-base text-slate-600 flex-1 leading-relaxed">{service.description}</p>
@@ -154,7 +154,7 @@ export default function ServicesOverview() {
                                         href={service.ctaLink}
                                         target={service.ctaLink.startsWith('http') ? "_blank" : undefined}
                                         rel={service.ctaLink.startsWith('http') ? "noopener noreferrer" : undefined}
-                                        className="block w-full rounded-full bg-slate-900 px-3.5 py-3 text-center text-sm font-semibold text-white shadow-md hover:bg-sky-600 hover:shadow-sky-500/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 transition-all duration-300 transform group-hover:-translate-y-0.5"
+                                        className="block w-full rounded-full bg-secondary px-3.5 py-3 text-center text-sm font-bold text-white shadow-md shadow-secondary/15 hover:bg-secondary/90 hover:shadow-lg hover:shadow-secondary/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary transition-all duration-300 transform group-hover:-translate-y-0.5"
                                     >
                                         {service.cta}
                                     </Link>
