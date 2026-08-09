@@ -132,6 +132,7 @@ export default function Hero() {
                                     src={slide.image}
                                     alt={slide.title}
                                     fill
+                                    unoptimized
                                     priority={index === 0}
                                     className="object-cover object-center transition-transform duration-[2500ms] ease-out hover:scale-105"
                                     sizes="(max-width: 1024px) 100vw, 65vw"
@@ -160,13 +161,13 @@ export default function Hero() {
                     <path d="M0,0 Q90,35 45,65 T0,100 L0,0 Z" fill="currentColor" opacity="0.4" />
                 </svg>
 
-                {/* ── BORDERLESS CONTROL BAR BLENDING SEAMLESSLY WITH BG ── */}
-                <div className="absolute bottom-6 right-6 lg:right-10 z-30 flex flex-col gap-2 items-end">
-                    {/* Clean Monochrome Progress Line (No heavy container, blending with background) */}
-                    <div className="w-full max-w-[210px] h-[2px] bg-slate-300/40 rounded-full overflow-hidden">
+                {/* ── CENTERED & LIGHT-COLORED 3PX PROGRESS BAR CONTROLS ── */}
+                <div className="absolute bottom-6 right-6 lg:right-10 z-30 flex flex-col gap-2.5 items-center">
+                    {/* Centered, slightly thicker 3px progress line in light neutral tone */}
+                    <div className="w-full max-w-[280px] h-[3px] bg-slate-300/40 rounded-full overflow-hidden mx-auto">
                         <div
                             key={currentIndex}
-                            className={`h-full bg-slate-600/70 rounded-full ${
+                            className={`h-full bg-slate-400/90 rounded-full ${
                                 isPaused ? "" : "animate-progress-countdown"
                             }`}
                         />
@@ -190,6 +191,7 @@ export default function Hero() {
                                         src={slide.image} 
                                         alt={slide.title} 
                                         fill 
+                                        unoptimized
                                         className="object-cover"
                                     />
                                 </button>
