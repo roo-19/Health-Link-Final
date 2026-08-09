@@ -41,7 +41,6 @@ const SLIDE_DURATION = 4000; // 4 seconds per photo
 
 export default function Hero() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isPaused, setIsPaused] = useState(false);
     const [scrollY, setScrollY] = useState(0);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -63,41 +62,46 @@ export default function Hero() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Auto-advance carousel every 4 seconds unless hovered
+    // Auto-advance carousel continuously every 4 seconds
     useEffect(() => {
-        if (!isPaused) {
-            timerRef.current = setInterval(() => {
-                handleNext();
-            }, SLIDE_DURATION);
-        }
+        timerRef.current = setInterval(() => {
+            handleNext();
+        }, SLIDE_DURATION);
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [isPaused, handleNext]);
+    }, [handleNext]);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const rect = e.currentTarget.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const x = (e.clientX - rect.left) / rect.width - -2;
+        const y = (e.clientY - rect.top) / rect.height - 6;
         setMousePos({ x, y });
     };
 
     return (
         <section
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
             className="relative min-h-[85vh] sm:min-h-[90vh] lg:min-h-screen w-full overflow-hidden flex items-center z-10 pt-28 sm:pt-32 pb-20 lg:py-0 bg-[#FAF8F5]"
         >
-            {/* Global Keyframes for 4s Countdown Progress Animation */}
+            {/* Global Keyframes & Slide Transition Styles */}
             <style>{`
                 @keyframes countdownFill {
-                    0% { width: 100%; }
-                    100% { width: 0%; }
-                }
-                .animate-progress-countdown {
-                    animation: countdownFill 4000ms linear forwards;
-                }
+    0% { width: 100%; }
+    100% { width: 0%; }
+}
+
+.animate-progress-countdown {
+    animation: countdownFill 4000ms linear forwards;
+}
+
+.hero-slide-transition {
+    transition:
+        opacity 1800ms ease-in-out,
+        transform 1800ms ease-in-out;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
             `}</style>
 
             {/* Subtle Grid Pattern Overlay */}
@@ -112,7 +116,7 @@ export default function Hero() {
             {/* ── RIGHT SIDE FULL IMAGE CONTAINER (Responsive: 100% on mobile, 65% on Desktop) ── */}
             <div className="absolute inset-y-0 right-0 w-full lg:w-[65%] h-full z-0 overflow-hidden">
                 <div 
-                    className="relative w-full h-[115%] -top-[7%] transition-transform duration-300 ease-out"
+                    className="relative w-full h-[115%] -top-[7%] transition-transform duration-700 ease-out"
                     style={{
                         transform: `translate3d(${mousePos.x * 18}px, ${scrollY * 0.16 + mousePos.y * 18}px, 0) scale(${1.02 + Math.min(scrollY * 0.0003, 0.06)})`
                     }}
@@ -122,10 +126,10 @@ export default function Hero() {
                         return (
                             <div
                                 key={slide.id}
-                                className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                                className={`absolute inset-0 hero-slide-transition ${
                                     isActive
-                                        ? "opacity-100 scale-100 z-10"
-                                        : "opacity-0 scale-105 z-0"
+                                        ? "opacity-100 scale-[1.01] z-10"
+    : "opacity-0 scale-[1.02] z-0 pointer-events-none"
                                 }`}
                             >
                                 <Image
@@ -134,7 +138,7 @@ export default function Hero() {
                                     fill
                                     unoptimized
                                     priority={index === 0}
-                                    className="object-cover object-center sm:object-center transition-transform duration-[2500ms] ease-out hover:scale-105"
+                                    className="object-cover object-center sm:object-center transition-transform duration-[1000ms] ease-out hover:scale-105"
                                     sizes="(max-width: 1024px) 100vw, 65vw"
                                 />
                             </div>
@@ -167,9 +171,7 @@ export default function Hero() {
                     <div className="w-full sm:w-[260px] max-w-[280px] h-[3px] bg-slate-300/40 rounded-full overflow-hidden mx-auto">
                         <div
                             key={currentIndex}
-                            className={`h-full bg-slate-400/90 rounded-full ${
-                                isPaused ? "" : "animate-progress-countdown"
-                            }`}
+                            className="h-full bg-slate-400/90 rounded-full animate-progress-countdown"
                         />
                     </div>
 
