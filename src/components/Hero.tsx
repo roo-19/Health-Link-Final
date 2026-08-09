@@ -101,7 +101,7 @@ export default function Hero() {
             `}</style>
 
             {/* Subtle Grid Pattern Overlay */}
-            <div 
+            <div
                 className="absolute inset-0 opacity-[0.03] pointer-events-none z-10"
                 style={{
                     backgroundImage: `radial-gradient(#002B9A 1px, transparent 1px)`,
@@ -111,7 +111,7 @@ export default function Hero() {
 
             {/* ── RIGHT SIDE FULL IMAGE CONTAINER (65% Width with Parallax Scroll & 4s Auto Carousel) ── */}
             <div className="absolute inset-y-0 right-0 w-full lg:w-[65%] h-full z-0 overflow-hidden">
-                <div 
+                <div
                     className="relative w-full h-[115%] -top-[7%] transition-transform duration-300 ease-out"
                     style={{
                         transform: `translate3d(${mousePos.x * 18}px, ${scrollY * 0.16 + mousePos.y * 18}px, 0) scale(${1.02 + Math.min(scrollY * 0.0003, 0.06)})`
@@ -122,11 +122,10 @@ export default function Hero() {
                         return (
                             <div
                                 key={slide.id}
-                                className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                                    isActive
-                                        ? "opacity-100 scale-100 z-10"
-                                        : "opacity-0 scale-105 z-0"
-                                }`}
+                                className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isActive
+                                    ? "opacity-100 scale-100 z-10"
+                                    : "opacity-0 scale-105 z-0"
+                                    }`}
                             >
                                 <Image
                                     src={slide.image}
@@ -151,9 +150,9 @@ export default function Hero() {
                 <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#FAF8F5] via-[#FAF8F5]/60 to-transparent z-20 pointer-events-none" />
 
                 {/* 3. Organic Fluid Curved Mask */}
-                <svg 
+                <svg
                     className="absolute inset-y-0 -left-1 h-full w-56 text-[#FAF8F5] z-25 pointer-events-none hidden lg:block"
-                    viewBox="0 0 100 100" 
+                    viewBox="0 0 100 100"
                     preserveAspectRatio="none"
                     aria-hidden="true"
                 >
@@ -167,9 +166,8 @@ export default function Hero() {
                     <div className="w-full max-w-[280px] h-[3px] bg-slate-300/40 rounded-full overflow-hidden mx-auto">
                         <div
                             key={currentIndex}
-                            className={`h-full bg-slate-400/90 rounded-full ${
-                                isPaused ? "" : "animate-progress-countdown"
-                            }`}
+                            className={`h-full bg-slate-400/90 rounded-full ${isPaused ? "" : "animate-progress-countdown"
+                                }`}
                         />
                     </div>
 
@@ -180,17 +178,16 @@ export default function Hero() {
                                 <button
                                     key={slide.id}
                                     onClick={() => setCurrentIndex(idx)}
-                                    className={`relative w-6 h-8 rounded-md overflow-hidden transition-all duration-300 cursor-pointer ${
-                                        idx === currentIndex
-                                            ? "opacity-100 scale-105 shadow-sm"
-                                            : "opacity-35 hover:opacity-85"
-                                    }`}
+                                    className={`relative w-6 h-8 rounded-md overflow-hidden transition-all duration-300 cursor-pointer ${idx === currentIndex
+                                        ? "opacity-100 scale-105 shadow-sm"
+                                        : "opacity-35 hover:opacity-85"
+                                        }`}
                                     aria-label={`Go to slide ${idx + 1}`}
                                 >
-                                    <Image 
-                                        src={slide.image} 
-                                        alt={slide.title} 
-                                        fill 
+                                    <Image
+                                        src={slide.image}
+                                        alt={slide.title}
+                                        fill
                                         unoptimized
                                         className="object-cover"
                                     />
@@ -225,7 +222,7 @@ export default function Hero() {
             </div>
 
             {/* ── LEFT COLUMN: HERO TEXT ── */}
-            <div 
+            <div
                 className="relative z-30 mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-12 transition-transform duration-300 ease-out"
                 style={{
                     transform: `translate3d(0, ${scrollY * -0.06}px, 0)`
@@ -235,11 +232,7 @@ export default function Hero() {
 
                     <div className="lg:col-span-5 flex flex-col justify-center">
 
-                        {/* Top Category Badge */}
-                        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#F4EFE2] border border-[#E2D4B5] text-[#8C6B1B] text-xs font-bold tracking-widest uppercase mb-6 w-fit shadow-xs">
-                            <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
-                            <span>Our Specialized Services • Sri Lanka</span>
-                        </div>
+
 
                         {/* Exact Main Headline */}
                         <h1 className="text-5xl sm:text-7xl lg:text-[5.75rem] font-black text-[#0A1329] leading-[1.02] tracking-tight mb-6">
