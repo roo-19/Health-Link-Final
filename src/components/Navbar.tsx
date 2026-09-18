@@ -84,7 +84,7 @@ export default function Navbar() {
                 <div className="mx-auto flex h-15 sm:h-18 items-center justify-between px-4 sm:px-7">
                     {/* Logo Section */}
                     <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-                        <div className="relative h-9 w-9 sm:h-11 sm:w-11 overflow-hidden rounded-xl bg-accent/60 border border-secondary/20 p-1 transition-transform duration-300 group-hover:scale-105 shadow-xs">
+                        <div className="relative h-9 w-9 sm:h-11 sm:w-11 transition-transform duration-300 group-hover:scale-105">
                             <Image
                                 src="/logo111.png"
                                 alt="Health Link Logo"
