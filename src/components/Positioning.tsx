@@ -14,7 +14,7 @@ export default function Positioning() {
                             Pioneering Holistic Care
                         </span>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary leading-snug tracking-tight">
-                            Integrating <span className="underline decoration-secondary decoration-4 underline-offset-4">24/7 on-demand medical care</span> with <span className="text-secondary font-black">personalized wellness</span> to pioneer a new era of comprehensive health.
+                            Integrating 24/7 on-demand medical care with <span className="text-secondary font-black">personalized wellness</span> to pioneer a new era of comprehensive health.
                         </h2>
                     </div>
 
