@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { servicesData } from "@/components/servicesData";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function ServicesCircleNav() {
     const [activeIdx, setActiveIdx] = useState<number>(0);
@@ -22,17 +23,19 @@ export default function ServicesCircleNav() {
             <div className="w-full max-w-[1700px] mx-auto px-6 xl:px-12 2xl:px-16 relative z-10">
 
                 {/* Header Section */}
-                <div className="max-w-4xl mb-8">
+                <ScrollReveal className="max-w-4xl mb-8" delay={100}>
                     <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-2">
                         Our Specialized Services
                     </span>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary leading-tight">
                         Healthcare &amp; Wellness designed around your life.
                     </h2>
-                </div>
+                </ScrollReveal>
 
                 {/* ── Interactive Split Dashboard — 3-column grid ── */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white rounded-[2.5rem] p-6 sm:p-10 shadow-2xl shadow-slate-200/50 border border-slate-200/30">
+                <ScrollReveal delay={200}>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-white rounded-[2.5rem] p-6 sm:p-10 shadow-2xl shadow-slate-200/50 border border-slate-200/30 hover:shadow-2xl transition-all duration-300">
+
 
                     {/* ── Left Navigation Panel — 3 cols (≈25%) ── */}
                     <div className="lg:col-span-3 flex flex-col gap-3 pr-0 lg:pr-6 lg:border-r border-slate-100 justify-center">
@@ -172,10 +175,10 @@ export default function ServicesCircleNav() {
                         </div>
 
                     </div>
-
                 </div>
+            </ScrollReveal>
 
-            </div>
-        </section>
-    );
+        </div>
+    </section>
+);
 }

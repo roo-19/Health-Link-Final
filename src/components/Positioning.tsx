@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Positioning() {
     return (
@@ -9,17 +10,17 @@ export default function Positioning() {
             <div className="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                     {/* Left Column (typography focus) */}
-                    <div className="lg:col-span-7">
+                    <ScrollReveal className="lg:col-span-7" direction="up" delay={100}>
                         <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-3">
                             Pioneering Holistic Care
                         </span>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary leading-snug tracking-tight">
-                            Integrating <span className="underline decoration-secondary decoration-4 underline-offset-4">24/7 on-demand medical care</span> with <span className="text-secondary font-black">personalized wellness</span> to pioneer a new era of comprehensive health.
+                            Integrating 24/7 on-demand medical care with <span className="text-secondary font-black">personalized wellness</span> to pioneer a new era of comprehensive health.
                         </h2>
-                    </div>
+                    </ScrollReveal>
 
                     {/* Right Column (descriptive focus) */}
-                    <div className="lg:col-span-5 lg:pt-4">
+                    <ScrollReveal className="lg:col-span-5 lg:pt-4" direction="up" delay={200}>
                         <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal mb-6">
                             Health Link creates a unique platform that integrates Western medicine with natural and alternative holistic modalities to form a personalized circle of care, helping each individual achieve a superior level of well‑being.
                         </p>
@@ -32,9 +33,10 @@ export default function Positioning() {
                                 →
                             </span>
                         </Link>
-                    </div>
+                    </ScrollReveal>
                 </div>
             </div>
         </section>
     );
 }
+

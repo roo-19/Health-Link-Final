@@ -93,6 +93,22 @@ h6 {
     background-size: 200% 200%;
     animation: shimmerBg 4s ease infinite;
   }
+  /* Page Load Fade-In & Scroll Reveal Utilities */
+  .animate-page-fade-in {
+    animation: pageFadeIn 0.5s ease-out forwards;
+    will-change: opacity, transform;
+  }
+}
+
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes floatSlow {
@@ -104,4 +120,4 @@ h6 {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
+}
