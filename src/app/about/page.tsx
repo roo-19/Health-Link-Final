@@ -58,11 +58,6 @@ export default function AboutPage() {
             
             {/* Left Column: Mission Statement & Philosophy */}
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 text-xs font-extrabold text-emerald-800 mb-6 shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>WHO WE ARE &amp; OUR MISSION</span>
-              </div>
-
               <h1 className="text-4xl sm:text-5xl lg:text-[4.25rem] font-extrabold text-primary leading-[1.08] tracking-tight mb-6">
                 Bridging Science <br />
                 <span className="font-serif italic font-normal text-secondary">&amp; Empathy</span> to Transform <br />
@@ -139,12 +134,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Story / Mission Section */}
+      {/* Our Story Section */}
       <section className="py-20 sm:py-24 bg-white relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            {/* Story Image Area - Beautiful Presentation of Logo & Badge */}
+            {/* Story Image Area - Presentation of Logo & Badge */}
             <div className="relative order-2 lg:order-1">
               <div className="absolute -inset-4 bg-gradient-to-tr from-accent to-secondary/10 rounded-[40px] transform -rotate-2 border border-secondary/20 shadow-inner"></div>
               <div className="absolute -inset-2 bg-slate-50 rounded-[35px] transform rotate-1 backdrop-blur-sm border border-slate-200/60"></div>
@@ -198,6 +193,71 @@ export default function AboutPage() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* Vision & Mission Interactive Showcase Section */}
+      <section className="py-16 sm:py-20 bg-slate-900 text-white relative overflow-hidden my-12 rounded-[2.5rem] sm:rounded-[3.5rem] mx-4 sm:mx-8 lg:mx-auto max-w-7xl shadow-2xl">
+        {/* Background ambient light effects */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 px-6 sm:px-12 lg:px-16">
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Our Purpose &amp; Driving Force
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+              Guided by Purpose, Driven by Care
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {/* Vision Card */}
+            <div className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/10 hover:border-emerald-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1 flex flex-col justify-between">
+              <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-emerald-500 to-teal-400 text-[11px] font-black text-slate-950 uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
+                The Horizon
+              </div>
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xs font-extrabold uppercase tracking-widest text-emerald-400 mb-3">Our Vision</h3>
+                <p className="text-2xl sm:text-3xl font-extrabold text-white leading-snug tracking-tight">
+                  &ldquo;A world where <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">holistic well-being</span> is accessible to everyone.&rdquo;
+                </p>
+              </div>
+              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-slate-400">
+                <span>Universal Healthcare Access</span>
+                
+              </div>
+            </div>
+
+            {/* Mission Card */}
+            <div className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/10 hover:border-sky-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-sky-500/10 hover:-translate-y-1 flex flex-col justify-between">
+              <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-sky-400 to-blue-500 text-[11px] font-black text-slate-950 uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
+                Our Action
+              </div>
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xs font-extrabold uppercase tracking-widest text-sky-400 mb-3">Our Mission</h3>
+                <p className="text-xl sm:text-2xl font-bold text-slate-100 leading-relaxed">
+                  &ldquo;To guide and support people on their journey toward healthier, more balanced lives through trusted holistic wellness solutions.&rdquo;
+                </p>
+              </div>
+              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-slate-400">
+                <span>Empowering Person-Centered Care</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
