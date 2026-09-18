@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function FAQ() {
     const [openIdx, setOpenIdx] = useState<number | null>(null);
@@ -34,7 +35,7 @@ export default function FAQ() {
             <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                     {/* Left Column: Heading */}
-                    <div className="lg:col-span-4 lg:sticky lg:top-32">
+                    <ScrollReveal className="lg:col-span-4 lg:sticky lg:top-32" delay={100}>
                         <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-3">
                             Support & FAQ
                         </span>
@@ -50,45 +51,47 @@ export default function FAQ() {
                         >
                             Contact our team
                         </Link>
-                    </div>
+                    </ScrollReveal>
 
                     {/* Right Column: Accordion */}
                     <div className="lg:col-span-8 divide-y divide-slate-200/80 border-t border-b border-slate-200/80">
                         {faqs.map((faq, idx) => {
                             const isOpen = openIdx === idx;
                             return (
-                                <div key={idx} className="py-4 sm:py-5">
-                                    <button
-                                        onClick={() => toggle(idx)}
-                                        className="w-full flex items-center justify-between text-left group focus:outline-none"
-                                    >
-                                        <span className="text-lg sm:text-xl font-bold text-primary transition-colors group-hover:text-secondary pr-4">
-                                            {faq.question}
-                                        </span>
-                                        <span className="flex-shrink-0 ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-accent text-secondary border border-secondary/10 group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
-                                            {isOpen ? (
-                                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
-                                                </svg>
-                                            ) : (
-                                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12M6 12h12" />
-                                                </svg>
-                                            )}
-                                        </span>
-                                    </button>
+                                <ScrollReveal key={idx} delay={(idx + 1) * 100}>
+                                    <div className="py-4 sm:py-5">
+                                        <button
+                                            onClick={() => toggle(idx)}
+                                            className="w-full flex items-center justify-between text-left group focus:outline-none"
+                                        >
+                                            <span className="text-lg sm:text-xl font-bold text-primary transition-colors group-hover:text-secondary pr-4">
+                                                {faq.question}
+                                            </span>
+                                            <span className="flex-shrink-0 ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-accent text-secondary border border-secondary/10 group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
+                                                {isOpen ? (
+                                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12M6 12h12" />
+                                                    </svg>
+                                                )}
+                                            </span>
+                                        </button>
 
-                                    {/* Collapsible Answer */}
-                                    <div
-                                        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                                            isOpen ? "max-h-[300px] opacity-100 mt-4" : "max-h-0 opacity-0"
-                                        }`}
-                                    >
-                                        <p className="text-slate-600 leading-relaxed font-light pr-8">
-                                            {faq.answer}
-                                        </p>
+                                        {/* Collapsible Answer */}
+                                        <div
+                                            className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                                                isOpen ? "max-h-[300px] opacity-100 mt-4" : "max-h-0 opacity-0"
+                                            }`}
+                                        >
+                                            <p className="text-slate-600 leading-relaxed font-light pr-8">
+                                                {faq.answer}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </ScrollReveal>
                             );
                         })}
                     </div>
@@ -97,3 +100,4 @@ export default function FAQ() {
         </section>
     );
 }
+

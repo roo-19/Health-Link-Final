@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const pillars = [
   {
@@ -90,7 +91,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
             {/* Left Column: Mission Statement & Philosophy */}
-            <div className="lg:col-span-7">
+            <ScrollReveal className="lg:col-span-7" direction="up" delay={100}>
               <h1 className="text-4xl sm:text-5xl lg:text-[4.25rem] font-extrabold text-primary leading-[1.08] tracking-tight mb-6">
                 Bridging Science <br />
                 <span className="font-serif italic font-normal text-secondary">&amp; Empathy</span> to Transform <br />
@@ -103,18 +104,18 @@ export default function AboutPage() {
 
               {/* Key Highlights Quick Badges */}
               <div className="grid grid-cols-3 gap-3 mb-8 max-w-lg">
-                <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+                <ScrollReveal delay={150} className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                   <span className="block text-lg sm:text-xl font-extrabold text-primary">50+</span>
                   <span className="text-[11px] font-bold text-slate-600">SLMC Doctors</span>
-                </div>
-                <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+                </ScrollReveal>
+                <ScrollReveal delay={250} className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                   <span className="block text-lg sm:text-xl font-extrabold text-secondary">24/7</span>
                   <span className="text-[11px] font-bold text-slate-600">Live Care Access</span>
-                </div>
-                <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs text-center">
+                </ScrollReveal>
+                <ScrollReveal delay={350} className="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-xs text-center hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                   <span className="block text-lg sm:text-xl font-extrabold text-sky-700">100%</span>
                   <span className="text-[11px] font-bold text-slate-600">Confidential</span>
-                </div>
+                </ScrollReveal>
               </div>
 
               <div className="flex flex-wrap items-center gap-4">
@@ -132,10 +133,10 @@ export default function AboutPage() {
                   Contact Clinical Team
                 </Link>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Right Column: Framed Team Showcase */}
-            <div className="lg:col-span-5 relative">
+            <ScrollReveal className="lg:col-span-5 relative" direction="left" delay={200}>
               <div className="relative rounded-[2.5rem] overflow-hidden border border-slate-200/80 bg-white p-3 shadow-2xl shadow-slate-900/10 group">
                 <div className="relative h-[420px] sm:h-[480px] w-full rounded-[2rem] overflow-hidden">
                   <Image
@@ -163,7 +164,7 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -173,7 +174,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Story Image Area */}
-            <div className="relative order-2 lg:order-1">
+            <ScrollReveal className="relative order-2 lg:order-1" direction="right" delay={150}>
               <div className="absolute -inset-4 bg-gradient-to-tr from-accent to-secondary/10 rounded-[40px] transform -rotate-2 border border-secondary/20 shadow-inner"></div>
               <div className="absolute -inset-2 bg-slate-50 rounded-[35px] transform rotate-1 backdrop-blur-sm border border-slate-200/60"></div>
               
@@ -195,10 +196,10 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Story Text Content */}
-            <div className="order-1 lg:order-2">
+            <ScrollReveal className="order-1 lg:order-2" direction="left" delay={200}>
               <span className="text-xs font-extrabold uppercase tracking-widest text-secondary block mb-2">Our Foundation</span>
               <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight text-primary leading-tight mb-6">
                 Connecting you to care that feels <span className="font-serif italic font-normal text-secondary">like home.</span>
@@ -215,16 +216,16 @@ export default function AboutPage() {
 
               {/* Stats Overview Cards */}
               <div className="mt-10 grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-accent/50 to-white rounded-2xl p-6 border border-secondary/20 shadow-sm group hover:scale-105 transition-all">
+                <ScrollReveal delay={100} className="bg-gradient-to-br from-accent/50 to-white rounded-2xl p-6 border border-secondary/20 shadow-sm group hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-out">
                   <div className="text-3xl sm:text-4xl font-extrabold text-secondary tracking-tight">10k+</div>
                   <div className="mt-2 text-xs font-bold text-slate-700">Satisfied Clients Served</div>
-                </div>
-                <div className="bg-gradient-to-br from-sky-50 to-white rounded-2xl p-6 border border-sky-200 shadow-sm group hover:scale-105 transition-all">
+                </ScrollReveal>
+                <ScrollReveal delay={200} className="bg-gradient-to-br from-sky-50 to-white rounded-2xl p-6 border border-sky-200 shadow-sm group hover:-translate-y-2 hover:shadow-xl transition-all duration-300 ease-out">
                   <div className="text-3xl sm:text-4xl font-extrabold text-sky-700 tracking-tight">99%</div>
                   <div className="mt-2 text-xs font-bold text-slate-700">Clinical Satisfaction Rate</div>
-                </div>
+                </ScrollReveal>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -235,7 +236,7 @@ export default function AboutPage() {
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 px-6 sm:px-12 lg:px-16">
-          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <ScrollReveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               Our Purpose &amp; Driving Force
@@ -243,51 +244,55 @@ export default function AboutPage() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
               Guided by Purpose, Driven by Care
             </h2>
-          </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {/* Vision Card */}
-            <div className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/10 hover:border-emerald-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1 flex flex-col justify-between">
-              <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-emerald-500 to-teal-400 text-[11px] font-black text-slate-950 uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
-                The Horizon
-              </div>
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
+            <ScrollReveal delay={100} className="h-full">
+              <div className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/10 hover:border-emerald-500/40 transition-all duration-300 ease-out hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-2 flex flex-col justify-between h-full">
+                <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-emerald-500 to-teal-400 text-[11px] font-black text-slate-950 uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
+                  The Horizon
                 </div>
-                <h3 className="text-xs font-extrabold uppercase tracking-widest text-emerald-400 mb-3">Our Vision</h3>
-                <p className="text-2xl sm:text-3xl font-extrabold text-white leading-snug tracking-tight">
-                  &ldquo;A world where <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">holistic well-being</span> is accessible to everyone.&rdquo;
-                </p>
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xs font-extrabold uppercase tracking-widest text-emerald-400 mb-3">Our Vision</h3>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-white leading-snug tracking-tight">
+                    &ldquo;A world where <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">holistic well-being</span> is accessible to everyone.&rdquo;
+                  </p>
+                </div>
+                <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-slate-400">
+                  <span>Universal Healthcare Access</span>
+                </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-slate-400">
-                <span>Universal Healthcare Access</span>
-              </div>
-            </div>
+            </ScrollReveal>
 
             {/* Mission Card */}
-            <div className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/10 hover:border-sky-500/40 transition-all duration-500 hover:shadow-2xl hover:shadow-sky-500/10 hover:-translate-y-1 flex flex-col justify-between">
-              <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-sky-400 to-blue-500 text-[11px] font-black text-slate-950 uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
-                Our Action
-              </div>
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+            <ScrollReveal delay={200} className="h-full">
+              <div className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/10 hover:border-sky-500/40 transition-all duration-300 ease-out hover:shadow-2xl hover:shadow-sky-500/10 hover:-translate-y-2 flex flex-col justify-between h-full">
+                <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-sky-400 to-blue-500 text-[11px] font-black text-slate-950 uppercase tracking-widest px-4 py-1 rounded-full shadow-lg">
+                  Our Action
                 </div>
-                <h3 className="text-xs font-extrabold uppercase tracking-widest text-sky-400 mb-3">Our Mission</h3>
-                <p className="text-xl sm:text-2xl font-bold text-slate-100 leading-relaxed">
-                  &ldquo;To guide and support people on their journey toward healthier, more balanced lives through trusted holistic wellness solutions.&rdquo;
-                </p>
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-sky-500/20 border border-sky-500/30 text-sky-400 flex items-center justify-center mb-6 shadow-inner group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xs font-extrabold uppercase tracking-widest text-sky-400 mb-3">Our Mission</h3>
+                  <p className="text-xl sm:text-2xl font-bold text-slate-100 leading-relaxed">
+                    &ldquo;To guide and support people on their journey toward healthier, more balanced lives through trusted holistic wellness solutions.&rdquo;
+                  </p>
+                </div>
+                <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-slate-400">
+                  <span>Empowering Person-Centered Care</span>
+                </div>
               </div>
-              <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs font-semibold text-slate-400">
-                <span>Empowering Person-Centered Care</span>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -295,7 +300,7 @@ export default function AboutPage() {
       {/* Core Pillars Section (Centering the bottom 2 pillars) */}
       <section className="py-20 sm:py-24 bg-[#fefcf8] relative border-t border-slate-200/80">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-          <div className="mx-auto max-w-2xl text-center mb-16">
+          <ScrollReveal className="mx-auto max-w-2xl text-center mb-16">
             <span className="text-xs font-extrabold uppercase tracking-widest text-secondary block mb-2">Our Core Pillars</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-primary tracking-tight mb-4">
               What Drives Our Mission
@@ -303,15 +308,16 @@ export default function AboutPage() {
             <p className="text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
               We stand by five fundamental pillars that ensure every interaction enriches your journey towards complete well-being.
             </p>
-          </div>
+          </ScrollReveal>
 
           <div className="flex flex-wrap justify-center -m-4">
             {pillars.map((pillar, idx) => (
-              <div 
+              <ScrollReveal 
                 key={idx} 
+                delay={(idx + 1) * 100}
                 className="p-4 w-full md:w-1/2 lg:w-1/3 flex"
               >
-                <div className="w-full group relative bg-white rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-200/80 flex flex-col justify-between">
+                <div className="w-full group relative bg-white rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 border border-slate-200/80 flex flex-col justify-between">
                   <div>
                     {/* Image Frame */}
                     <div className="relative mb-6 h-48 w-full overflow-hidden rounded-2xl bg-slate-100 border border-slate-200/60">
@@ -334,7 +340,7 @@ export default function AboutPage() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -347,4 +353,4 @@ export default function AboutPage() {
       <Footer />
     </main>
   );
-}
+}
