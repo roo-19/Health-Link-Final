@@ -77,7 +77,7 @@ export default function Navbar() {
             />
 
             <header
-                className={`fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[94%] max-w-7xl overflow-hidden rounded-[26px] sm:rounded-full bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-lg shadow-slate-900/5 transition-all duration-300 ease-out ${
+                className={`fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[94%] max-w-7xl overflow-hidden rounded-[26px] sm:rounded-full bg-[#FAF8F5]/92 backdrop-blur-xl border border-[#002B9A]/12 shadow-lg shadow-slate-900/5 transition-all duration-300 ease-out ${
                     isVisible ? "translate-y-0 opacity-100" : "-translate-y-28 opacity-0 pointer-events-none"
                 }`}
             >
@@ -160,7 +160,7 @@ export default function Navbar() {
                             <div className="flex items-center gap-1.5 sm:gap-2">
                                 <Link
                                     href="/signin"
-                                    className="hidden sm:inline-flex px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-primary transition-colors"
+                                    className="hidden sm:inline-flex px-4 py-2 sm:px-4.5 sm:py-2 rounded-full text-xs font-bold text-primary hover:text-white hover:bg-primary border border-primary/25 transition-all shadow-2xs cursor-pointer"
                                 >
                                     Sign in
                                 </Link>
@@ -176,7 +176,7 @@ export default function Navbar() {
                         {/* Mobile Hamburger / Close Toggle */}
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="lg:hidden text-slate-700 hover:text-primary p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full hover:bg-slate-100 transition-all cursor-pointer"
+                            className="lg:hidden text-slate-700 hover:text-primary p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-full hover:bg-[#002B9A]/5 transition-all cursor-pointer"
                             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                             aria-expanded={mobileMenuOpen}
                         >
@@ -210,7 +210,7 @@ export default function Navbar() {
                 <div
                     className={`grid transition-all duration-300 ease-in-out lg:hidden overflow-hidden ${
                         mobileMenuOpen
-                            ? "grid-rows-[1fr] opacity-100 border-t border-slate-200/80 pt-2 pb-4"
+                            ? "grid-rows-[1fr] opacity-100 border-t border-[#002B9A]/10 pt-2 pb-4"
                             : "grid-rows-[0fr] opacity-0 pointer-events-none"
                     }`}
                 >
@@ -280,7 +280,7 @@ export default function Navbar() {
                                     <Link
                                         href="/signin"
                                         onClick={() => setMobileMenuOpen(false)}
-                                        className="flex-1 text-center py-2.5 rounded-xl bg-slate-100 text-slate-800 font-bold text-sm border border-slate-200 hover:bg-slate-200 transition-colors"
+                                        className="flex-1 text-center py-2.5 rounded-xl border border-primary/25 text-primary hover:bg-primary hover:text-white font-bold text-sm transition-colors"
                                     >
                                         Sign in
                                     </Link>
