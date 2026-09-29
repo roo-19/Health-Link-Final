@@ -8,12 +8,16 @@ export default function Positioning() {
             <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] bg-accent/30 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="relative mx-auto max-w-7xl px-6 sm:px-10 lg:px-14 z-10">
+                {/* Centered Large Eyebrow Title */}
+                <ScrollReveal className="text-center mb-6 sm:mb-8" direction="up" delay={100}>
+                    <span className="text-base sm:text-lg md:text-xl font-extrabold uppercase tracking-widest text-[#54B476] inline-block">
+                        Pioneering Holistic Care
+                    </span>
+                </ScrollReveal>
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                     {/* Left Column (typography focus) */}
-                    <ScrollReveal className="lg:col-span-7" direction="up" delay={100}>
-                        <span className="text-xs font-bold uppercase tracking-widest text-secondary block mb-3">
-                            Pioneering Holistic Care
-                        </span>
+                    <ScrollReveal className="lg:col-span-7" direction="up" delay={150}>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary leading-snug tracking-tight">
                             Integrating 24/7 on-demand medical care with <span className="text-secondary font-black">personalized wellness</span> to pioneer a new era of comprehensive health.
                         </h2>
