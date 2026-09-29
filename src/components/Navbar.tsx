@@ -77,7 +77,7 @@ export default function Navbar() {
             />
 
             <header
-                className={`fixed top-10 sm:top-12 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[94%] max-w-7xl overflow-hidden rounded-[26px] sm:rounded-full bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-lg shadow-slate-900/5 transition-all duration-300 ease-out ${
+                className={`fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[94%] max-w-7xl overflow-hidden rounded-[26px] sm:rounded-full bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-lg shadow-slate-900/5 transition-all duration-300 ease-out ${
                     isVisible ? "translate-y-0 opacity-100" : "-translate-y-28 opacity-0 pointer-events-none"
                 }`}
             >
