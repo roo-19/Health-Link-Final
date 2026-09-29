@@ -94,7 +94,7 @@ export default function AboutPage() {
             <ScrollReveal className="lg:col-span-7" direction="up" delay={100}>
               <h1 className="text-4xl sm:text-5xl lg:text-[4.25rem] font-extrabold text-primary leading-[1.08] tracking-tight mb-6">
                 Bridging Science <br />
-                <span className="font-serif italic font-normal text-secondary">&amp; Empathy</span> to Transform <br />
+                &amp; Empathy to Transform <br />
                 Human Healthcare.
               </h1>
 
@@ -201,8 +201,8 @@ export default function AboutPage() {
             {/* Story Text Content */}
             <ScrollReveal className="order-1 lg:order-2" direction="left" delay={200}>
               <span className="text-xs font-extrabold uppercase tracking-widest text-secondary block mb-2">Our Foundation</span>
-              <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight text-primary leading-tight mb-6">
-                Connecting you to care that feels <span className="font-serif italic font-normal text-secondary">like home.</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight text-secondary leading-tight mb-6">
+                Connecting you to care that feels like home.
               </h2>
               
               <div className="space-y-5 text-sm sm:text-base leading-relaxed text-slate-700 font-normal">
@@ -238,7 +238,6 @@ export default function AboutPage() {
         <div className="relative z-10 px-6 sm:px-12 lg:px-16">
           <ScrollReveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               Our Purpose &amp; Driving Force
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
@@ -353,4 +352,4 @@ export default function AboutPage() {
       <Footer />
     </main>
   );
-}
+}

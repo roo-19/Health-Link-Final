@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export default function TrustSafety() {
@@ -46,12 +45,6 @@ export default function TrustSafety() {
                                     <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">Data governance aligns with local and international health regulations, utilizing strict role-based access controls.</p>
                                 </div>
                             </ScrollReveal>
-                        </div>
-
-                        <div className="mt-8 pt-6 border-t border-slate-100">
-                            <Link href="/privacy" className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-primary hover:text-secondary transition-colors group">
-                                Learn how we protect your data <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                            </Link>
                         </div>
                     </ScrollReveal>
 

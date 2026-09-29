@@ -38,6 +38,7 @@ const CAROUSEL_SLIDES = [
 ];
 
 const SLIDE_DURATION = 4000; // 4 seconds per photo
+const TICKER_ITEMS = Array(6).fill("Your Trusted Wellness Partner");
 
 export default function Hero() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,10 +48,6 @@ export default function Hero() {
 
     const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
-    }, []);
-
-    const handlePrev = useCallback(() => {
-        setCurrentIndex((prev) => (prev - 1 + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length);
     }, []);
 
     // Listen to window scroll for smooth parallax scrolling animation
@@ -86,22 +83,26 @@ export default function Hero() {
         >
             {/* Global Keyframes & Slide Transition Styles */}
             <style>{`
-                @keyframes countdownFill {
-    0% { width: 100%; }
-    100% { width: 0%; }
-}
-
-.animate-progress-countdown {
-    animation: countdownFill 4000ms linear forwards;
-}
-
-.hero-slide-transition {
-    transition:
-        opacity 1800ms ease-in-out,
-        transform 1800ms ease-in-out;
-    will-change: opacity, transform;
-    backface-visibility: hidden;
-}
+                @keyframes marquee-loop {
+                    0% { transform: translateX(0%); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-seamless-marquee {
+                    display: flex;
+                    width: max-content;
+                    flex-wrap: nowrap;
+                    animation: marquee-loop 25s linear infinite;
+                }
+                .animate-seamless-marquee:hover {
+                    animation-play-state: paused;
+                }
+                .hero-slide-transition {
+                    transition:
+                        opacity 1800ms ease-in-out,
+                        transform 1800ms ease-in-out;
+                    will-change: opacity, transform;
+                    backface-visibility: hidden;
+                }
             `}</style>
 
             {/* Subtle Grid Pattern Overlay */}
@@ -165,65 +166,6 @@ export default function Hero() {
                     <path d="M0,0 Q90,35 45,65 T0,100 L0,0 Z" fill="currentColor" opacity="0.4" />
                 </svg>
 
-                {/* ── CENTERED CONTROLS (Centered at bottom on mobile, right-aligned on desktop) ── */}
-                <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-10 z-30 flex flex-col gap-2.5 items-center w-[92%] sm:w-auto max-w-sm">
-                    {/* Thicker 3px progress line in light neutral tone */}
-                    <div className="w-full sm:w-[260px] max-w-[280px] h-[3px] bg-slate-300/40 rounded-full overflow-hidden mx-auto">
-                        <div
-                            key={currentIndex}
-                            className="h-full bg-slate-400/90 rounded-full animate-progress-countdown"
-                        />
-                    </div>
-
-                    <div className="flex items-center justify-center gap-2.5 sm:gap-3 bg-white/40 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none px-3 py-1.5 sm:p-0 rounded-full">
-                        {/* 6 Minimal Borderless Thumbnail Buttons */}
-                        <div className="flex items-center gap-1 sm:gap-1.5">
-                            {CAROUSEL_SLIDES.map((slide, idx) => (
-                                <button
-                                    key={slide.id}
-                                    onClick={() => setCurrentIndex(idx)}
-                                    className={`relative w-5.5 h-7 sm:w-6 sm:h-8 rounded-md overflow-hidden transition-all duration-300 cursor-pointer ${
-                                        idx === currentIndex
-                                            ? "opacity-100 scale-105 shadow-xs"
-                                            : "opacity-35 hover:opacity-85"
-                                    }`}
-                                    aria-label={`Go to slide ${idx + 1}`}
-                                >
-                                    <Image 
-                                        src={slide.image} 
-                                        alt={slide.title} 
-                                        fill 
-                                        unoptimized
-                                        className="object-cover"
-                                    />
-                                </button>
-                            ))}
-                        </div>
-
-                        <div className="h-3 w-[1px] bg-slate-300/60" />
-
-                        {/* Minimal Counter & Borderless Clean Arrows */}
-                        <div className="flex items-center gap-1 sm:gap-1.5 text-xs font-bold text-slate-700">
-                            <span className="text-[10px] font-mono text-slate-700">
-                                0{currentIndex + 1}/0{CAROUSEL_SLIDES.length}
-                            </span>
-                            <button
-                                onClick={handlePrev}
-                                className="w-5 h-5 rounded-full hover:bg-slate-200/50 active:bg-slate-300/60 text-slate-800 flex items-center justify-center text-[10px] font-bold transition-colors cursor-pointer"
-                                aria-label="Previous slide"
-                            >
-                                ←
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                className="w-5 h-5 rounded-full hover:bg-slate-200/50 active:bg-slate-300/60 text-slate-800 flex items-center justify-center text-[10px] font-bold transition-colors cursor-pointer"
-                                aria-label="Next slide"
-                            >
-                                →
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             {/* ── LEFT COLUMN: HERO TEXT ── */}
@@ -275,6 +217,41 @@ export default function Hero() {
 
                     </div>
 
+                </div>
+            </div>
+
+            {/* ── SEAMLESS TICKER BANNER (Full width spanning bottom of hero screen) ── */}
+            <div className="absolute bottom-0 left-0 w-full bg-white/50 backdrop-blur-md text-slate-800 py-2.5 sm:py-3 z-30 font-semibold text-xs sm:text-sm shadow-xs overflow-hidden whitespace-nowrap border-t border-slate-200/60">
+                <div className="animate-seamless-marquee flex items-center">
+                    {/* Primary Track Set */}
+                    <div className="flex items-center gap-8 shrink-0 pr-8">
+                        {TICKER_ITEMS.map((text, i) => (
+                            <div key={`hero-ticker-set1-${i}`} className="flex items-center gap-8 shrink-0">
+                                <span className="inline-flex items-center gap-2 text-slate-800 font-semibold">
+                                    <svg className="w-4 h-4 text-[#54B476] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    {text}
+                                </span>
+                                <span className="text-emerald-500/50">✦</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Identical Duplicate Track Set for Seamless Looping */}
+                    <div className="flex items-center gap-8 shrink-0 pr-8">
+                        {TICKER_ITEMS.map((text, i) => (
+                            <div key={`hero-ticker-set2-${i}`} className="flex items-center gap-8 shrink-0">
+                                <span className="inline-flex items-center gap-2 text-slate-800 font-semibold">
+                                    <svg className="w-4 h-4 text-[#54B476] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    {text}
+                                </span>
+                                <span className="text-emerald-500/50">✦</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
