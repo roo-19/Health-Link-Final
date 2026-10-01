@@ -3,10 +3,21 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { collection, query, where, orderBy, onSnapshot, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export interface AttachedDocument {
+    id: string;
+    name: string;
+    url: string;
+    size: number;
+    type: string;
+    uploadedAt: string;
+    uploadedBy: "patient" | "doctor";
+}
 
 interface Inquiry {
     id: string;
@@ -20,7 +31,7 @@ interface Inquiry {
     status: "pending" | "assigned" | "answered";
     doctorId: string | null;
     doctorName: string | null;
-    documents: string[];
+    documents: AttachedDocument[];
     createdAt: any;
     assignedAt: any;
     answeredAt: any;
@@ -29,8 +40,10 @@ interface Inquiry {
 interface Answer {
     id: string;
     inquiryId: string;
+    doctorId?: string;
     doctorName: string;
     answer: string;
+    documents?: AttachedDocument[];
     createdAt: any;
 }
 
@@ -48,6 +61,13 @@ export default function DoctorDashboard() {
     const [answerText, setAnswerText] = useState("");
     const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false);
     const [submitError, setSubmitError] = useState("");
+
+    // Doctor file attachment state
+    const [selectedDoctorFiles, setSelectedDoctorFiles] = useState<File[]>([]);
+    const [doctorFileError, setDoctorFileError] = useState("");
+    const [doctorUploadProgress, setDoctorUploadProgress] = useState("");
+    const [isDoctorDragging, setIsDoctorDragging] = useState(false);
+    const doctorFileInputRef = React.useRef<HTMLInputElement | null>(null);
 
     // Auth check
     useEffect(() => {
@@ -120,28 +140,105 @@ export default function DoctorDashboard() {
         return () => unsubscribe();
     }, [inquiries]);
 
+    const formatFileSize = (bytes: number) => {
+        if (!bytes || bytes === 0) return "0 B";
+        const k = 1024;
+        if (bytes < k) return `${bytes} B`;
+        if (bytes < k * k) return `${(bytes / k).toFixed(1)} KB`;
+        return `${(bytes / (k * k)).toFixed(1)} MB`;
+    };
+
+    const handleDoctorFileSelect = (newFiles: FileList | File[] | null) => {
+        if (!newFiles) return;
+        setDoctorFileError("");
+        const incoming = Array.from(newFiles);
+
+        if (selectedDoctorFiles.length + incoming.length > 5) {
+            setDoctorFileError("You can attach a maximum of 5 files.");
+            return;
+        }
+
+        const validFiles: File[] = [];
+        const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
+
+        for (const file of incoming) {
+            if (!allowedTypes.includes(file.type)) {
+                setDoctorFileError(`File "${file.name}" is not supported. Use PDF, JPEG, PNG, or WEBP.`);
+                return;
+            }
+            if (file.size > 10 * 1024 * 1024) {
+                setDoctorFileError(`File "${file.name}" exceeds 10MB limit.`);
+                return;
+            }
+            validFiles.push(file);
+        }
+
+        setSelectedDoctorFiles(prev => [...prev, ...validFiles]);
+    };
+
+    const removeDoctorFile = (index: number) => {
+        setSelectedDoctorFiles(prev => prev.filter((_, i) => i !== index));
+        setDoctorFileError("");
+    };
+
     const handleAnswerSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedInquiry) return;
         
         setSubmitError("");
+        setDoctorFileError("");
         setIsSubmittingAnswer(true);
+        setDoctorUploadProgress("");
 
         try {
             const newAnswerRef = doc(collection(db, "answers"));
             const answerId = newAnswerRef.id;
 
-            // 1. Save answer document
+            // 1. Upload any attached doctor clinical documents
+            const uploadedDocs: AttachedDocument[] = [];
+            if (selectedDoctorFiles.length > 0) {
+                for (let i = 0; i < selectedDoctorFiles.length; i++) {
+                    const file = selectedDoctorFiles[i];
+                    setDoctorUploadProgress(`Uploading attachment ${i + 1} of ${selectedDoctorFiles.length}...`);
+                    
+                    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+                    const fileId = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+                    const storageRef = ref(storage, `inquiries/${selectedInquiry.id}/doctor/${fileId}_${sanitizedName}`);
+
+                    await uploadBytes(storageRef, file, {
+                        contentType: file.type,
+                        customMetadata: {
+                            originalName: file.name,
+                            uploadedBy: user!.uid,
+                            inquiryId: selectedInquiry.id
+                        }
+                    });
+
+                    const downloadUrl = await getDownloadURL(storageRef);
+                    uploadedDocs.push({
+                        id: fileId,
+                        name: file.name,
+                        url: downloadUrl,
+                        size: file.size,
+                        type: file.type,
+                        uploadedAt: new Date().toISOString(),
+                        uploadedBy: "doctor"
+                    });
+                }
+            }
+
+            // 2. Save answer document
             await setDoc(newAnswerRef, {
                 id: answerId,
                 inquiryId: selectedInquiry.id,
                 doctorId: user!.uid,
                 doctorName: profile!.fullName,
                 answer: answerText,
+                documents: uploadedDocs,
                 createdAt: serverTimestamp(),
             });
 
-            // 2. Update Inquiry document
+            // 3. Update Inquiry document
             const inquiryDocRef = doc(db, "inquiries", selectedInquiry.id);
             await updateDoc(inquiryDocRef, {
                 status: "answered",
@@ -150,6 +247,8 @@ export default function DoctorDashboard() {
 
             // Clean up
             setAnswerText("");
+            setSelectedDoctorFiles([]);
+            setDoctorUploadProgress("");
             setSelectedInquiry(null);
             setActiveTab("answered");
         } catch (err: any) {
@@ -157,6 +256,7 @@ export default function DoctorDashboard() {
             setSubmitError(err.message || "Failed to post your answer.");
         } finally {
             setIsSubmittingAnswer(false);
+            setDoctorUploadProgress("");
         }
     };
 
@@ -535,6 +635,38 @@ export default function DoctorDashboard() {
                                         </div>
                                     </div>
 
+                                    {/* Patient Attached Medical Documents */}
+                                    {selectedInquiry.documents && selectedInquiry.documents.length > 0 && (
+                                        <div>
+                                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                                                <span>Patient Attached Documents</span>
+                                                <span className="text-indigo-600 font-semibold">{selectedInquiry.documents.length} file(s)</span>
+                                            </h4>
+                                            <div className="space-y-1.5">
+                                                {selectedInquiry.documents.map((doc, idx) => (
+                                                    <a
+                                                        key={doc.id || idx}
+                                                        href={doc.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors text-xs group"
+                                                    >
+                                                        <div className="flex items-center gap-2.5 truncate pr-2">
+                                                            <span className="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white border border-slate-200 text-indigo-700 shrink-0">
+                                                                {doc.type === "application/pdf" ? "PDF" : doc.name.split('.').pop()}
+                                                            </span>
+                                                            <span className="truncate font-semibold text-slate-800 group-hover:text-indigo-600">{doc.name}</span>
+                                                            <span className="text-slate-400 text-[11px] shrink-0">({formatFileSize(doc.size)})</span>
+                                                        </div>
+                                                        <span className="text-indigo-600 font-bold shrink-0 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                                                            View ↗
+                                                        </span>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
                                     {/* Clinical Response Form */}
                                     {selectedInquiry.status === "assigned" ? (
                                         <form onSubmit={handleAnswerSubmit} className="space-y-4 pt-4 border-t border-slate-100">
@@ -568,12 +700,93 @@ export default function DoctorDashboard() {
                                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-900 block">Your Clinical Advice & Prescriptions</label>
                                                 <textarea 
                                                     required 
-                                                    rows={6} 
+                                                    rows={5} 
                                                     value={answerText}
                                                     onChange={(e) => setAnswerText(e.target.value)}
                                                     className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none resize-none text-sm font-medium leading-relaxed" 
                                                     placeholder="Type your medical findings, advice, recommended rest, or instructions for the patient..."
                                                 />
+                                            </div>
+
+                                            {/* Attach Clinical Files / Prescriptions */}
+                                            <div className="space-y-2">
+                                                <div className="flex justify-between items-center">
+                                                    <label className="text-xs font-bold uppercase tracking-wider text-slate-900 block">
+                                                        Attach Prescription / Notes (Optional)
+                                                    </label>
+                                                    <span className="text-[11px] font-semibold text-slate-400">
+                                                        {selectedDoctorFiles.length}/5 files
+                                                    </span>
+                                                </div>
+                                                <div 
+                                                    onDragOver={(e) => { e.preventDefault(); setIsDoctorDragging(true); }}
+                                                    onDragLeave={() => setIsDoctorDragging(false)}
+                                                    onDrop={(e) => {
+                                                        e.preventDefault();
+                                                        setIsDoctorDragging(false);
+                                                        handleDoctorFileSelect(e.dataTransfer.files);
+                                                    }}
+                                                    onClick={() => doctorFileInputRef.current?.click()}
+                                                    className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer transition-all ${
+                                                        isDoctorDragging 
+                                                            ? "border-indigo-500 bg-indigo-50/70" 
+                                                            : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 hover:border-slate-300"
+                                                    }`}
+                                                >
+                                                    <input 
+                                                        type="file" 
+                                                        ref={doctorFileInputRef} 
+                                                        onChange={(e) => handleDoctorFileSelect(e.target.files)} 
+                                                        multiple 
+                                                        accept=".pdf,image/jpeg,image/png,image/webp" 
+                                                        className="hidden" 
+                                                    />
+                                                    <div className="flex flex-col items-center justify-center gap-1.5">
+                                                        <div className="w-8 h-8 rounded-full bg-indigo-100/70 text-indigo-600 flex items-center justify-center">
+                                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                            </svg>
+                                                        </div>
+                                                        <p className="text-xs font-bold text-slate-700">
+                                                            <span className="text-indigo-600 underline">Click to attach</span> or drag & drop files
+                                                        </p>
+                                                        <p className="text-[10px] text-slate-400">PDF, JPEG, PNG, WEBP — up to 10MB each</p>
+                                                    </div>
+                                                </div>
+
+                                                {doctorFileError && (
+                                                    <p className="text-xs font-semibold text-rose-600">{doctorFileError}</p>
+                                                )}
+
+                                                {selectedDoctorFiles.length > 0 && (
+                                                    <div className="space-y-1.5 mt-2">
+                                                        {selectedDoctorFiles.map((file, idx) => (
+                                                            <div key={idx} className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                                                                <div className="flex items-center gap-2 truncate pr-2">
+                                                                    <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white border border-slate-200 text-slate-600 shrink-0">
+                                                                        {file.name.split('.').pop()}
+                                                                    </span>
+                                                                    <span className="truncate font-semibold text-slate-800">{file.name}</span>
+                                                                    <span className="text-slate-400 text-[10px] shrink-0">({formatFileSize(file.size)})</span>
+                                                                </div>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={(e) => { e.stopPropagation(); removeDoctorFile(idx); }}
+                                                                    className="text-slate-400 hover:text-rose-600 p-1 rounded-md transition-colors cursor-pointer shrink-0"
+                                                                >
+                                                                    ✕
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {doctorUploadProgress && (
+                                                    <div className="p-2.5 bg-indigo-50 border border-indigo-200 text-indigo-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                                                        <div className="animate-spin h-3.5 w-3.5 border-2 border-indigo-600 border-t-transparent rounded-full shrink-0" />
+                                                        <span>{doctorUploadProgress}</span>
+                                                    </div>
+                                                )}
                                             </div>
 
                                             <button 
@@ -584,7 +797,7 @@ export default function DoctorDashboard() {
                                                 {isSubmittingAnswer ? (
                                                     <>
                                                         <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                                                        <span>Posting Clinical Answer...</span>
+                                                        <span>{doctorUploadProgress || "Posting Clinical Answer..."}</span>
                                                     </>
                                                 ) : (
                                                     <span>📤 Submit Answer to Patient</span>
@@ -597,6 +810,31 @@ export default function DoctorDashboard() {
                                             <div className="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 text-sm text-slate-800 font-normal leading-relaxed whitespace-pre-line max-h-56 overflow-y-auto">
                                                 {answers[selectedInquiry.id]?.answer}
                                             </div>
+                                            {answers[selectedInquiry.id]?.documents && answers[selectedInquiry.id]!.documents!.length > 0 && (
+                                                <div className="space-y-1.5 pt-2">
+                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Attached Prescriptions & Files</span>
+                                                    <div className="space-y-1.5">
+                                                        {answers[selectedInquiry.id]!.documents!.map((doc, idx) => (
+                                                            <a
+                                                                key={doc.id || idx}
+                                                                href={doc.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-emerald-200 text-xs hover:border-emerald-300 transition-colors group"
+                                                            >
+                                                                <div className="flex items-center gap-2 truncate pr-2">
+                                                                    <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
+                                                                        {doc.type === "application/pdf" ? "PDF" : "IMG"}
+                                                                    </span>
+                                                                    <span className="font-semibold text-slate-800 truncate group-hover:text-emerald-700">{doc.name}</span>
+                                                                    <span className="text-slate-400 text-[10px] shrink-0">({formatFileSize(doc.size)})</span>
+                                                                </div>
+                                                                <span className="text-emerald-700 font-bold shrink-0">Download ↗</span>
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>

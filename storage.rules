@@ -13,26 +13,70 @@ service firebase.storage {
       return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role;
     }
 
-    match /inquiries/{inquiryId}/{fileName} {
+    function isAdmin() {
+      return isLoggedIn() && getUserRole() == 'admin';
+    }
+
+    // Helper to fetch inquiry document data
+    function getInquiry(inquiryId) {
+      return firestore.get(/databases/(default)/documents/inquiries/$(inquiryId)).data;
+    }
+
+    // Check if the current user is the client/patient who filed this inquiry
+    function isPatientForInquiry(inquiryId) {
+      return isLoggedIn() && getInquiry(inquiryId).clientId == request.auth.uid;
+    }
+
+    // Check if the current user is the doctor assigned to this inquiry
+    function isDoctorForInquiry(inquiryId) {
+      return isLoggedIn() && getInquiry(inquiryId).doctorId == request.auth.uid;
+    }
+
+    // Enforce strict file types: Images (jpeg, png, webp) and PDF only, max 10MB
+    function isValidMedicalDocument() {
+      return request.resource.size < 10 * 1024 * 1024
+        && (
+          request.resource.contentType == 'application/pdf'
+          || request.resource.contentType == 'image/jpeg'
+          || request.resource.contentType == 'image/png'
+          || request.resource.contentType == 'image/webp'
+        );
+    }
+
+    // --- Inquiries Root Folder & Subfolders ---
+    match /inquiries/{inquiryId} {
       
-      // Allow read access if user is:
-      // 1. Admin
-      // 2. The patient who submitted the inquiry (checks Firestore record)
-      // 3. The doctor assigned to the inquiry (checks Firestore record)
-      allow read: if isLoggedIn() 
-                    && (
-                      getUserRole() == 'admin'
-                      || firestore.get(/databases/(default)/documents/inquiries/{inquiryId}).data.patientId == request.auth.uid
-                      || firestore.get(/databases/(default)/documents/inquiries/{inquiryId}).data.doctorId == request.auth.uid
-                    );
+      // Patient files
+      match /patient/{fileName} {
+        // Read: Admin, Patient who owns it, or Assigned Doctor
+        allow read: if isAdmin() || isPatientForInquiry(inquiryId) || isDoctorForInquiry(inquiryId);
+        
+        // Upload: Patient who filed the inquiry or Admin
+        allow create: if (isPatientForInquiry(inquiryId) || isAdmin()) && isValidMedicalDocument();
 
-      // Allow upload (create) if user is logged in and file size is under 10MB
-      allow create: if isLoggedIn() 
-                    && request.resource.size < 10 * 1024 * 1024; // 10MB limit
+        // Only Admin can update or delete medical records
+        allow update, delete: if isAdmin();
+      }
 
-      // Only Admins can update or delete documents once uploaded
-      allow update, delete: if isLoggedIn() 
-                              && getUserRole() == 'admin';
+      // Doctor response attachments (prescriptions, diagnostic guidance)
+      match /doctor/{fileName} {
+        // Read: Admin, Patient who owns it, or Assigned Doctor
+        allow read: if isAdmin() || isPatientForInquiry(inquiryId) || isDoctorForInquiry(inquiryId);
+        
+        // Upload: Assigned Doctor or Admin
+        allow create: if (isDoctorForInquiry(inquiryId) || isAdmin()) && isValidMedicalDocument();
+
+        // Only Admin can update or delete
+        allow update, delete: if isAdmin();
+      }
+
+      // Direct attachments fallback for compatibility
+      match /{fileName} {
+        allow read: if isAdmin() || isPatientForInquiry(inquiryId) || isDoctorForInquiry(inquiryId);
+        allow create: if (isPatientForInquiry(inquiryId) || isDoctorForInquiry(inquiryId) || isAdmin()) && isValidMedicalDocument();
+        allow update, delete: if isAdmin();
+      }
     }
   }
 }
+

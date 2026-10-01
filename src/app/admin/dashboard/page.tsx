@@ -35,7 +35,7 @@ interface Inquiry {
     status: "pending" | "assigned" | "answered";
     doctorId: string | null;
     doctorName: string | null;
-    documents: string[];
+    documents: any[];
     createdAt: any;
     assignedAt: any;
     answeredAt: any;
@@ -384,19 +384,28 @@ export default function AdminDashboard() {
 
                                                 {inq.documents && inq.documents.length > 0 && (
                                                     <div>
-                                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Attachments</h4>
+                                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Attached Medical Files ({inq.documents.length})</h4>
                                                         <div className="flex flex-wrap gap-2 mt-2">
-                                                            {inq.documents.map((docUrl, idx) => (
-                                                                <a 
-                                                                    key={idx} 
-                                                                    href={docUrl} 
-                                                                    target="_blank" 
-                                                                    rel="noopener noreferrer" 
-                                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-100 hover:text-sky-600 transition-colors"
-                                                                >
-                                                                    Document {idx + 1}
-                                                                </a>
-                                                            ))}
+                                                            {inq.documents.map((item: any, idx) => {
+                                                                const url = typeof item === "string" ? item : item.url;
+                                                                const name = typeof item === "string" ? `Document ${idx + 1}` : item.name;
+                                                                const ext = typeof item === "string" ? "FILE" : (item.type === "application/pdf" ? "PDF" : item.name?.split('.').pop()?.toUpperCase() || "IMG");
+                                                                return (
+                                                                    <a 
+                                                                        key={idx} 
+                                                                        href={url} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer" 
+                                                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-700 transition-colors"
+                                                                    >
+                                                                        <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white border border-slate-200 text-slate-600">
+                                                                            {ext}
+                                                                        </span>
+                                                                        <span className="truncate max-w-[180px]">{name}</span>
+                                                                        <span className="text-sky-600 font-bold">↗</span>
+                                                                    </a>
+                                                                );
+                                                            })}
                                                         </div>
                                                     </div>
                                                 )}

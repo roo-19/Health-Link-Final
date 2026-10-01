@@ -3,14 +3,28 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { collection, query, where, orderBy, onSnapshot, doc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CountryList from "country-list-with-dial-code-and-flag";
 
+export interface AttachedDocument {
+    id: string;
+    name: string;
+    url: string;
+    size: number;
+    type: string;
+    uploadedAt: string;
+    uploadedBy: "patient" | "doctor";
+}
+
 interface Inquiry {
     id: string;
+    clientId?: string;
+    clientName?: string;
+    clientEmail?: string;
     subject: string;
     message: string;
     phoneNumber: string;
@@ -18,7 +32,7 @@ interface Inquiry {
     status: "pending" | "assigned" | "answered";
     doctorId: string | null;
     doctorName: string | null;
-    documents: string[];
+    documents: AttachedDocument[];
     createdAt: any;
     assignedAt: any;
     answeredAt: any;
@@ -29,6 +43,7 @@ interface Answer {
     inquiryId: string;
     doctorName: string;
     answer: string;
+    documents?: AttachedDocument[];
     createdAt: any;
 }
 
@@ -46,6 +61,13 @@ export default function ClientDashboard() {
     const [dob, setDob] = useState("");
     const [consultationReason, setConsultationReason] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // File upload state
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [fileError, setFileError] = useState("");
+    const [uploadProgress, setUploadProgress] = useState("");
+    const [isDragging, setIsDragging] = useState(false);
+    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
 
     const countries = React.useMemo(() => {
         const list = CountryList.getAll();
@@ -54,6 +76,7 @@ export default function ClientDashboard() {
         return [lk, ...rest].filter((c): c is any => !!c);
     }, []);
     const [modalError, setModalError] = useState("");
+
 
     // Authorization check
     useEffect(() => {
@@ -145,52 +168,16 @@ export default function ClientDashboard() {
         return () => unsubscribe();
     }, [inquiries]);
 
-    const handleNewInquirySubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setModalError("");
-        setIsSubmitting(true);
-
-        try {
-            const newInquiryRef = doc(collection(db, "inquiries"));
-            const inquiryId = newInquiryRef.id;
-
-            await setDoc(newInquiryRef, {
-                id: inquiryId,
-                clientId: user!.uid,
-                clientName: profile!.fullName,
-                clientEmail: profile!.email,
-                phoneNumber: `${countryCode} ${phoneNumber}`,
-                dateOfBirth: dob,
-                subject: "Health Inquiry",
-                message: consultationReason,
-                status: "pending",
-                doctorId: null,
-                doctorName: null,
-                documents: [],
-                createdAt: serverTimestamp(),
-                assignedAt: null,
-                answeredAt: null,
-            });
-
-            // Update user profile document so details are persisted
-            const userDocRef = doc(db, "users", user!.uid);
-            await updateDoc(userDocRef, {
-                phoneNumber: `${countryCode} ${phoneNumber}`,
-                dateOfBirth: dob,
-            });
-
-            // Reset form
-            setPhoneNumber("");
-            setDob("");
-            setConsultationReason("");
-            setShowModal(false);
-        } catch (err: any) {
-            console.error("Error creating inquiry:", err);
-            setModalError(err.message || "Failed to submit inquiry.");
-        } finally {
-            setIsSubmitting(false);
+    // Lock background scrolling when modal is open
+    useEffect(() => {
+        if (showModal) {
+            const originalOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = originalOverflow;
+            };
         }
-    };
+    }, [showModal]);
 
     const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "assigned" | "answered">("all");
     const [selectedCategory, setSelectedCategory] = useState<string>("General Health");
@@ -245,18 +232,65 @@ export default function ClientDashboard() {
 
     const openInquiryModalWithCategory = (catName: string) => {
         setSelectedCategory(catName);
+        setSelectedFiles([]);
+        setFileError("");
+        setModalError("");
         setShowModal(true);
+    };
+
+    const formatFileSize = (bytes: number) => {
+        if (!bytes || bytes === 0) return "0 B";
+        const k = 1024;
+        if (bytes < k) return `${bytes} B`;
+        if (bytes < k * k) return `${(bytes / k).toFixed(1)} KB`;
+        return `${(bytes / (k * k)).toFixed(1)} MB`;
+    };
+
+    const handleFileSelect = (newFiles: FileList | File[] | null) => {
+        if (!newFiles) return;
+        setFileError("");
+        const incoming = Array.from(newFiles);
+
+        if (selectedFiles.length + incoming.length > 5) {
+            setFileError("You can attach a maximum of 5 files per inquiry.");
+            return;
+        }
+
+        const validFiles: File[] = [];
+        const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
+
+        for (const file of incoming) {
+            if (!allowedTypes.includes(file.type)) {
+                setFileError(`File "${file.name}" is not supported. Please upload PDF, JPEG, PNG, or WEBP only.`);
+                return;
+            }
+            if (file.size > 10 * 1024 * 1024) {
+                setFileError(`File "${file.name}" exceeds the 10MB limit.`);
+                return;
+            }
+            validFiles.push(file);
+        }
+
+        setSelectedFiles(prev => [...prev, ...validFiles]);
+    };
+
+    const removeFile = (index: number) => {
+        setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+        setFileError("");
     };
 
     const handleNewInquirySubmitWithCategory = async (e: React.FormEvent) => {
         e.preventDefault();
         setModalError("");
+        setFileError("");
         setIsSubmitting(true);
+        setUploadProgress("");
 
         try {
             const newInquiryRef = doc(collection(db, "inquiries"));
             const inquiryId = newInquiryRef.id;
 
+            // 1. Create base inquiry record first so ownership is confirmed in Firestore (storage rules)
             await setDoc(newInquiryRef, {
                 id: inquiryId,
                 clientId: user!.uid,
@@ -275,7 +309,45 @@ export default function ClientDashboard() {
                 answeredAt: null,
             });
 
-            // Update user profile document so details are persisted
+            // 2. Upload attached medical files if any
+            const uploadedDocs: AttachedDocument[] = [];
+            if (selectedFiles.length > 0) {
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    const file = selectedFiles[i];
+                    setUploadProgress(`Securing and uploading file ${i + 1} of ${selectedFiles.length}...`);
+                    
+                    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+                    const fileId = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+                    const storageRef = ref(storage, `inquiries/${inquiryId}/patient/${fileId}_${sanitizedName}`);
+
+                    await uploadBytes(storageRef, file, {
+                        contentType: file.type,
+                        customMetadata: {
+                            originalName: file.name,
+                            uploadedBy: user!.uid,
+                            inquiryId: inquiryId
+                        }
+                    });
+
+                    const downloadUrl = await getDownloadURL(storageRef);
+                    uploadedDocs.push({
+                        id: fileId,
+                        name: file.name,
+                        url: downloadUrl,
+                        size: file.size,
+                        type: file.type,
+                        uploadedAt: new Date().toISOString(),
+                        uploadedBy: "patient"
+                    });
+                }
+
+                // 3. Update inquiry document with documents array
+                await updateDoc(newInquiryRef, {
+                    documents: uploadedDocs
+                });
+            }
+
+            // 4. Update user profile document so details are persisted
             const userDocRef = doc(db, "users", user!.uid);
             await updateDoc(userDocRef, {
                 phoneNumber: `${countryCode} ${phoneNumber}`,
@@ -284,12 +356,23 @@ export default function ClientDashboard() {
 
             // Reset form
             setConsultationReason("");
+            setSelectedFiles([]);
+            setUploadProgress("");
             setShowModal(false);
+
+            // Anchor view to inquiries section so user sees their new inquiry without scrolling to top
+            setTimeout(() => {
+                const section = document.getElementById("inquiries-section");
+                if (section) {
+                    section.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }, 100);
         } catch (err: any) {
             console.error("Error creating inquiry:", err);
             setModalError(err.message || "Failed to submit inquiry.");
         } finally {
             setIsSubmitting(false);
+            setUploadProgress("");
         }
     };
 
@@ -446,7 +529,7 @@ export default function ClientDashboard() {
                 </div>
 
                 {/* Main Content: Inquiries List */}
-                <div className="space-y-6">
+                <div id="inquiries-section" className="space-y-6 scroll-mt-28">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
                         <div>
                             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Your Health Inquiries</h2>
@@ -602,6 +685,57 @@ export default function ClientDashboard() {
                                                  </p>
                                              </div>
 
+                                             {/* Patient Attached Files */}
+                                             {inq.documents && inq.documents.length > 0 && (
+                                                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
+                                                     <div className="flex items-center gap-2 mb-3">
+                                                         <svg className="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                                         </svg>
+                                                         <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                                             Your Attached Documents ({inq.documents.length})
+                                                         </span>
+                                                     </div>
+                                                     <div className="flex flex-wrap gap-2.5">
+                                                         {inq.documents.map((doc, docIdx) => {
+                                                             const isPdf = doc.type === "application/pdf" || doc.name.toLowerCase().endsWith(".pdf");
+                                                             return (
+                                                                 <a
+                                                                     key={doc.id || docIdx}
+                                                                     href={doc.url}
+                                                                     target="_blank"
+                                                                     rel="noopener noreferrer"
+                                                                     className="inline-flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white hover:bg-sky-50/50 border border-slate-200 text-slate-800 text-xs font-semibold transition-all group hover:border-sky-300 hover:shadow-sm"
+                                                                 >
+                                                                     <span className="p-1 rounded-md bg-slate-100 border border-slate-200 text-sky-600">
+                                                                         {isPdf ? (
+                                                                             <svg className="w-4 h-4 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
+                                                                                 <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                                                                             </svg>
+                                                                         ) : (
+                                                                             <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                                                                                 <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                                                                             </svg>
+                                                                         )}
+                                                                     </span>
+                                                                     <div className="flex flex-col text-left">
+                                                                         <span className="truncate max-w-[170px] font-bold text-slate-800 group-hover:text-sky-600">
+                                                                             {doc.name}
+                                                                         </span>
+                                                                         <span className="text-[10px] text-slate-400 font-normal">
+                                                                             {formatFileSize(doc.size)}
+                                                                         </span>
+                                                                     </div>
+                                                                     <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 shrink-0 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                     </svg>
+                                                                 </a>
+                                                             );
+                                                         })}
+                                                     </div>
+                                                 </div>
+                                             )}
+
                                              {/* Doctor Answer Display Box */}
                                              {inq.status === "answered" && answers[inq.id] && (
                                                  <div className="mt-6 p-6 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-sky-500/10 rounded-3xl border border-emerald-200 shadow-sm">
@@ -626,10 +760,62 @@ export default function ClientDashboard() {
                                                              {answers[inq.id].answer}
                                                          </div>
                                                      </div>
+
+                                                     {/* Doctor Attached Documents / Prescriptions */}
+                                                     {answers[inq.id]?.documents && answers[inq.id].documents!.length > 0 && (
+                                                         <div className="mt-5 pt-4 border-t border-emerald-200/60">
+                                                             <div className="flex items-center gap-2 mb-3">
+                                                                 <svg className="w-4 h-4 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                 </svg>
+                                                                 <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
+                                                                     Doctor Prescriptions & Attachments ({answers[inq.id].documents!.length})
+                                                                 </span>
+                                                             </div>
+                                                             <div className="flex flex-wrap gap-2.5">
+                                                                 {answers[inq.id].documents!.map((doc, docIdx) => {
+                                                                     const isPdf = doc.type === "application/pdf" || doc.name.toLowerCase().endsWith(".pdf");
+                                                                     return (
+                                                                         <a
+                                                                             key={doc.id || docIdx}
+                                                                             href={doc.url}
+                                                                             target="_blank"
+                                                                             rel="noopener noreferrer"
+                                                                             className="inline-flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-200 text-slate-800 text-xs font-semibold transition-all group hover:border-emerald-400 shadow-xs"
+                                                                         >
+                                                                             <span className="p-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-600">
+                                                                                 {isPdf ? (
+                                                                                     <svg className="w-4 h-4 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
+                                                                                         <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                                                                                     </svg>
+                                                                                 ) : (
+                                                                                     <svg className="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                                                                                         <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                                                                                     </svg>
+                                                                                 )}
+                                                                             </span>
+                                                                             <div className="flex flex-col text-left">
+                                                                                 <span className="truncate max-w-[170px] font-bold text-slate-900 group-hover:text-emerald-700">
+                                                                                     {doc.name}
+                                                                                 </span>
+                                                                                 <span className="text-[10px] text-slate-400 font-normal">
+                                                                                     {formatFileSize(doc.size)}
+                                                                                 </span>
+                                                                             </div>
+                                                                             <svg className="w-3.5 h-3.5 text-emerald-600 shrink-0 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                                             </svg>
+                                                                         </a>
+                                                                     );
+                                                                 })}
+                                                             </div>
+                                                         </div>
+                                                     )}
                                                  </div>
                                              )}
                                          </div>
                                      </div>
+
                                  );
                              })}
                          </div>
@@ -639,119 +825,230 @@ export default function ClientDashboard() {
 
              {/* Intuitive New Inquiry Modal */}
              {showModal && (
-                 <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
-                     <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl p-6 sm:p-10 border border-slate-200 max-h-[92vh] overflow-y-auto relative animate-in fade-in zoom-in-95 duration-200">
-                         <div className="flex justify-between items-start mb-6">
+                 <div 
+                     className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/75 backdrop-blur-md p-3 sm:p-6 flex items-center justify-center min-h-[100dvh]"
+                     onClick={(e) => {
+                         if (e.target === e.currentTarget && !isSubmitting) setShowModal(false);
+                     }}
+                 >
+                     <div 
+                         className="bg-white rounded-3xl sm:rounded-[2.5rem] shadow-2xl w-full max-w-2xl p-5 sm:p-8 md:p-9 border border-slate-200 my-auto max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] flex flex-col relative animate-in fade-in zoom-in-95 duration-200"
+                         onClick={(e) => e.stopPropagation()}
+                     >
+                         {/* Modal Header - Fixed at Top */}
+                         <div className="flex justify-between items-start pb-4 border-b border-slate-100 shrink-0">
                              <div>
                                  <span className="text-xs font-bold uppercase tracking-wider text-sky-600 block mb-1">Online Medical Consultation</span>
-                                 <h3 className="text-2xl sm:text-3xl font-black text-slate-900">Ask a Doctor</h3>
-                                 <p className="text-slate-500 text-xs sm:text-sm mt-1">Submit your health question to be reviewed by a licensed physician.</p>
+                                 <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900">Ask a Doctor</h3>
+                                 <p className="text-slate-500 text-xs sm:text-sm mt-0.5">Submit your health question to be reviewed by a licensed physician.</p>
                              </div>
                              <button 
+                                 type="button"
                                  onClick={() => setShowModal(false)} 
-                                 className="text-slate-400 hover:text-slate-700 h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer text-xl font-bold"
+                                 disabled={isSubmitting}
+                                 className="text-slate-400 hover:text-slate-700 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer text-lg sm:text-xl font-bold shrink-0 ml-3 disabled:opacity-40"
+                                 title="Close"
                              >
                                  ✕
                              </button>
                          </div>
 
                          {modalError && (
-                             <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold rounded-2xl flex items-center gap-2">
+                             <div className="mt-3 p-3 sm:p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm font-semibold rounded-2xl flex items-center gap-2 shrink-0">
                                  <svg className="w-5 h-5 text-rose-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                  <span>{modalError}</span>
                              </div>
                          )}
 
-                         <form onSubmit={handleNewInquirySubmitWithCategory} className="space-y-6">
-                             
-                             {/* Category Quick Selector */}
-                             <div>
-                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">1. Select Consultation Topic</label>
-                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                     {categories.map((cat) => (
-                                         <button
-                                             type="button"
-                                             key={cat.id}
-                                             onClick={() => setSelectedCategory(cat.id)}
-                                             className={`p-3.5 rounded-2xl text-xs font-extrabold flex flex-col items-center justify-center gap-2 border transition-all cursor-pointer group ${selectedCategory === cat.id ? "bg-slate-900 text-white border-slate-900 shadow-lg scale-105" : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"}`}
-                                         >
-                                             <div className="shrink-0">{cat.icon}</div>
-                                             <span>{cat.name}</span>
-                                         </button>
-                                     ))}
-                                 </div>
-                             </div>
-
-                             {/* Patient Contact Info */}
-                             <div>
-                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">2. Patient Details</label>
-                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                     <div className="space-y-1">
-                                         <label className="text-xs font-semibold text-slate-500">Phone Number (For Urgent Follow-up)</label>
-                                         <div className="flex rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
-                                             <select 
-                                                 value={countryCode} 
-                                                 onChange={(e) => setCountryCode(e.target.value)} 
-                                                 className="bg-transparent pl-3 pr-1 text-slate-800 font-semibold outline-none border-r border-slate-200 cursor-pointer text-xs shrink-0 max-w-[110px]"
+                         {/* Scrollable Form Body */}
+                         <form onSubmit={handleNewInquirySubmitWithCategory} className="flex flex-col flex-1 overflow-hidden min-h-0 mt-3">
+                             <div className="overflow-y-auto overscroll-contain flex-1 pr-1 sm:pr-2 space-y-5 focus:outline-none">
+                                 
+                                 {/* Category Quick Selector */}
+                                 <div>
+                                     <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">1. Select Consultation Topic</label>
+                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                         {categories.map((cat) => (
+                                             <button
+                                                 type="button"
+                                                 key={cat.id}
+                                                 onClick={() => setSelectedCategory(cat.id)}
+                                                 className={`p-3 rounded-2xl text-xs font-extrabold flex flex-col items-center justify-center gap-2 border transition-all cursor-pointer group ${selectedCategory === cat.id ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.02]" : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"}`}
                                              >
-                                                 {countries.map((c, idx) => (
-                                                     <option key={`${c.code}-${c.dialCode}-${idx}`} value={c.dialCode}>
-                                                         {c.dialCode} ({c.code})
-                                                     </option>
-                                                 ))}
-                                             </select>
+                                                 <div className="shrink-0">{cat.icon}</div>
+                                                 <span className="text-center leading-tight">{cat.name}</span>
+                                             </button>
+                                         ))}
+                                     </div>
+                                 </div>
+
+                                 {/* Patient Contact Info */}
+                                 <div>
+                                     <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-2">2. Patient Details</label>
+                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                         <div className="space-y-1">
+                                             <label className="text-xs font-semibold text-slate-500">Phone Number (For Urgent Follow-up)</label>
+                                             <div className="flex rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden focus-within:border-sky-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
+                                                 <select 
+                                                     value={countryCode} 
+                                                     onChange={(e) => setCountryCode(e.target.value)} 
+                                                     className="bg-transparent pl-3 pr-1 text-slate-800 font-semibold outline-none border-r border-slate-200 cursor-pointer text-xs shrink-0 max-w-[105px]"
+                                                 >
+                                                     {countries.map((c, idx) => (
+                                                         <option key={`${c.code}-${c.dialCode}-${idx}`} value={c.dialCode}>
+                                                             {c.dialCode} ({c.code})
+                                                         </option>
+                                                     ))}
+                                                 </select>
+                                                 <input 
+                                                     type="tel" 
+                                                     required 
+                                                     value={phoneNumber} 
+                                                     onChange={(e) => setPhoneNumber(e.target.value)} 
+                                                     className="w-full bg-transparent px-3 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm font-medium" 
+                                                     placeholder="77 123 4567" 
+                                                 />
+                                             </div>
+                                         </div>
+                                         <div className="space-y-1">
+                                             <label className="text-xs font-semibold text-slate-500">Date of Birth</label>
                                              <input 
-                                                 type="tel" 
+                                                 type="date" 
                                                  required 
-                                                 value={phoneNumber} 
-                                                 onChange={(e) => setPhoneNumber(e.target.value)} 
-                                                 className="w-full bg-transparent px-3 py-3 text-slate-900 placeholder:text-slate-400 outline-none border-none text-sm font-medium" 
-                                                 placeholder="77 123 4567" 
+                                                 value={dob} 
+                                                 onChange={(e) => setDob(e.target.value)} 
+                                                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 sm:py-3 text-slate-900 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm font-medium" 
                                              />
                                          </div>
                                      </div>
-                                     <div className="space-y-1">
-                                         <label className="text-xs font-semibold text-slate-500">Date of Birth</label>
-                                         <input 
-                                             type="date" 
-                                             required 
-                                             value={dob} 
-                                             onChange={(e) => setDob(e.target.value)} 
-                                             className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none text-sm font-medium" 
-                                         />
-                                     </div>
                                  </div>
-                             </div>
 
-                             {/* Symptoms / Question Description */}
-                             <div className="space-y-1">
-                                 <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-1">
-                                     3. Describe Your Health Symptoms / Question
-                                 </label>
-                                 <textarea 
-                                     required 
-                                     rows={5} 
-                                     value={consultationReason} 
-                                     onChange={(e) => setConsultationReason(e.target.value)} 
-                                     className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none resize-none text-sm font-medium leading-relaxed" 
-                                     placeholder="Please describe: What are your symptoms? How many days have you felt this way? Any current medicines you are taking?"
-                                 />
-                             </div>
+                                 {/* Symptoms / Question Description */}
+                                 <div className="space-y-1">
+                                     <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block mb-1">
+                                         3. Describe Your Health Symptoms / Question
+                                     </label>
+                                     <textarea 
+                                         required 
+                                         rows={4} 
+                                         value={consultationReason} 
+                                         onChange={(e) => setConsultationReason(e.target.value)} 
+                                         className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-500/20 transition-all outline-none resize-none text-sm font-medium leading-relaxed" 
+                                         placeholder="Please describe: What are your symptoms? How many days have you felt this way? Any current medicines you are taking?"
+                                     />
+                                 </div>
 
-                             <button 
-                                 type="submit" 
-                                 disabled={isSubmitting}
-                                 className="w-full rounded-2xl bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-500 hover:to-teal-500 py-4 px-8 text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer"
-                             >
-                                 {isSubmitting ? (
-                                     <>
-                                         <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
-                                         <span>Submitting to Doctor...</span>
-                                     </>
-                                 ) : (
-                                     <span>Submit Medical Inquiry Now ➔</span>
+                                 {/* 4. Medical Documents Upload */}
+                                 <div className="space-y-2">
+                                     <div className="flex justify-between items-center">
+                                         <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                                             4. Attach Medical Files & Photos (Optional)
+                                         </label>
+                                         <span className="text-[11px] font-semibold text-slate-400">
+                                             {selectedFiles.length}/5 files
+                                         </span>
+                                     </div>
+                                     
+                                     <div 
+                                         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                                         onDragLeave={() => setIsDragging(false)}
+                                         onDrop={(e) => {
+                                             e.preventDefault();
+                                             setIsDragging(false);
+                                             handleFileSelect(e.dataTransfer.files);
+                                         }}
+                                         onClick={() => fileInputRef.current?.click()}
+                                         className={`border-2 border-dashed rounded-2xl p-5 sm:p-6 text-center cursor-pointer transition-all ${
+                                             isDragging 
+                                                 ? "border-sky-500 bg-sky-50/70 scale-[1.01]" 
+                                                 : "border-slate-200 bg-slate-50/50 hover:bg-slate-100/70 hover:border-slate-300"
+                                         }`}
+                                     >
+                                         <input 
+                                             type="file" 
+                                             ref={fileInputRef} 
+                                             onChange={(e) => handleFileSelect(e.target.files)} 
+                                             multiple 
+                                             accept=".pdf,image/jpeg,image/png,image/webp" 
+                                             className="hidden" 
+                                         />
+                                         <div className="flex flex-col items-center justify-center gap-2">
+                                             <div className="w-10 h-10 rounded-full bg-sky-100/70 text-sky-600 flex items-center justify-center">
+                                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                 </svg>
+                                             </div>
+                                             <div>
+                                                 <p className="text-xs font-bold text-slate-700">
+                                                     <span className="text-sky-600 underline">Click to browse</span> or drag & drop files
+                                                 </p>
+                                                 <p className="text-[11px] text-slate-400 mt-0.5">
+                                                     Lab reports, prescriptions, or photos (PDF, JPEG, PNG, WEBP — max 10MB each)
+                                                 </p>
+                                             </div>
+                                         </div>
+                                     </div>
+
+                                     {fileError && (
+                                         <p className="text-xs font-semibold text-rose-600 flex items-center gap-1.5 mt-1">
+                                             <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                             </svg>
+                                             {fileError}
+                                         </p>
+                                     )}
+
+                                     {/* Selected files preview list */}
+                                     {selectedFiles.length > 0 && (
+                                         <div className="space-y-2 mt-2">
+                                             {selectedFiles.map((file, idx) => (
+                                                 <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                                                     <div className="flex items-center gap-2.5 truncate pr-2">
+                                                         <span className="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white border border-slate-200 text-slate-600 shrink-0">
+                                                             {file.name.split(".").pop()}
+                                                         </span>
+                                                         <span className="truncate font-semibold text-slate-800">{file.name}</span>
+                                                         <span className="text-slate-400 text-[11px] shrink-0">({formatFileSize(file.size)})</span>
+                                                     </div>
+                                                     <button
+                                                         type="button"
+                                                         onClick={(e) => { e.stopPropagation(); removeFile(idx); }}
+                                                         className="text-slate-400 hover:text-rose-600 p-1 rounded-md hover:bg-white transition-colors cursor-pointer shrink-0"
+                                                         title="Remove file"
+                                                     >
+                                                         ✕
+                                                     </button>
+                                                 </div>
+                                             ))}
+                                         </div>
+                                     )}
+                                 </div>
+
+                                 {uploadProgress && (
+                                     <div className="p-3 bg-sky-50 border border-sky-200 text-sky-800 rounded-xl text-xs font-semibold flex items-center gap-2">
+                                         <div className="animate-spin h-4 w-4 border-2 border-sky-600 border-t-transparent rounded-full shrink-0" />
+                                         <span>{uploadProgress}</span>
+                                     </div>
                                  )}
-                             </button>
+                             </div>
+
+                             {/* Modal Footer Submit Button - Fixed at bottom */}
+                             <div className="pt-3.5 sm:pt-4 border-t border-slate-100 shrink-0">
+                                 <button 
+                                     type="submit" 
+                                     disabled={isSubmitting}
+                                     className="w-full rounded-2xl bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-500 hover:to-teal-500 py-3.5 sm:py-4 px-6 sm:px-8 text-sm sm:text-base font-black text-white shadow-xl shadow-sky-600/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer"
+                                 >
+                                     {isSubmitting ? (
+                                         <>
+                                             <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
+                                             <span>{uploadProgress || "Submitting to Doctor..."}</span>
+                                         </>
+                                     ) : (
+                                         <span>Submit Medical Inquiry Now ➔</span>
+                                     )}
+                                 </button>
+                             </div>
                          </form>
                      </div>
                  </div>
