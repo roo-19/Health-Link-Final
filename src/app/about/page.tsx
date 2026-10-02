@@ -200,7 +200,7 @@ export default function AboutPage() {
 
             {/* Story Text Content */}
             <ScrollReveal className="order-1 lg:order-2" direction="left" delay={200}>
-              <span className="text-xs font-extrabold uppercase tracking-widest text-secondary block mb-2">Our Foundation</span>
+              <span className="text-xs font-extrabold uppercase tracking-widest text-primary block mb-2">Our Foundation</span>
               <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight text-secondary leading-tight mb-6">
                 Connecting you to care that feels like home.
               </h2>
