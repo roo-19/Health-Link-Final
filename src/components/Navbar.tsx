@@ -81,26 +81,27 @@ export default function Navbar() {
                     isVisible ? "translate-y-0 opacity-100" : "-translate-y-28 opacity-0 pointer-events-none"
                 }`}
             >
-                <div className="mx-auto flex h-15 sm:h-18 items-center justify-between px-4 sm:px-7">
+                <div className="mx-auto flex h-15 sm:h-18 max-h-[60px] sm:max-h-[72px] items-center justify-between px-4 sm:px-7">
                     {/* Logo Section */}
                     <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-                        <div className="relative h-9 w-9 sm:h-11 sm:w-11 transition-transform duration-300 group-hover:scale-105">
+                        <div className="relative h-[42px] w-[42px] sm:h-[50px] sm:w-[50px] lg:h-[54px] lg:w-[54px] transition-transform duration-300 group-hover:scale-105 shrink-0 flex items-center justify-center">
                             <Image
                                 src="/logo111.png"
                                 alt="Health Link Logo"
-                                width={44}
-                                height={44}
-                                className="object-contain"
+                                width={56}
+                                height={56}
+                                className="h-full w-full object-contain"
                                 unoptimized
+                                priority
                             />
                         </div>
-                        <span className="text-lg sm:text-2xl font-extrabold tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary">
+                        <span className="text-xl sm:text-[25px] lg:text-[27px] font-extrabold tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary leading-none select-none">
                             Health Link
                         </span>
                     </Link>
 
                     {/* Center Desktop Navigation Links */}
-                    <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+                    <nav className="hidden lg:flex items-center gap-5 xl:gap-8">
                         {navLinks.map((link) => {
                             if (link.isAnchor) {
                                 return (
